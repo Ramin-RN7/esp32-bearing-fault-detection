@@ -1,0 +1,3 @@
+# Additional dependency for the emlearn C/header export experiments.
+-r requirements.txt
+emlearn
