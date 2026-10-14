@@ -1,5 +1,3 @@
-> **Publication in progress:** The research code and setup notes are available. Remaining audio, figures and thesis documents are still uploading; some links below will become available when publication finishes.
-
 # ESP32 Acoustic Bearing Fault Detection
 
 Python DSP and machine-learning experiments, with a MicroPython/ulab inference prototype on an ESP32-based M5Stack Core2.
