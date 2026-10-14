@@ -1,0 +1,11 @@
+# Desktop experiments. Both archived model bundles record scikit-learn 1.7.1.
+# Other original package versions were not recorded in the supplied archive.
+scikit-learn==1.7.1
+numpy
+scipy
+pandas
+soundfile
+librosa
+joblib
+matplotlib
+tqdm
