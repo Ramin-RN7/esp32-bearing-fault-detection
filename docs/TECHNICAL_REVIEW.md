@@ -1,8 +1,35 @@
 # Technical review and known issues
 
-Review date: **15 October 2026**. Reviewed publication: [`c03372e`](https://github.com/Ramin-RN7/esp32-bearing-fault-detection/commit/c03372e3610b765f9a6acc555b584b81d72441f2).
+There were three review passes, all on 15 October 2026:
 
-The historical offline scores can be reproduced from the supplied model bundles under a reconstruction of the missing split. The archived embedded feature extractor is incompatible with those models. The archive supports an offline ablation study and an embedded scoring prototype; a validated audio-to-decision deployment remains outstanding work.
+- **First pass:** reviewed [`c03372e`](https://github.com/Ramin-RN7/esp32-bearing-fault-detection/commit/c03372e3610b765f9a6acc555b584b81d72441f2).
+- **Second pass:** reviewed [`8c9a5a9`](https://github.com/Ramin-RN7/esp32-bearing-fault-detection/commit/8c9a5a9dc69d13e3eab17dea69bdcb3a268c8280).
+- **Third pass:** published the original research records in [`records/`](../records/) and added the evaluation package [`src/bearing_audio/`](../src/bearing_audio/).
+
+## Current status (third pass)
+
+The original split manifests, all 101 run folders and the device-phase files are now available. They settle the questions the first two passes left open.
+
+| Finding | Status |
+|---|---|
+| Thesis scores | **Reproduced exactly.** Retraining from the archived manifests gives the same confusion matrices and misclassified recordings ([`tests/test_reproduction.py`](../tests/test_reproduction.py)). The archived A8 model also reproduces the per-window scores logged on 14 Aug 2025 to within 1e-3. |
+| Split ([§3](#3-the-split-is-too-weak-for-unseen-bearing-claims)) | The archived manifests are **identical** to the reconstruction the earlier passes used. |
+| Bearing overlap ([§3](#3-the-split-is-too-weak-for-unseen-bearing-claims)) | The overlap is real but **has no measurable effect**. Over 200 matched splits of the thesis size, keeping bearings apart changes mean balanced accuracy by at most 0.02 (GMM 0.000, MLP 0.010, baseline 0.018). The real uncertainty comes from two other things: the 9-recording test set, where balanced accuracy varies by about ±0.15 between random splits, and the choice of configurations by their test scores. |
+| Performance on unseen bearings | Leave-one-bearing-out balanced accuracy: A16 MLP 0.850, A8 GMM 0.762. A two-feature baseline (RMS and kurtosis) also reaches 0.762. See [`results/protocol_comparison.md`](../results/protocol_comparison.md). |
+| Load confound ([§3](#required-re-evaluation)) | Without the ball-fault bearings 11–15, which were recorded without load, balanced accuracy is MLP 0.800, GMM 0.733 and baseline 0.817. |
+| Desktop/device features ([§1](#1-desktop-and-device-features-have-different-meanings)) | **Confirmed by the device notes** of 14 Aug 2025. [`REPORT_DevicePhase.md`](../records/device/REPORT_DevicePhase.md) says "GMM predictions not meaningful" and "Parity with PC not established". The deployed JSON is the archived A8 model. A strict expected-failure test tracks the issue. **Open.** |
+| Timing ([§2](#2-predictor-timing-includes-repeated-model-loading)) | Confirmed: both published runtime versions reload the model JSON on every call. **Open.** |
+| Configuration metadata ([§4](#4-additional-archive-issues)) | The errors are confined to two supplementary files: `06_results_evaluation/ablation_summary.csv`, plus the evaluation-level mix-up in `best_of_table.csv`. The original run log and the thesis tables are correct. The corrected table is [`results/ablation_runs.csv`](../results/ablation_runs.csv). |
+| Per-run artifacts ([§4](#4-additional-archive-issues)) | **Resolved.** All run folders are in [`records/runs/`](../records/runs/). |
+| Embedded assets ([§4](#4-additional-archive-issues)) | **Partly resolved.** The WAV evaluation, live and loop scripts, the deployed JSON files and the firmware build notes and configuration are now in [`records/device/`](../records/device/) and [`records/firmware/`](../records/firmware/). `wavtools` and `feat_a8.extract` never existed: thesis Listing 4.1 is illustrative, and the measured runs used `a8_eval_wav_gmm.py` and `time_gmm.py`. A complete firmware source tree is still missing. |
+| License ([§4](#4-additional-archive-issues)) | **Resolved.** The code is MIT-licensed; the thesis documents remain all rights reserved. |
+| Still open ([§4](#4-additional-archive-issues)) | MLP C exporter buffer swap, legacy CSV writer, FFT input crop, A45 placeholder, label polarity. |
+
+The sections below are the record of the first and second passes. Sentences that the third pass superseded are marked.
+
+## First-pass summary
+
+The historical offline scores can be reproduced from the supplied model bundles under a reconstruction of the split, which is now confirmed by the archived manifests. The archived embedded feature extractor is incompatible with those models. The archive supports an offline ablation study and an embedded scoring prototype; a validated audio-to-decision deployment remains outstanding work.
 
 ## Scope and evidence
 
@@ -81,9 +108,9 @@ The slow feature path uses a Python DFT after a broad import exception. The thes
 
 The available [`prep_segments.py`](../02_data_segmentation/prep_segments.py) generates two-second windows with a one-second hop. [`make_splits.py`](../02_data_segmentation/make_splits.py) assigns recordings within each class using seed 42. With the sorted published filenames, this reconstructs 42 training, 9 validation and 9 test recordings.
 
-The original manifests are absent. This is an explicit reconstruction, supported by the reproduced model scores, rather than a recovered historical manifest.
+*Superseded by the third pass:* the original manifests, now published in [`records/manifests/`](../records/manifests/), contain exactly this split.
 
-The reconstructed test set has 3 normal and 6 fault recordings, comprising **81 overlapping windows from 7 physical bearings**:
+The test set has 3 normal and 6 fault recordings, comprising **81 overlapping windows from 7 physical bearings**:
 
 | Test recording | Same-bearing recordings outside test |
 |---|---|
@@ -97,7 +124,7 @@ The reconstructed test set has 3 normal and 6 fault recordings, comprising **81 
 | C_18_2 | None |
 | C_19_2 | H_19_0, C_19_1 in training |
 
-The [dataset authors' paper, section 2.1](https://doi.org/10.1016/j.dib.2023.109327) identifies the first numeric filename field as the physical bearing ID. An [author-uploaded copy](https://www.researchgate.net/publication/371782379_University_of_Ottawa_constant_load_and_speed_rolling-element_bearing_vibration_and_acoustic_fault_signature_datasets) supplies the same mapping. Consequently, **6/9 test recordings share a physical bearing with training or validation**, and 11 of the 20 bearing IDs cross some split boundary. This is actual group overlap in the reconstruction.
+The [dataset authors' paper, section 2.1](https://doi.org/10.1016/j.dib.2023.109327) identifies the first numeric filename field as the physical bearing ID. An [author-uploaded copy](https://www.researchgate.net/publication/371782379_University_of_Ottawa_constant_load_and_speed_rolling-element_bearing_vibration_and_acoustic_fault_signature_datasets) supplies the same mapping. Consequently, **6/9 test recordings share a physical bearing with training or validation**, and 11 of the 20 bearing IDs cross some split boundary. This is actual group overlap. *Third pass:* matched splits that keep bearings apart score the same, so the overlap does not inflate these results. See the [current status](#current-status-third-pass).
 
 ### Reproduced historical scores
 
@@ -120,9 +147,11 @@ For scale, an independent-binomial Wilson interval for 8/9 is approximately **56
 
 ### Required re-evaluation
 
+*Third pass:* done for the two thesis pipelines. [`scripts/evaluate_protocols.py`](../scripts/evaluate_protocols.py) runs leave-one-bearing-out (out-of-fold predictions included), matched repeated splits and the ball-fault sensitivity analysis. Nested selection across all ablation configurations is still open.
+
 Group all health states, recordings and derived windows by physical bearing. Use outer held-out bearing groups for evaluation and inner groups for preprocessing/model/threshold selection. Fit scalers and PCA only on each training fold. Report out-of-fold recording-level predictions, balanced accuracy, MCC, fault F1 and uncertainty that respects bearing groups. The [scikit-learn nested-CV example](https://scikit-learn.org/stable/auto_examples/model_selection/plot_nested_cross_validation_iris.html) explains the selection-bias issue.
 
-The source dataset also has limited operating-condition coverage. Section 3.2 of its paper specifies a nominal 400 N load for healthy, inner-race, outer-race and cage data, and no applied load for ball-fault data. Three of the six reconstructed test-fault recordings are ball faults. This is a potential load/label confound; these results do not establish how much the models use load-related cues. Re-evaluation should include a sensitivity analysis that removes all recordings of ball-fault bearings 11–15. Grouping or excluding these bearings cannot demonstrate robustness across loads; that requires suitable additional data.
+The source dataset also has limited operating-condition coverage. Section 3.2 of its paper specifies a nominal 400 N load for healthy, inner-race, outer-race and cage data, and no applied load for ball-fault data. Three of the six reconstructed test-fault recordings are ball faults. This is a potential load/label confound; these results do not establish how much the models use load-related cues. Re-evaluation should include a sensitivity analysis that removes all recordings of ball-fault bearings 11–15. Grouping or excluding these bearings cannot demonstrate robustness across loads; that requires suitable additional data. *Third pass:* the sensitivity analysis has been run. See the [current status](#current-status-third-pass).
 
 ## 4. Additional archive issues
 
@@ -130,15 +159,15 @@ The source dataset also has limited operating-condition coverage. Section 3.2 of
 |---|---|
 | A16 scoring preprocessing differs from training | Training uses an upper band-pass cutoff of 3500 Hz. `a35b_aggregate_A16_MLP_per_file.py` clamps its requested 5000 Hz to 3600 Hz. In the reconstruction this changes segment predictions, although mean file decisions remain the same. |
 | Some aggregation/re-segmentation comparisons change the front end | A40/A41 and B1/B2 A16 helpers use resampling, Hilbert magnitude and `log1p` without the full training band-pass/smoothing/percentile normalization/RMS matching. Their results do not isolate aggregation or window length alone. |
-| Configuration metadata is wrong | `ablation_summary.csv` marks A16-MLP as no envelope and no PCA, contradicting the code, bundle dimensions and `variants.csv`. The second pass confirmed that PCA errors also affect A8, A17 and A31. Use source and model objects as evidence; do not infer ablation effects from this metadata without repair. |
+| Configuration metadata is wrong | `ablation_summary.csv` marks A16-MLP as no envelope and no PCA, contradicting the code, bundle dimensions and `variants.csv`. The second pass confirmed that PCA errors also affect A8, A17 and A31. Use source and model objects as evidence; do not infer ablation effects from this metadata without repair. *Third pass:* the original log ([`records/logs/`](../records/logs/)) and the thesis tables are correct. [`results/ablation_runs.csv`](../results/ablation_runs.csv) rebuilds the table from them, with evaluation level, balanced accuracy and MCC. |
 | Logged rows are not unique configurations | `variants.csv` has 104 rows and 93 distinct IDs. Repeated IDs include A1, A14, B1/B2-A8 and A44-ET. Counts include repeat runs and aggregation entries. |
-| Per-run artifacts are not all present | Absolute Windows paths in `variants.csv` refer to historical `params.json`, `metrics.json`, `code.py` and model outputs that are mostly absent. The logging code supports their creation; the published archive does not contain every run directory. |
+| Per-run artifacts are not all present | Absolute Windows paths in `variants.csv` refer to historical `params.json`, `metrics.json`, `code.py` and model outputs that are mostly absent. The logging code supports their creation; the published archive does not contain every run directory. *Third pass: resolved.* All run folders are in [`records/runs/`](../records/runs/). |
 | A legacy feature writer emits incomplete rows | `run_variant_ov75.py` calls `writerow` inside the loop over 11 feature values, producing 11 rows per window, of which the first 10 have missing feature fields. That script needs repair before reuse. |
 | Two baseline FFT calls crop long input | `extract_features.py` and `run_variant_ov75.py` pass a 4096-point FFT length for a 32000-sample window. NumPy crops the input for that transform. Confirm the intended baseline feature definition before treating it as a whole-window spectrum. |
 | A45 is an export placeholder | `a45_train_export_rf_small.py` explicitly exports an A44 ExtraTrees model under RF names. It does not train a new Random Forest, despite its filename and supplementary-index description. |
 | Device label polarity differs | Offline scoring uses 1=fault. The archived runtime returns 1=normal. A shared contract and wrapper tests are needed before combining outputs. |
-| Embedded assets are incomplete | The archive has no original `wavtools`, `feat_a8.extract`, complete WAV evaluation helper, model JSON files, firmware source tree or build configuration. The A47 exporter can regenerate JSON from the supplied bundle. The thesis's illustrative JSON keys also differ from A47's actual schema. |
-| Software licensing is undeclared | The dataset's CC BY 4.0 attribution is supplied. The authored code/documents have no declared general license. |
+| Embedded assets are incomplete | The archive has no original `wavtools`, `feat_a8.extract`, complete WAV evaluation helper, model JSON files, firmware source tree or build configuration. The A47 exporter can regenerate JSON from the supplied bundle. The thesis's illustrative JSON keys also differ from A47's actual schema. *Third pass:* the deployed JSON files, `a8_eval_wav_gmm.py` (which includes its own WAV parser), the live and loop scripts and the firmware build notes are now in [`records/device/`](../records/device/) and [`records/firmware/`](../records/firmware/). `wavtools` and `feat_a8.extract` never existed. |
+| Software licensing is undeclared | The dataset's CC BY 4.0 attribution is supplied. The authored code/documents have no declared general license. *Third pass: resolved.* The code is [MIT](../LICENSE)-licensed; the thesis documents remain all rights reserved. |
 
 The absent thesis and presentation noted in the earlier `0bc3373` review are **resolved**: both are present from `c03372e` onward, and README links work. The raw archived documents are historical evidence; the corrections above qualify their technical claims.
 
@@ -157,8 +186,8 @@ Successful completion means the diagnostic ran. It does not mean the known featu
 
 ## Repair order
 
-1. Define and enforce one desktop/device feature and label contract. Add feature-to-decision parity fixtures.
-2. Re-evaluate with nested physical-bearing grouping and publish explicit split manifests and out-of-fold predictions.
-3. Complete the firmware/WAV path, cache model parameters, use the board's supported FFT API and benchmark correct predictions stage by stage.
-4. Repair the optional MLP C exporter's buffer handling and verify repeated-call behavior before using that export path.
-5. Consolidate duplicated experiment code, repair legacy writers and metadata/evaluation units, and declare an appropriate license after ownership and reuse terms are decided.
+1. Define and enforce one desktop/device feature and label contract. Add feature-to-decision parity fixtures. *(Open. The current mismatch is tracked by a strict expected-failure test.)*
+2. Re-evaluate with nested physical-bearing grouping and publish explicit split manifests and out-of-fold predictions. *(Done for the thesis pipelines in the third pass. Nested selection across all configurations is open.)*
+3. Complete the firmware/WAV path, cache model parameters, use the board's supported FFT API and benchmark correct predictions stage by stage. *(Open.)*
+4. Repair the optional MLP C exporter's buffer handling and verify repeated-call behavior before using that export path. *(Open.)*
+5. Consolidate duplicated experiment code, repair legacy writers and metadata/evaluation units, and declare an appropriate license after ownership and reuse terms are decided. *(License and metadata done. The rest is open.)*

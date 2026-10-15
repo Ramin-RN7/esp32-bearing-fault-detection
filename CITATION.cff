@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this code or its results, please cite the thesis below."
+type: software
+title: "ESP32 Acoustic Bearing Fault Detection"
+authors:
+  - family-names: Nassiri
+    given-names: Ramin
+    affiliation: "OTH Regensburg"
+repository-code: "https://github.com/Ramin-RN7/esp32-bearing-fault-detection"
+license: MIT
+keywords:
+  - bearing fault detection
+  - acoustic condition monitoring
+  - TinyML
+  - ESP32
+  - MicroPython
+preferred-citation:
+  type: thesis
+  title: "Audio-Based Bearing Fault Detection on Resource-Constrained Microcontrollers: An Ablation-Driven Study"
+  authors:
+    - family-names: Nassiri
+      given-names: Ramin
+  thesis-type: "Master's thesis, Electrical and Microsystems Engineering"
+  institution:
+    name: "OTH Regensburg (Ostbayerische Technische Hochschule Regensburg)"
+    city: Regensburg
+    country: DE
+  year: 2025
+references:
+  - type: dataset
+    title: "University of Ottawa Rolling-element Dataset – Vibration and Acoustic Faults under Constant Load and Speed conditions (UORED-VAFCLS)"
+    authors:
+      - family-names: Sehri
+        given-names: Mert
+      - family-names: Dumond
+        given-names: Patrick
+    publisher:
+      name: Mendeley Data
+    version: "5"
+    doi: "10.17632/y2px5tg92h.5"
+    year: 2023
+    license: CC-BY-4.0

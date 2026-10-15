@@ -1,88 +1,89 @@
-# ESP32 Acoustic Bearing Fault Detection
+# Acoustic Bearing-Fault Detection on an ESP32
 
-Python DSP and machine-learning ablation experiments, with an experimental MicroPython/ulab scoring prototype for an ESP32-based M5Stack Core2.
+[![tests](https://github.com/Ramin-RN7/esp32-bearing-fault-detection/actions/workflows/tests.yml/badge.svg)](https://github.com/Ramin-RN7/esp32-bearing-fault-detection/actions/workflows/tests.yml)
 
-Supplementary materials for **Ramin Nassiri's master's thesis at OTH Regensburg (2025)**: *Audio-Based Bearing Fault Detection on Resource-Constrained Microcontrollers: An Ablation-Driven Study*.
+Can a microphone and a small microcontroller tell a healthy rolling bearing from a faulty one? This repository holds the master's thesis *Audio-Based Bearing Fault Detection on Resource-Constrained Microcontrollers: An Ablation-Driven Study* (Ramin Nassiri, OTH Regensburg, 2025). It contains:
 
-**Technical review, 15 October 2026:** the archived device extractor produces different features from those used to train the exported GMM. The embedded audio-to-decision path therefore needs correction and validation. The offline scores below describe a small recording-level experiment. Read the [technical review and known issues](docs/TECHNICAL_REVIEW.md) before using the models or interpreting the timings.
+- a 93-run ablation of compact DSP features and lightweight classifiers on the University of Ottawa bearing-sound dataset
+- a MicroPython prototype for an ESP32-based M5Stack Core2
+- what you need to check the work: the original data split and run records, a package that reproduces the thesis numbers exactly, and stricter re-evaluations
 
-## Overview
+## Results
 
-The study investigates acoustic bearing-fault detection for condition monitoring. An ablation framework compares preprocessing, handcrafted and spectral feature representations, scaling, PCA, GMM/MLP classifiers and file-level aggregation. The archive includes a desktop-to-JSON parameter exporter and a MicroPython scaler/PCA/GMM runtime.
+The table shows balanced accuracy for recording-level decisions (healthy vs. fault). 0.5 is chance level.
 
-The embedded prototype uses **WAV files stored in flash**. Its measurements concern the archived implementation, and embedded classification accuracy has not been established by this repository review.
-
-## Historical offline results
-
-| Archived configuration | File-level fault F1 | Accuracy | Balanced accuracy |
+| Pipeline | Thesis split (9 test recordings) | Leave-one-bearing-out (60 recordings) | 200 random splits of thesis size |
 |---|---:|---:|---:|
-| A16 MLP | 0.923 | 0.889 | 0.833 |
-| A8 GMM | 0.909 | 0.889 | 0.917 |
+| **A16 MLP** (8 kHz, 1–3.5 kHz band-pass, Hilbert envelope + log, MinMax, PCA(8), MLP with 10 units) | 0.833 (F1 0.923) | **0.850** (F1 0.883) | 0.800 ± 0.143 |
+| **A8 GMM** (16 kHz, 1–5 kHz band-pass, z-score, PCA(4), 3-component GMM fitted on healthy audio) | 0.917 (F1 0.909) | 0.762 (F1 0.854) | 0.766 ± 0.152 |
+| Baseline: logistic regression on RMS and kurtosis | 0.500 | 0.762 | 0.776 ± 0.124 |
 
-These results correspond to **9 test recordings: 3 normal and 6 fault**, with 81 overlapping two-second windows. Both models classify 8 of the 9 recordings correctly. The higher MLP fault F1 reflects a different error type, while GMM has higher balanced accuracy on this split. Always predicting fault gives F1 = 0.800.
+- **The thesis results reproduce exactly.** Retraining on the archived split gives the same confusion matrices ([`tests/test_reproduction.py`](tests/test_reproduction.py)).
+- **A 9-recording test set is noisy.** Between random splits of that size, balanced accuracy varies by about ±0.15. The thesis split was a favourable draw for the GMM: only about a quarter of random splits score as high. It was an unfavourable draw for the baseline.
+- **Bearing overlap does not inflate the scores.** In the thesis split, recordings of one physical bearing appear in both training and test. Matched splits that keep bearings apart score the same, within 0.02 ([details](results/protocol_comparison.md)).
+- **A16 MLP is the strongest thesis pipeline.** It reaches 0.79–0.85 balanced accuracy on unseen bearings.
+- **A two-feature baseline comes close to the MLP.** It matches it in two cases: on bearing-grouped splits (0.794 vs. 0.790), and when the ball-fault bearings, which were recorded without load, are left out (0.817 vs. 0.800).
+- **A8 GMM is no better than the baseline.** This is the model that was ported to the ESP32.
 
-A host reconstruction on 15 October 2026 reproduced these file-level scores using the archived model bundles, the available segmentation/split code and published WAV filenames. The original manifests are absent, so the reconstructed split is explicitly identified as such. These results do not establish accuracy on unseen bearings: the reconstructed split places 6 test recordings on physical bearings also represented in training or validation. Comparing many configurations on the same test set adds selection bias. A new evaluation must group all recordings and windows by physical bearing and select configurations inside training folds.
+Full tables: [`results/protocol_comparison.md`](results/protocol_comparison.md). Every logged ablation run, with corrected configuration metadata: [`results/ablation_runs.csv`](results/ablation_runs.csv).
 
-The desktop A8 model takes **25 handcrafted descriptors: 10 time-domain statistics, 8 band-power ratios and 7 spectral/autocorrelation descriptors**, then applies z-score scaling and PCA(4). The archived device extractor instead computes **25 short-frame PSD band energies**. Equal vector length does not make those feature definitions interchangeable.
+## On the ESP32 (M5Stack Core2)
 
-See the [results tables](06_results_evaluation/), [thesis](Master_Thesis_Audio_ESP32.pdf) and [technical review](docs/TECHNICAL_REVIEW.md). The tables and thesis retain the historical experiment record.
+| Part | Status |
+|---|---|
+| Custom MicroPython v1.20 image with ulab (ESP-IDF 4.4) | Built and flashed. See the [build notes](records/firmware/). |
+| Model export (scaler, PCA, GMM → JSON) and the ulab runtime | Works. On identical inputs it matches scikit-learn ([`tests/test_device_runtime.py`](tests/test_device_runtime.py)). |
+| On-device feature extraction | **Doesn't match the model yet.** The device computes 25 short-frame band energies, but the model was trained on 25 window statistics. On-device classification accuracy has not been measured ([device notes](records/device/REPORT_DevicePhase.md)). |
+| Timing (WAV from flash) | About 63 ms per prediction call, including reloading the model JSON on every call. About 11.2 s per feature frame, because a pure-Python DFT was used even though `ulab.numpy.fft` was available. |
 
-A second review verified all 240 files at `8c9a5a9` and repeated the host results. It also found mislabeled RF/ET evaluation levels, broader summary-metadata errors, unsupported presentation timing claims, and input mutation in the optional MLP C exporter. These findings and their evidence are recorded in the [review](docs/TECHNICAL_REVIEW.md#second-pass-verification).
+**Next:**
+1. Retrain the GMM on features the device computes with FFT.
+2. Load the model once instead of on every call.
+3. Add host–device parity tests.
+4. Re-measure on the board.
 
-## Timing interpretation
+## Reproduce
 
-The thesis reports approximately **64 ms per predictor call over 500 calls**. In the archived code, each `predict_gmm()` call reads and parses two JSON files, constructs parameter arrays, and performs normalization, PCA and GMM scoring. The timing therefore includes repeated model loading and is not an isolated arithmetic benchmark. Spectral feature extraction is excluded, and the code does not measure live microphone latency.
-
-The reported feature time of approximately 11.2 seconds for a 512-sample frame used the Python DFT fallback. The thesis contains an FFT erratum. Choosing a supported FFT API, caching parameters and re-measuring stages on the board are outstanding work. Hardware timings were not repeated in this review.
-
-## Dataset and evaluation
-
-- 60 ten-second WAV recordings from 20 physical bearings.
-- 104 logged result rows with 93 distinct run IDs, including repeated IDs and file-aggregation results.
-- The available standard splitter assigns all windows from a source recording to one subset. Using sorted published filenames reconstructs 42/9/9 train/validation/test recordings.
-- Recording grouping prevents windows of the same recording crossing subsets, but the reconstructed subsets share physical bearings across different recordings.
-
-The split implementation is in [make_splits.py](02_data_segmentation/make_splits.py).
-
-The WAVs derive from the University of Ottawa dataset, version 5, by **Mert Sehri and Patrick Dumond**, licensed **CC BY 4.0**. See [dataset attribution](01_uottawa_wavs/ATTRIBUTION.md).
+```bash
+python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\Activate.ps1
+pip install -r requirements-lock.txt
+pytest -q                                              # ~3 min: thesis split, split integrity, device runtime
+python scripts/evaluate_protocols.py                   # ~10 min: writes results/protocol_comparison.md
+```
 
 ## Repository map
 
-| Directory | Contents |
+| Path | Contents |
 |---|---|
-| [01_uottawa_wavs](01_uottawa_wavs/) | Converted source WAVs and attribution |
-| [02_data_segmentation](02_data_segmentation/) | Segmentation and recording-grouped split scripts |
-| [03_feature_extraction](03_feature_extraction/) | Desktop feature pipelines and archived device extractor |
-| [04_model_training_ablation](04_model_training_ablation/) | Training/ablation scripts and embedded GMM runtime |
-| [05_model_export](05_model_export/) | Export scripts and two archived desktop model bundles |
-| [06_results_evaluation](06_results_evaluation/) | Historical evaluation tables and summaries |
-| [07_confusion_matrices_full](07_confusion_matrices_full/) | Archived confusion matrices |
-| [docs](docs/) | Setup, validation scope, technical review and review evidence |
+| [`src/bearing_audio/`](src/bearing_audio/) | Feature extraction, the two thesis pipelines and the evaluation protocols |
+| [`scripts/`](scripts/) | `evaluate_protocols.py`, `build_ablation_table.py`, archive checks, earlier review diagnostics |
+| [`tests/`](tests/) | Reproduction, split-integrity and device-runtime tests, run on every push |
+| [`results/`](results/) | Evaluation results and the corrected ablation table |
+| [`records/`](records/) | Original research records: split manifests, 101 run folders, logs, device files, firmware notes |
+| [`01_uottawa_wavs/`](01_uottawa_wavs/) to [`07_confusion_matrices_full/`](07_confusion_matrices_full/) | The supplementary package as submitted: audio, segmentation, feature and ablation scripts, export, results, confusion matrices |
+| [`docs/`](docs/) | [Technical review and known issues](docs/TECHNICAL_REVIEW.md), [validation scope](docs/VALIDATION.md), [running the archived scripts](docs/RUNNING.md) |
 
-Additional documents: [thesis](Master_Thesis_Audio_ESP32.pdf), [defense presentation](Presentation%20Audio-Based%20Bearing%20Fault%20Detection.pptx), and [supplementary-materials index](Supplementary_Materials_Index_Ramin_Nassiri_MEM_OTH_Regensburg.pdf).
+## Thesis documents
 
-## Getting started
+- [Thesis (PDF)](Master_Thesis_Audio_ESP32.pdf)
+- [Defense slides](Presentation%20Audio-Based%20Bearing%20Fault%20Detection.pptx)
+- [Supplementary-materials index](Supplementary_Materials_Index_Ramin_Nassiri_MEM_OTH_Regensburg.pdf)
 
-Clone and inspect the archive with Python's standard library:
+These are the documents as submitted and presented. Two of their on-device statements go beyond the archived evidence:
 
-```bash
-git clone https://github.com/Ramin-RN7/esp32-bearing-fault-detection.git
-cd esp32-bearing-fault-detection
-python scripts/check_snapshot.py
-```
+- Section 4.2 of the thesis says the WAV test exercised the model "identically to the offline pipeline".
+- Slide 19 reports about 70–75 ms per frame at offline accuracy.
 
-For host model diagnostics, install `requirements.txt` in a virtual environment and run:
+The [technical review](docs/TECHNICAL_REVIEW.md) explains both.
 
-```bash
-python scripts/review_models.py
-```
+## Data
 
-This reconstructs the test split, exports the GMM parameters, re-scores the archived models and demonstrates the device feature mismatch in a host emulation. It writes diagnostics under `artifacts/technical_review/`. It performs no new training and no hardware verification. See the [review evidence](docs/review/summary.json).
+The audio comes from the University of Ottawa bearing dataset (UORED-VAFCLS, version 5) by Mert Sehri and Patrick Dumond, licensed CC BY 4.0. It has 60 ten-second microphone recordings, converted here to 16 kHz WAV, from 20 bearings. Each bearing was recorded healthy, with a developing fault and faulty. There are five bearings per fault type: inner race, outer race, ball and cage. See the [attribution](01_uottawa_wavs/ATTRIBUTION.md).
 
-**Read [running the archived scripts](docs/RUNNING.md) before attempting full experiments.** The archive uses stage-specific paths and omitted intermediates, so it is not a one-command reproduction package. Some legacy evaluation scripts also change preprocessing between training and scoring; details are in the technical review.
+## License and citation
 
-## Source and licensing
+- **Code:** [MIT](LICENSE).
+- **Thesis PDF, presentation and supplementary index:** © Ramin Nassiri, all rights reserved.
+- **Audio:** CC BY 4.0, as above.
 
-The supplied supplementary archive contains the historical research scripts, models, results and thesis documents. Its [original README](docs/original-supplementary-readme.md) is retained. Setup guidance, snapshot checks and the later technical review accompany the archive.
-
-No general software license has been assigned to the authored code or thesis documents. The separately credited dataset retains its **CC BY 4.0** license.
+To cite this work, use [`CITATION.cff`](CITATION.cff) or GitHub's "Cite this repository" button.
