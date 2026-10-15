@@ -1,0 +1,2132 @@
+{
+ "version": "0.1.0",
+ "original_split": {
+  "a8_gmm": {
+   "test": [
+    "B_11_2",
+    "B_14_2",
+    "B_15_1",
+    "C_18_1",
+    "C_18_2",
+    "C_19_2",
+    "H_10_0",
+    "H_13_0",
+    "H_18_0"
+   ],
+   "true": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "pred": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "recording": {
+    "confusion_matrix": [
+     [
+      3,
+      0
+     ],
+     [
+      1,
+      5
+     ]
+    ],
+    "accuracy": 0.8888888888888888,
+    "fault_f1": 0.9090909090909091,
+    "balanced_accuracy": 0.9166666666666667,
+    "mcc": 0.7905694150420948,
+    "fault_recall": 0.8333333333333334,
+    "specificity": 1.0
+   },
+   "window": {
+    "confusion_matrix": [
+     [
+      26,
+      1
+     ],
+     [
+      9,
+      45
+     ]
+    ],
+    "accuracy": 0.8765432098765432,
+    "fault_f1": 0.9,
+    "balanced_accuracy": 0.8981481481481481,
+    "mcc": 0.7577754301140095,
+    "fault_recall": 0.8333333333333334,
+    "specificity": 0.9629629629629629
+   },
+   "misclassified": [
+    "C_19_2"
+   ]
+  },
+  "a16_mlp": {
+   "test": [
+    "B_11_2",
+    "B_14_2",
+    "B_15_1",
+    "C_18_1",
+    "C_18_2",
+    "C_19_2",
+    "H_10_0",
+    "H_13_0",
+    "H_18_0"
+   ],
+   "true": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "pred": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0
+   ],
+   "recording": {
+    "confusion_matrix": [
+     [
+      2,
+      1
+     ],
+     [
+      0,
+      6
+     ]
+    ],
+    "accuracy": 0.8888888888888888,
+    "fault_f1": 0.9230769230769231,
+    "balanced_accuracy": 0.8333333333333333,
+    "mcc": 0.7559289460184544,
+    "fault_recall": 1.0,
+    "specificity": 0.6666666666666666
+   },
+   "window": {
+    "confusion_matrix": [
+     [
+      18,
+      9
+     ],
+     [
+      0,
+      54
+     ]
+    ],
+    "accuracy": 0.8888888888888888,
+    "fault_f1": 0.9230769230769231,
+    "balanced_accuracy": 0.8333333333333333,
+    "mcc": 0.7559289460184544,
+    "fault_recall": 1.0,
+    "specificity": 0.6666666666666666
+   },
+   "misclassified": [
+    "H_13_0"
+   ]
+  },
+  "baseline_rms_kurtosis": {
+   "test": [
+    "B_11_2",
+    "B_14_2",
+    "B_15_1",
+    "C_18_1",
+    "C_18_2",
+    "C_19_2",
+    "H_10_0",
+    "H_13_0",
+    "H_18_0"
+   ],
+   "true": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "pred": [
+    1,
+    1,
+    0,
+    1,
+    1,
+    0,
+    1,
+    1,
+    0
+   ],
+   "recording": {
+    "confusion_matrix": [
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ]
+    ],
+    "accuracy": 0.5555555555555556,
+    "fault_f1": 0.6666666666666666,
+    "balanced_accuracy": 0.5,
+    "mcc": 0.0,
+    "fault_recall": 0.6666666666666666,
+    "specificity": 0.3333333333333333
+   },
+   "window": {
+    "confusion_matrix": [
+     [
+      9,
+      18
+     ],
+     [
+      22,
+      32
+     ]
+    ],
+    "accuracy": 0.5061728395061729,
+    "fault_f1": 0.6153846153846154,
+    "balanced_accuracy": 0.4629629629629629,
+    "mcc": -0.07184212081070997,
+    "fault_recall": 0.5925925925925926,
+    "specificity": 0.3333333333333333
+   },
+   "misclassified": [
+    "B_15_1",
+    "C_19_2",
+    "H_10_0",
+    "H_13_0"
+   ]
+  }
+ },
+ "leave_one_bearing_out": {
+  "a8_gmm": {
+   "confusion_matrix": [
+    [
+     13,
+     7
+    ],
+    [
+     5,
+     35
+    ]
+   ],
+   "accuracy": 0.8,
+   "fault_f1": 0.8536585365853658,
+   "balanced_accuracy": 0.7625,
+   "mcc": 0.5400617248673216,
+   "fault_recall": 0.875,
+   "specificity": 0.65,
+   "recall_developing_fault": 0.9,
+   "recall_faulty": 0.85,
+   "recall_by_condition": {
+    "I": 0.9,
+    "O": 0.8,
+    "B": 0.9,
+    "C": 0.9
+   },
+   "misclassified": [
+    "I_1_2",
+    "H_2_0",
+    "H_3_0",
+    "H_4_0",
+    "H_5_0",
+    "O_6_1",
+    "O_6_2",
+    "H_8_0",
+    "H_9_0",
+    "B_12_1",
+    "C_19_2",
+    "H_19_0"
+   ],
+   "predictions": [
+    {
+     "recording": "H_1_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_1_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_1_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_2_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "I_2_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_2_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_3_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "I_3_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_3_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_4_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "I_4_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_4_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_5_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "I_5_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_5_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_6_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_7_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_7_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_7_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_8_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_9_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_9_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_9_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_10_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_10_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_10_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_11_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_11_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_11_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_12_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "B_12_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_12_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_13_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_13_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_13_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_14_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_14_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_14_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_15_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_15_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_15_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_16_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_16_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_16_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_17_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_17_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_17_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_18_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_18_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_18_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_19_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_19_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_19_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "C_20_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_20_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_20_0",
+     "true": 0,
+     "pred": 0
+    }
+   ]
+  },
+  "a16_mlp": {
+   "confusion_matrix": [
+    [
+     17,
+     3
+    ],
+    [
+     6,
+     34
+    ]
+   ],
+   "accuracy": 0.85,
+   "fault_f1": 0.8831168831168831,
+   "balanced_accuracy": 0.85,
+   "mcc": 0.6787006317892075,
+   "fault_recall": 0.85,
+   "specificity": 0.85,
+   "recall_developing_fault": 0.8,
+   "recall_faulty": 0.9,
+   "recall_by_condition": {
+    "I": 0.9,
+    "O": 1.0,
+    "B": 0.7,
+    "C": 0.8
+   },
+   "misclassified": [
+    "I_1_2",
+    "H_8_0",
+    "B_12_1",
+    "B_12_2",
+    "B_13_1",
+    "H_13_0",
+    "H_16_0",
+    "C_19_1",
+    "C_20_1"
+   ],
+   "predictions": [
+    {
+     "recording": "H_1_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_1_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_1_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_2_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_2_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_2_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_3_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_3_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_3_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_4_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_4_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_4_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_5_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_5_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_5_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_6_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_6_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_7_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_7_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_7_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_8_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_9_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_9_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_9_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_10_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_10_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_10_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_11_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_11_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_11_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_12_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "B_12_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_12_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_13_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "B_13_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_13_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "B_14_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_14_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_14_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_15_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_15_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_15_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_16_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_16_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_16_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "C_17_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_17_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_17_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_18_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_18_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_18_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_19_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "C_19_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_19_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_20_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "C_20_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_20_0",
+     "true": 0,
+     "pred": 0
+    }
+   ]
+  },
+  "baseline_rms_kurtosis": {
+   "confusion_matrix": [
+    [
+     16,
+     4
+    ],
+    [
+     11,
+     29
+    ]
+   ],
+   "accuracy": 0.75,
+   "fault_f1": 0.7945205479452054,
+   "balanced_accuracy": 0.7625,
+   "mcc": 0.497468338163091,
+   "fault_recall": 0.725,
+   "specificity": 0.8,
+   "recall_developing_fault": 0.75,
+   "recall_faulty": 0.7,
+   "recall_by_condition": {
+    "I": 0.9,
+    "O": 0.8,
+    "B": 0.4,
+    "C": 0.8
+   },
+   "misclassified": [
+    "I_1_2",
+    "O_6_1",
+    "O_6_2",
+    "H_8_0",
+    "H_9_0",
+    "H_10_0",
+    "B_12_1",
+    "B_12_2",
+    "H_13_0",
+    "B_14_1",
+    "B_14_2",
+    "B_15_1",
+    "B_15_2",
+    "C_19_2",
+    "C_20_1"
+   ],
+   "predictions": [
+    {
+     "recording": "H_1_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_1_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_1_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_2_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_2_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_2_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_3_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_3_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_3_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_4_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_4_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_4_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_5_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_5_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_5_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_6_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_7_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_7_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_7_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_8_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_9_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_9_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_9_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_10_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_10_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_10_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_11_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_11_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_11_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_12_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "B_12_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_12_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_13_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "B_13_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_13_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "B_14_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "B_14_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_14_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "B_15_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "B_15_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_15_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_16_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_16_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_16_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_17_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_17_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_17_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_18_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_18_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_18_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_19_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_19_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_19_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_20_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "C_20_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_20_0",
+     "true": 0,
+     "pred": 0
+    }
+   ]
+  }
+ },
+ "leave_one_bearing_out_without_ball_fault_bearings": {
+  "a8_gmm": {
+   "confusion_matrix": [
+    [
+     9,
+     6
+    ],
+    [
+     4,
+     26
+    ]
+   ],
+   "accuracy": 0.7777777777777778,
+   "fault_f1": 0.8387096774193549,
+   "balanced_accuracy": 0.7333333333333334,
+   "mcc": 0.4853626716970755,
+   "fault_recall": 0.8666666666666667,
+   "specificity": 0.6,
+   "recall_developing_fault": 0.9333333333333333,
+   "recall_faulty": 0.8,
+   "recall_by_condition": {
+    "I": 0.9,
+    "O": 0.8,
+    "B": NaN,
+    "C": 0.9
+   },
+   "misclassified": [
+    "I_1_2",
+    "H_2_0",
+    "H_3_0",
+    "H_5_0",
+    "O_6_1",
+    "O_6_2",
+    "H_18_0",
+    "C_19_2",
+    "H_19_0",
+    "H_20_0"
+   ],
+   "predictions": [
+    {
+     "recording": "H_1_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_1_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_1_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_2_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "I_2_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_2_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_3_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "I_3_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_3_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_4_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_4_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_4_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_5_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "I_5_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_5_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_6_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_7_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_7_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_7_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_8_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_8_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_9_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_9_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_9_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_10_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_10_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_10_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_16_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_16_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_16_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_17_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_17_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_17_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_18_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_18_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_18_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "C_19_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_19_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_19_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "C_20_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_20_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_20_0",
+     "true": 0,
+     "pred": 1
+    }
+   ]
+  },
+  "a16_mlp": {
+   "confusion_matrix": [
+    [
+     12,
+     3
+    ],
+    [
+     6,
+     24
+    ]
+   ],
+   "accuracy": 0.8,
+   "fault_f1": 0.8421052631578947,
+   "balanced_accuracy": 0.8,
+   "mcc": 0.5773502691896257,
+   "fault_recall": 0.8,
+   "specificity": 0.8,
+   "recall_developing_fault": 0.7333333333333333,
+   "recall_faulty": 0.8666666666666667,
+   "recall_by_condition": {
+    "I": 0.9,
+    "O": 0.7,
+    "B": NaN,
+    "C": 0.8
+   },
+   "misclassified": [
+    "I_1_2",
+    "O_6_1",
+    "H_8_0",
+    "O_9_1",
+    "O_9_2",
+    "H_16_0",
+    "H_17_0",
+    "C_19_1",
+    "C_20_1"
+   ],
+   "predictions": [
+    {
+     "recording": "H_1_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_1_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_1_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_2_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_2_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_2_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_3_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_3_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_3_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_4_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_4_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_4_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_5_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_5_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_5_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_6_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_7_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_7_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_7_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_8_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_9_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_9_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "O_9_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_10_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_10_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_10_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_16_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_16_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_16_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "C_17_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_17_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_17_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "C_18_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_18_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_18_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_19_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "C_19_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_19_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_20_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "C_20_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_20_0",
+     "true": 0,
+     "pred": 0
+    }
+   ]
+  },
+  "baseline_rms_kurtosis": {
+   "confusion_matrix": [
+    [
+     12,
+     3
+    ],
+    [
+     5,
+     25
+    ]
+   ],
+   "accuracy": 0.8222222222222222,
+   "fault_f1": 0.8620689655172413,
+   "balanced_accuracy": 0.8166666666666667,
+   "mcc": 0.6157935373745562,
+   "fault_recall": 0.8333333333333334,
+   "specificity": 0.8,
+   "recall_developing_fault": 0.8666666666666667,
+   "recall_faulty": 0.8,
+   "recall_by_condition": {
+    "I": 0.9,
+    "O": 0.8,
+    "B": NaN,
+    "C": 0.8
+   },
+   "misclassified": [
+    "I_1_2",
+    "O_6_1",
+    "O_6_2",
+    "H_8_0",
+    "H_9_0",
+    "H_10_0",
+    "C_19_2",
+    "C_20_1"
+   ],
+   "predictions": [
+    {
+     "recording": "H_1_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_1_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_1_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_2_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_2_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_2_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_3_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_3_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_3_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_4_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_4_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_4_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_5_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "I_5_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "I_5_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_6_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "O_6_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_7_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "O_7_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_7_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_8_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_8_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_9_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_9_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_9_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_10_0",
+     "true": 0,
+     "pred": 1
+    },
+    {
+     "recording": "O_10_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "O_10_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_16_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_16_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_16_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_17_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_17_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_17_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_18_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_18_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_18_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_19_1",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "C_19_2",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "H_19_0",
+     "true": 0,
+     "pred": 0
+    },
+    {
+     "recording": "C_20_1",
+     "true": 1,
+     "pred": 0
+    },
+    {
+     "recording": "C_20_2",
+     "true": 1,
+     "pred": 1
+    },
+    {
+     "recording": "H_20_0",
+     "true": 0,
+     "pred": 0
+    }
+   ]
+  }
+ },
+ "repeated_summary": {
+  "a8_gmm": {
+   "recording": {
+    "n_splits": 200,
+    "fault_f1_mean": 0.8488135198135197,
+    "fault_f1_sd": 0.09599284425223653,
+    "balanced_accuracy_mean": 0.76625,
+    "balanced_accuracy_sd": 0.15245616400934547,
+    "balanced_accuracy_p10": 0.5,
+    "balanced_accuracy_p50": 0.75,
+    "balanced_accuracy_p90": 0.9249999999999996,
+    "share_fault_f1_at_least_0.9": 0.41,
+    "share_splits_at_least_original_balanced_accuracy": 0.255
+   },
+   "bearing": {
+    "n_splits": 200,
+    "fault_f1_mean": 0.8332479187479188,
+    "fault_f1_sd": 0.13128850604184678,
+    "balanced_accuracy_mean": 0.7666666666666666,
+    "balanced_accuracy_sd": 0.15523280008497634,
+    "balanced_accuracy_p10": 0.5,
+    "balanced_accuracy_p50": 0.8333333333333333,
+    "balanced_accuracy_p90": 1.0,
+    "share_fault_f1_at_least_0.9": 0.395
+   },
+   "recording_minus_bearing_balanced_accuracy": -0.00041666666666666295
+  },
+  "a16_mlp": {
+   "recording": {
+    "n_splits": 200,
+    "fault_f1_mean": 0.8632165612165613,
+    "fault_f1_sd": 0.0975301783628722,
+    "balanced_accuracy_mean": 0.8,
+    "balanced_accuracy_sd": 0.14312970031098057,
+    "balanced_accuracy_p10": 0.5833333333333334,
+    "balanced_accuracy_p50": 0.8333333333333333,
+    "balanced_accuracy_p90": 1.0,
+    "share_fault_f1_at_least_0.9": 0.485,
+    "share_splits_at_least_original_balanced_accuracy": 0.57
+   },
+   "bearing": {
+    "n_splits": 200,
+    "fault_f1_mean": 0.838370573870574,
+    "fault_f1_sd": 0.1251077271957446,
+    "balanced_accuracy_mean": 0.7895833333333334,
+    "balanced_accuracy_sd": 0.14066743186995664,
+    "balanced_accuracy_p10": 0.5833333333333334,
+    "balanced_accuracy_p50": 0.8333333333333333,
+    "balanced_accuracy_p90": 1.0,
+    "share_fault_f1_at_least_0.9": 0.475
+   },
+   "recording_minus_bearing_balanced_accuracy": 0.010416666666666671
+  },
+  "baseline_rms_kurtosis": {
+   "recording": {
+    "n_splits": 200,
+    "fault_f1_mean": 0.7946524031524033,
+    "fault_f1_sd": 0.12233226772440117,
+    "balanced_accuracy_mean": 0.7758333333333334,
+    "balanced_accuracy_sd": 0.12371281708501798,
+    "balanced_accuracy_p10": 0.5833333333333334,
+    "balanced_accuracy_p50": 0.75,
+    "balanced_accuracy_p90": 0.9166666666666667,
+    "share_fault_f1_at_least_0.9": 0.27,
+    "share_splits_at_least_original_balanced_accuracy": 0.99
+   },
+   "bearing": {
+    "n_splits": 200,
+    "fault_f1_mean": 0.7919876234876235,
+    "fault_f1_sd": 0.1600295329065362,
+    "balanced_accuracy_mean": 0.7941666666666667,
+    "balanced_accuracy_sd": 0.1221650750237381,
+    "balanced_accuracy_p10": 0.6666666666666666,
+    "balanced_accuracy_p50": 0.8333333333333333,
+    "balanced_accuracy_p90": 1.0,
+    "share_fault_f1_at_least_0.9": 0.39
+   },
+   "recording_minus_bearing_balanced_accuracy": -0.01833333333333334
+  }
+ }
+}
