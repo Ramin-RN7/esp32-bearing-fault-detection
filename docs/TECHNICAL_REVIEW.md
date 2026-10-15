@@ -108,7 +108,9 @@ Rows are true labels and columns are predictions, ordered `[normal, fault]`.
 | A8 GMM | `[[3, 0], [1, 5]]` | 0.888889 | 0.909091 | 0.916667 | 0.790569 |
 | A16 MLP | `[[2, 1], [0, 6]]` | 0.888889 | 0.923077 | 0.833333 | 0.755929 |
 
-The matching A8 training features reproduce segment confusion matrix `[[26, 1], [9, 45]]`, with F1 0.900000. Matching A16 training features reproduce `[[18, 9], [0, 54]]`, with F1 0.923077. The A16 false positives are all nine windows of H_13_0. GMM's file-level false negative is C_19_2.
+The matching A8 training features reproduce segment confusion matrix `[[26, 1], [9, 45]]`, with F1 0.900000. Matching A16 training features reproduce `[[18, 9], [0, 54]]`, with F1 0.923077. The A16 false-positive windows are distributed as seven from H_13_0, one from H_10_0 and one from H_18_0. After mean-probability aggregation, only H_13_0 is a file-level false positive. GMM's file-level false negative is C_19_2.
+
+Correction, 15 October 2026: an earlier version of this review incorrectly assigned all nine A16 false-positive windows to H_13_0. Rechecking the per-window output confirmed the distribution above. The confusion matrices and headline file-level scores are unchanged. The distinct A16 file-scoring helper has seven false-positive windows (five H_13_0, one H_10_0 and one H_18_0), plus one false-negative window; it uses the different preprocessing described below.
 
 The MLP/GMM F1 ordering is not convincing evidence that one model generalizes better: each makes one file error, in a different direction. Overlapping windows are correlated observations, not 81 independent test cases. They can still contain within-recording variation, as the A8 segment matrix shows.
 
@@ -120,7 +122,7 @@ For scale, an independent-binomial Wilson interval for 8/9 is approximately **56
 
 Group all health states, recordings and derived windows by physical bearing. Use outer held-out bearing groups for evaluation and inner groups for preprocessing/model/threshold selection. Fit scalers and PCA only on each training fold. Report out-of-fold recording-level predictions, balanced accuracy, MCC, fault F1 and uncertainty that respects bearing groups. The [scikit-learn nested-CV example](https://scikit-learn.org/stable/auto_examples/model_selection/plot_nested_cross_validation_iris.html) explains the selection-bias issue.
 
-The source dataset also has limited operating-condition coverage. Its paper describes ball-fault recordings at a different nominal load from the other conditions. Grouped evaluation will improve this archive's validity, but broader load/speed/sensor robustness requires additional evidence.
+The source dataset also has limited operating-condition coverage. Section 3.2 of its paper specifies a nominal 400 N load for healthy, inner-race, outer-race and cage data, and no applied load for ball-fault data. Three of the six reconstructed test-fault recordings are ball faults. This is a potential load/label confound; these results do not establish how much the models use load-related cues. Re-evaluation should include a sensitivity analysis that removes all recordings of ball-fault bearings 11–15. Grouping or excluding these bearings cannot demonstrate robustness across loads; that requires suitable additional data.
 
 ## 4. Additional archive issues
 
