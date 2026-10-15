@@ -14,7 +14,7 @@ The standard-library snapshot checker remains available:
 python scripts/check_snapshot.py
 ```
 
-It checks syntax of 66 archived Python sources, all 60 WAVs and the archived best-results table. All WAVs are mono 16-bit PCM at 16,000 Hz and 10.000 seconds. A passing snapshot check establishes file readability, not scientific validity or embedded accuracy.
+It checks the syntax of the archived Python sources (66 at the first review; 69 since the third pass added the A5, A7 and E3 scripts), all 60 WAVs and the archived best-results table. All WAVs are mono 16-bit PCM at 16,000 Hz and 10.000 seconds. A passing snapshot check establishes file readability, not scientific validity or embedded accuracy.
 
 ## Host model checks
 
@@ -34,14 +34,24 @@ All 240 files at `8c9a5a9dc69d13e3eab17dea69bdcb3a268c8280` matched GitHub and p
 
 The optional minimal MLP C export was generated and compiled on the host. First-call decisions matched scikit-learn on all 81 test windows, but the generated predictor overwrote every input. A second call without restoring the input changed 78 decisions. Additional table/feature metadata and presentation inconsistencies are recorded in the [second-pass review](TECHNICAL_REVIEW.md#second-pass-verification) and [evidence](review/recheck.json). These findings remain open defects in the historical sources.
 
+## Third-pass checks
+
+The original research records are now published in [`records/`](../records/): split manifests, 101 run folders, logs, per-window predictions, device files and firmware notes. Before publication, they were scanned for credentials and personal contact details.
+
+- The archived manifests contain exactly the split the earlier passes reconstructed.
+- [`src/bearing_audio/`](../src/bearing_audio/) re-implements the A8 and A16 pipelines from the archived scripts, emulating the intermediate WAV round trips. Retraining on the archived split reproduces both thesis confusion matrices at window and recording level, including which recordings are misclassified.
+- With the archived A8 model, today's features reproduce the per-window scores logged on 14 Aug 2025 to within 1e-3.
+- The archived MicroPython runtime, run under a NumPy shim, matches scikit-learn on desktop features.
+- A strict expected-failure test records that the device feature extractor does not reproduce the desktop decisions.
+- [`scripts/evaluate_protocols.py`](../scripts/evaluate_protocols.py) adds three evaluations: leave-one-bearing-out, the same without the ball-fault bearings, and 200 matched repeated splits by recording and by bearing. Results are in [`results/protocol_comparison.md`](../results/protocol_comparison.md).
+- These checks run on every push via GitHub Actions ([`tests.yml`](../.github/workflows/tests.yml)), using the pinned versions in [`requirements-lock.txt`](../requirements-lock.txt).
+
 ## Boundaries
 
-- The original split manifests are absent; reconstructed filenames and reproduced scores do not make the reconstruction an original manifest.
-- Recordings from the same physical bearing cross subsets in the reconstruction. The headline scores do not estimate unseen-bearing generalization.
-- Comparing many configurations on the same test set introduces selection bias.
+- The split is now the original one, not a reconstruction. Recordings from the same physical bearing cross subsets, but matched comparisons show this does not measurably change the scores. Leave-one-bearing-out results estimate performance on unseen bearings.
+- Comparing many configurations on the same test set introduces selection bias. The re-evaluation covers the two thesis pipelines, not a nested selection over all configurations.
 - Predictor timing includes two JSON loads per call; the approximately 64 ms thesis number is not isolated arithmetic time.
 - The physical ESP32, ulab behavior, firmware build, live microphone path and historical hardware timings were not verified.
-- No classifier retraining or nested grouped cross-validation was performed. Preprocessing estimators were refitted only for the second-pass comparison.
 - The full original environment and every legacy script have not been executed end to end. Some archived evaluation scripts change preprocessing between training and scoring.
 
 The scikit-learn pin matches both bundles. Other historical package versions are unknown. The diagnostic environment versions are recorded in the review summary; this is not a claim that a fresh installation of all requirements was tested.
