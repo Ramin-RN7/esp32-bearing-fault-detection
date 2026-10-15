@@ -1,23 +1,41 @@
 # Validation scope
 
-Repository preparation date: **14 October 2026**.
+Publication: 14-15 October 2026. Technical review: **15 October 2026**, against commit `c03372e3610b765f9a6acc555b584b81d72441f2`.
 
-The supplementary ZIP passed its archive-integrity check. Its 228 original files were preserved: the research code, data, models, results and documents retain their original bytes; the original README is stored under `docs/original-supplementary-readme.md` and the repository root has an expanded README.
+## Archive checks
 
-The snapshot checker verifies:
+All 236 files in that publication matched their published blob hashes and passed format-specific checks: all Python sources parsed, WAV payloads decoded, PNGs decoded, PDF pages extracted/rendered, Office ZIP/XML parts checked, CSV rows parsed and model parameter arrays inspected. See the [per-file inventory](review/file_inventory.json).
 
-- Syntax of 66 archived Python source files, without importing or executing them.
-- Readability of the full PCM payload in all 60 WAV recordings.
-- Recording sample rates: 16,000 Hz for all 60 WAVs.
-- Recording durations: 10.000 seconds for all 60 WAVs.
-- Best file-level F1 values in the archived results table: MLP 0.923077 and GMM 0.909091.
+The original 228-file supplementary archive and its historical documents form the source record. Later setup/checking files and this technical review accompany it.
 
-Run it from the repository root:
+The standard-library snapshot checker remains available:
 
 ```bash
 python scripts/check_snapshot.py
 ```
 
-The values read from the results table are archived values, not newly computed predictions. Syntax and file-integrity checks do not reproduce the full ML experiments or validate embedded behavior. Original dataset splitting, model training, JSON export, firmware building/flashing and hardware latency measurements were not rerun during this publication.
+It checks syntax of 66 archived Python sources, all 60 WAVs and the archived best-results table. All WAVs are mono 16-bit PCM at 16,000 Hz and 10.000 seconds. A passing snapshot check establishes file readability, not scientific validity or embedded accuracy.
 
-The scikit-learn pin in `requirements.txt` is based on version 1.7.1 recorded inside both archived model bundles. The dependency file is not a complete reconstruction of the original environment, and a clean installation of all dependencies has not been tested as part of these snapshot checks.
+## Host model checks
+
+```bash
+python scripts/review_models.py
+```
+
+Using scikit-learn 1.7.1, the later host review reconstructed the missing split from sorted published filenames and the available seed-42 splitter. On nine test recordings it reproduced A8 GMM file F1 0.909091 and A16 MLP file F1 0.923077. It also reproduced their matching training-pipeline segment matrices.
+
+A NumPy shim of the archived scaler/PCA/GMM runtime agreed on decisions in all 162 score comparisons covering 81 distinct test windows. Maximum absolute log-likelihood difference was approximately 0.001414. This is host arithmetic compatibility, not an ulab or firmware test.
+
+The same review confirmed a critical front-end mismatch: the desktop GMM expects mixed handcrafted descriptors, while `feat_a8.py` computes PSD band energies. All 243 sampled host-emulated device vectors fell on the fault side, including healthy inputs. See [technical review](TECHNICAL_REVIEW.md) and [summary](review/summary.json).
+
+## Boundaries
+
+- The original split manifests are absent; reconstructed filenames and reproduced scores do not make the reconstruction an original manifest.
+- Recordings from the same physical bearing cross subsets in the reconstruction. The headline scores do not estimate unseen-bearing generalization.
+- Comparing many configurations on the same test set introduces selection bias.
+- Predictor timing includes two JSON loads per call; the approximately 64 ms thesis number is not isolated arithmetic time.
+- The physical ESP32, ulab behavior, firmware build, live microphone path and historical hardware timings were not verified.
+- No new model training or nested grouped cross-validation was performed.
+- The full original environment and every legacy script have not been executed end to end. Some archived evaluation scripts change preprocessing between training and scoring.
+
+The scikit-learn pin matches both bundles. Other historical package versions are unknown. The diagnostic environment versions are recorded in the review summary; this is not a claim that a fresh installation of all requirements was tested.

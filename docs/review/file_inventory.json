@@ -1,0 +1,3224 @@
+[
+  {
+    "path": ".gitignore",
+    "bytes": 377,
+    "matches_published_sha": true,
+    "check": "Full text decoded",
+    "lines": 18,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/ATTRIBUTION.md",
+    "bytes": 856,
+    "matches_published_sha": true,
+    "check": "Full text decoded",
+    "lines": 12,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/converter/uottawa_to_wav_v2.py",
+    "bytes": 5364,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 139,
+    "functions": [
+      "_imports",
+      "read_table",
+      "strict_label_from_name",
+      "peak_normalize",
+      "resample_array",
+      "float_to_int16",
+      "process_file",
+      "main"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_11_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1114.3395744958086,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_11_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1601.2492740650189,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_12_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1663.1964698754775,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_12_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1656.9103973831084,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_13_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1636.3859549858646,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_13_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1512.0651313890219,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_14_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1626.7286559822294,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_14_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1696.5763496487566,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_15_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1629.3427037343924,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/B_15_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1404.7371737735318,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_16_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1353.590952330596,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_16_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 945.3105932146059,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_17_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1415.9238826513592,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_17_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1549.6669008814442,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_18_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1396.9146206394469,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_18_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1236.4143271396729,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_19_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1697.4047279063263,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_19_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1516.2661828835496,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_20_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1914.390684057528,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/C_20_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1513.278748240059,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_1_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1289.5701594644822,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_1_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 2996.136486572124,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_2_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 803.5301582859227,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_2_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1182.4150440491487,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_3_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1581.721942632854,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_3_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1444.9496801056775,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_4_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1291.3415378735015,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_4_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 904.9525882332179,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_5_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1173.8925000878487,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/I_5_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1002.152717322814,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_10_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1288.544444128238,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_10_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1679.1858338566938,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_6_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1836.1183982725624,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_6_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1383.5135681775043,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_7_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1400.5376902327548,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_7_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1440.7411137848464,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_8_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1738.088441737071,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_8_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1337.9638240485056,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_9_1_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1391.6573516472185,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/fault/O_9_2_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1207.9823610311948,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_10_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 2297.5131250536415,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_11_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1766.8279303564057,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_12_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1235.9437789979568,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_13_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1462.985352983327,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_14_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1781.4080043728752,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_15_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1844.9936084442136,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_16_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1548.4766604028941,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_17_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1846.4105146134214,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_18_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 2048.167747515447,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_19_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 5879.073099594973,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_1_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1817.4202018004808,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_20_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1828.4084791595394,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_2_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 6466.871020684482,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_3_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1721.4471594235765,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_4_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1508.7881439585876,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_5_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1964.911779000841,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_6_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1564.8106448684935,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_7_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 2693.8029305774207,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_8_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 1937.4136996102561,
+    "status": "PASS"
+  },
+  {
+    "path": "01_uottawa_wavs/wav/normal/H_9_0_mic_16000Hz.wav",
+    "bytes": 320044,
+    "matches_published_sha": true,
+    "check": "Full PCM payload decoded",
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits": 16,
+    "duration_s": 10.0,
+    "peak": 8230,
+    "rms": 2032.7507784373124,
+    "status": "PASS"
+  },
+  {
+    "path": "02_data_segmentation/ingest_uottawa_raw_split.py",
+    "bytes": 3010,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 98,
+    "functions": [
+      "gather_wavs",
+      "split_indices",
+      "copy_list",
+      "main"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "02_data_segmentation/make_splits.py",
+    "bytes": 3448,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 96,
+    "functions": [],
+    "status": "PASS"
+  },
+  {
+    "path": "02_data_segmentation/prep_segments.py",
+    "bytes": 3560,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 105,
+    "functions": [
+      "to_mono",
+      "norm_to_dbfs",
+      "standardize",
+      "segment_file",
+      "main"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "02_data_segmentation/resegment_make_B1_B2.py",
+    "bytes": 3378,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 104,
+    "functions": [
+      "load_mono_16k",
+      "base_prefix",
+      "write_segments",
+      "main"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a10_hilbert_envelope.py",
+    "bytes": 9771,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 215,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a11_hilbert_envelope_log.py",
+    "bytes": 10082,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 219,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a12_env_log_sr8k.py",
+    "bytes": 10148,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 219,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a13_env_log_sr8k_pca8.py",
+    "bytes": 10221,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 220,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a1_hpf.py",
+    "bytes": 9722,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 239,
+    "functions": [
+      "load_wav",
+      "highpass",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all",
+      "metrics_of"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a2_preemph.py",
+    "bytes": 8864,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 203,
+    "functions": [
+      "load_wav",
+      "preemph",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a36_logmel20.py",
+    "bytes": 8429,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 173,
+    "functions": [
+      "load_wav",
+      "features25_logmel",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a37_logmel40.py",
+    "bytes": 8247,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 169,
+    "functions": [
+      "load_wav",
+      "features_logmel40",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a38_mfcc20.py",
+    "bytes": 8259,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 170,
+    "functions": [
+      "load_wav",
+      "features25_mfcc20",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a39_mfcc20_deltas.py",
+    "bytes": 8388,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 172,
+    "functions": [
+      "load_wav",
+      "features45_mfcc20_delta",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a3_hpf_preemph.py",
+    "bytes": 9003,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 192,
+    "functions": [
+      "load_wav",
+      "highpass",
+      "preemph",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a4_notch50.py",
+    "bytes": 8411,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 180,
+    "functions": [
+      "load_wav",
+      "notch50",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a6_notch60.py",
+    "bytes": 8624,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 180,
+    "functions": [
+      "load_wav",
+      "notch60",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a8_bandpass_1_5k.py",
+    "bytes": 8794,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 185,
+    "functions": [
+      "load_wav",
+      "bandpass",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/a9_spectral_whitening.py",
+    "bytes": 9373,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 203,
+    "functions": [
+      "load_wav",
+      "spectral_whiten",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/extract_features.py",
+    "bytes": 3542,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 112,
+    "functions": [
+      "load_audio",
+      "features_from_signal",
+      "process_split",
+      "main"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/feat_a8.py",
+    "bytes": 2175,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 81,
+    "functions": [
+      "_hann",
+      "_take_frame",
+      "_psd_fft",
+      "_psd_fallback",
+      "feat25"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/fix_feature_nans.py",
+    "bytes": 1447,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 42,
+    "functions": [
+      "load",
+      "report"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "03_feature_extraction/make_baseline_time.py",
+    "bytes": 1712,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 48,
+    "functions": [
+      "load",
+      "metr"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/A0_baseline.py",
+    "bytes": 8997,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 200,
+    "functions": [
+      "load_wav",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a14_env_log_sr8k_pca8_gmm_out05.py",
+    "bytes": 10956,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 242,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all",
+      "mahalanobis_sq",
+      "keep_mask_outliers"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a15_env_log_sr8k_pca8_gmm_thr95.py",
+    "bytes": 10202,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 221,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a16_env_log_sr8k_pca8_minmax.py",
+    "bytes": 10019,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 215,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a17_env_log_sr8k_pca8_minmax_gmm_out10.py",
+    "bytes": 10973,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 243,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all",
+      "mahalanobis_sq",
+      "keep_mask_outliers"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a18_env_log_sr8k_pca8_robust.py",
+    "bytes": 10307,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 220,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a19_env_log_sr16k_pca8_minmax.py",
+    "bytes": 10038,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 216,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a20_env_log_sr16k_pca8_zscore.py",
+    "bytes": 9998,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 215,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a21_env_log_sr16k_pca4_minmax.py",
+    "bytes": 9855,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 215,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a22_env_log_sr16k_pca4_minmax_smooth5.py",
+    "bytes": 9934,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 216,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a23_env_log_sr16k_pca4_minmax_smooth40.py",
+    "bytes": 9986,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 216,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a24_env_log_sr16k_pca4_zscore.py",
+    "bytes": 9872,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 215,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a25_env_log_sr16k_pca2_zscore.py",
+    "bytes": 9887,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 215,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a26_env_log_sr16k_no_pca_zscore.py",
+    "bytes": 9784,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 215,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a27_env_log_sr16k_no_pca_minmax.py",
+    "bytes": 9763,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 215,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a28_env_log_sr16k_no_pca_robust.py",
+    "bytes": 9850,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 215,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a29_env_log_sr16k_pca4_minmax_norm90.py",
+    "bytes": 9950,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 216,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a30_env_log_sr16k_pca4_minmax_norm99.py",
+    "bytes": 9993,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 217,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a31_env_log_sr16k_pca8_minmax.py",
+    "bytes": 9940,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 218,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a32_env_log_sr16k_pca4_zscore_norm90.py",
+    "bytes": 9995,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 218,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a33_env_log_sr16k_pca8_zscore_norm95.py",
+    "bytes": 9957,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 218,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a34_env_log_sr16k_pca8_zscore_norm99.py",
+    "bytes": 9959,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 219,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a35a_aggregate_A8_GMM_per_file.py",
+    "bytes": 11519,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 273,
+    "functions": [
+      "load_wav",
+      "bandpass_1_5k",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "group_id_from_fp",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a35b_aggregate_A16_MLP_per_file.py",
+    "bytes": 12416,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 291,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_envelope_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "group_id_from_fp",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a35c_aggregate_A31_MLP_per_file.py",
+    "bytes": 11090,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 228,
+    "functions": [
+      "load_wav",
+      "moving_average",
+      "bp_hilbert_env_log",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "group_id",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a40_aggregate_majority.py",
+    "bytes": 12857,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 277,
+    "functions": [
+      "load_wav",
+      "resamp",
+      "spectral_slope",
+      "autocorr_feats",
+      "bandpower",
+      "features25_baseline",
+      "prefix_of",
+      "save_cm",
+      "metrics_of",
+      "log_all",
+      "bandpass_1_5k",
+      "run_A8_GMM_majority",
+      "features25_envelope_log_8k",
+      "run_A16_MLP_majority"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a41_aggregate_median.py",
+    "bytes": 12755,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 267,
+    "functions": [
+      "load_wav",
+      "resamp",
+      "spectral_slope",
+      "autocorr_feats",
+      "bandpower",
+      "features25_baseline",
+      "prefix_of",
+      "save_cm",
+      "metrics_of",
+      "log_all",
+      "bandpass_1_5k",
+      "run_A8_GMM_median",
+      "features25_envelope_log_8k",
+      "run_A16_MLP_median"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a42_rf_on_A16_envlog8k.py",
+    "bytes": 8173,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 179,
+    "functions": [
+      "load_wav",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25_baseline",
+      "features25_envlog8k",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/a43_extratrees_on_A16_envlog8k.py",
+    "bytes": 8158,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 179,
+    "functions": [
+      "load_wav",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25_baseline",
+      "features25_envlog8k",
+      "load_split",
+      "metrics_of",
+      "save_cm",
+      "log_all"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/b1_eval_A16_A8.py",
+    "bytes": 10304,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 213,
+    "functions": [
+      "load16k",
+      "prefix_of",
+      "save_cm",
+      "append_row",
+      "metrics_of",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "bandpass_1_5k",
+      "envlog8k_feats_from16k",
+      "eval_A8",
+      "eval_A16"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/b2_eval_A16_A8.py",
+    "bytes": 10213,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 213,
+    "functions": [
+      "load16k",
+      "prefix_of",
+      "save_cm",
+      "append_row",
+      "metrics_of",
+      "bandpower",
+      "spectral_slope",
+      "autocorr_feats",
+      "features25",
+      "bandpass_1_5k",
+      "envlog8k_feats_from16k",
+      "eval_A8",
+      "eval_A16"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/model_rt_gmm.py",
+    "bytes": 2727,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 90,
+    "functions": [
+      "jload",
+      "_to_np1d",
+      "_pca_project",
+      "preprocess_vec",
+      "_log_gauss_diag",
+      "gmm_loglik",
+      "predict_gmm"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/run_variant_ov75.py",
+    "bytes": 8064,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 168,
+    "functions": [
+      "to_mono",
+      "norm_peak",
+      "standardize",
+      "segment",
+      "write_split",
+      "load_audio",
+      "features",
+      "make_feats",
+      "load",
+      "metr",
+      "save_cm"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/time_gmm.py",
+    "bytes": 819,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 29,
+    "functions": [
+      "infer_only",
+      "end_to_end"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/train_calibrate.py",
+    "bytes": 3851,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 115,
+    "functions": [
+      "load_split",
+      "metrics",
+      "save_cm"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/train_models.py",
+    "bytes": 5160,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 137,
+    "functions": [
+      "load_csv",
+      "cm_metrics",
+      "save_cm",
+      "gmm_scores",
+      "sz"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "04_model_training_ablation/tune_models.py",
+    "bytes": 2112,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 47,
+    "functions": [
+      "load",
+      "m"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "05_model_export/a44_export_only_et_header (1).py",
+    "bytes": 4937,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 124,
+    "functions": [
+      "walk",
+      "first",
+      "extract_preprocess",
+      "find_classifier",
+      "classes_of",
+      "main"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "05_model_export/a45_train_export_rf_small.py",
+    "bytes": 3643,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 93,
+    "functions": [
+      "find",
+      "scaler_params",
+      "pca_params"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "05_model_export/a46_export_mlp_MIN.py",
+    "bytes": 6432,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 135,
+    "functions": [
+      "walk",
+      "first",
+      "sp_scaler",
+      "sp_pca",
+      "main"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "05_model_export/a46_export_mlp_to_header.py",
+    "bytes": 1469,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 44,
+    "functions": [
+      "walk"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "05_model_export/a47_export_gmm_json.py",
+    "bytes": 4784,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 122,
+    "functions": [
+      "find_file",
+      "scaler_params",
+      "pca_params",
+      "main"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "05_model_export/gmm_A8.joblib",
+    "bytes": 3453,
+    "matches_published_sha": true,
+    "check": "Model deserialized and parameter arrays finite",
+    "keys": [
+      "scaler",
+      "pca",
+      "gmm",
+      "thr"
+    ],
+    "warnings": [],
+    "status": "PASS"
+  },
+  {
+    "path": "05_model_export/mlp_A16.joblib",
+    "bytes": 21589,
+    "matches_published_sha": true,
+    "check": "Model deserialized and parameter arrays finite",
+    "keys": [
+      "scaler",
+      "pca",
+      "mlp"
+    ],
+    "warnings": [],
+    "status": "PASS"
+  },
+  {
+    "path": "06_results_evaluation/ablation_summary.csv",
+    "bytes": 4856,
+    "matches_published_sha": true,
+    "check": "Every CSV row parsed",
+    "rows": 104,
+    "columns": [
+      "ID",
+      "Model",
+      "SR",
+      "Bandpass",
+      "Envelope",
+      "Log",
+      "PCA",
+      "Scaling",
+      "Aggregation",
+      "F1"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "06_results_evaluation/best_of_table.csv",
+    "bytes": 373,
+    "matches_published_sha": true,
+    "check": "Every CSV row parsed",
+    "rows": 5,
+    "columns": [
+      "label",
+      "id",
+      "file_F1",
+      "segment_F1",
+      "scaler",
+      "pca",
+      "notes"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "06_results_evaluation/cm_A16_MLP.png",
+    "bytes": 26909,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "06_results_evaluation/cm_A16_MLP_FILE.png",
+    "bytes": 26337,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "06_results_evaluation/cm_A42_RF.png",
+    "bytes": 26414,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "06_results_evaluation/cm_A43_ET.png",
+    "bytes": 26558,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "06_results_evaluation/cm_A8_GMM.png",
+    "bytes": 27011,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "06_results_evaluation/cm_A8_GMM_FILE.png",
+    "bytes": 26387,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "06_results_evaluation/variants.csv",
+    "bytes": 62246,
+    "matches_published_sha": true,
+    "check": "Every CSV row parsed",
+    "rows": 104,
+    "columns": [
+      "timestamp",
+      "id",
+      "change",
+      "model",
+      "accuracy",
+      "precision",
+      "recall",
+      "f1_score",
+      "run_dir",
+      "code_path",
+      "cm_path",
+      "params_path",
+      "metrics_path",
+      "model_path",
+      "notes"
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A0_GMM.png",
+    "bytes": 26995,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A0_MLP.png",
+    "bytes": 26333,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A10_GMM.png",
+    "bytes": 27009,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A10_MLP.png",
+    "bytes": 26689,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A11_GMM.png",
+    "bytes": 26504,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A11_MLP.png",
+    "bytes": 26317,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A12_GMM.png",
+    "bytes": 26876,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A12_MLP.png",
+    "bytes": 26341,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A13_GMM.png",
+    "bytes": 26812,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A13_MLP.png",
+    "bytes": 26416,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A14_GMM.png",
+    "bytes": 26660,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A14_MLP.png",
+    "bytes": 26190,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A15_GMM.png",
+    "bytes": 27347,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A15_MLP.png",
+    "bytes": 26295,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A16_GMM.png",
+    "bytes": 26946,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A16_MLP.png",
+    "bytes": 26909,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A16_MLP_FILE.png",
+    "bytes": 26337,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A17_GMM.png",
+    "bytes": 26623,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A17_MLP.png",
+    "bytes": 26568,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A18_GMM.png",
+    "bytes": 26904,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A18_MLP.png",
+    "bytes": 26762,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A19_GMM.png",
+    "bytes": 26909,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A19_MLP.png",
+    "bytes": 26608,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A1_GMM.png",
+    "bytes": 26978,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A1_MLP.png",
+    "bytes": 26332,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A20_GMM.png",
+    "bytes": 27045,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A20_MLP.png",
+    "bytes": 26841,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A21_GMM.png",
+    "bytes": 26777,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A21_MLP.png",
+    "bytes": 26601,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A22_GMM.png",
+    "bytes": 26846,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A22_MLP.png",
+    "bytes": 26390,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A23_GMM.png",
+    "bytes": 27051,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A23_MLP.png",
+    "bytes": 26869,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A24_GMM.png",
+    "bytes": 26918,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A24_MLP.png",
+    "bytes": 26739,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A25_GMM.png",
+    "bytes": 26984,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A25_MLP.png",
+    "bytes": 26436,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A26_GMM.png",
+    "bytes": 27094,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A26_MLP.png",
+    "bytes": 27175,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A27_GMM.png",
+    "bytes": 26827,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A27_MLP.png",
+    "bytes": 26532,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A28_GMM.png",
+    "bytes": 27169,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A28_MLP.png",
+    "bytes": 27847,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A29_GMM.png",
+    "bytes": 27148,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A29_MLP.png",
+    "bytes": 27016,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A2_GMM.png",
+    "bytes": 26945,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A2_MLP.png",
+    "bytes": 26686,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A30_GMM.png",
+    "bytes": 27091,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A30_MLP.png",
+    "bytes": 26993,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A31_GMM.png",
+    "bytes": 26808,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A31_MLP.png",
+    "bytes": 26551,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A31_MLP_FILE.png",
+    "bytes": 26227,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A32_GMM.png",
+    "bytes": 27088,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A32_MLP.png",
+    "bytes": 26802,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A33_GMM.png",
+    "bytes": 26718,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A33_MLP.png",
+    "bytes": 26512,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A34_GMM.png",
+    "bytes": 26890,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A34_MLP.png",
+    "bytes": 26662,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A36_GMM.png",
+    "bytes": 27143,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A36_MLP.png",
+    "bytes": 27124,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A37_GMM.png",
+    "bytes": 26888,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A37_MLP.png",
+    "bytes": 26860,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A38_GMM.png",
+    "bytes": 27664,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A38_MLP.png",
+    "bytes": 27698,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A39_GMM.png",
+    "bytes": 27221,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A39_MLP.png",
+    "bytes": 27004,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A3_GMM.png",
+    "bytes": 26930,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A3_MLP.png",
+    "bytes": 26694,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A42_RF.png",
+    "bytes": 26414,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A43_ET.png",
+    "bytes": 26558,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A44_ET_file.png",
+    "bytes": 25680,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A44_ET_segment.png",
+    "bytes": 28511,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A4_GMM.png",
+    "bytes": 26785,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A4_MLP.png",
+    "bytes": 26098,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A5_GMM.png",
+    "bytes": 26500,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A5_MLP.png",
+    "bytes": 26474,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A6_GMM.png",
+    "bytes": 26687,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A6_MLP.png",
+    "bytes": 26377,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A7_GMM.png",
+    "bytes": 26377,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A7_MLP.png",
+    "bytes": 26308,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A8_GMM.png",
+    "bytes": 27011,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A8_GMM_FILE.png",
+    "bytes": 26387,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A8_MLP.png",
+    "bytes": 26831,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A9_GMM.png",
+    "bytes": 26904,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_A9_MLP.png",
+    "bytes": 27135,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "07_confusion_matrices_full/cm_E3_GMM.png",
+    "bytes": 26044,
+    "matches_published_sha": true,
+    "check": "Full PNG decoded",
+    "size": [
+      1024,
+      768
+    ],
+    "status": "PASS"
+  },
+  {
+    "path": "Master_Thesis_Audio_ESP32.pdf",
+    "bytes": 2647409,
+    "matches_published_sha": true,
+    "check": "Every PDF page extracted and rendered",
+    "pages": 57,
+    "text_chars": 70225,
+    "status": "PASS"
+  },
+  {
+    "path": "Presentation Audio-Based Bearing Fault Detection.pptx",
+    "bytes": 1460377,
+    "matches_published_sha": true,
+    "check": "ZIP CRC and every XML part parsed",
+    "xml_parts": 87,
+    "status": "PASS"
+  },
+  {
+    "path": "README.md",
+    "bytes": 4690,
+    "matches_published_sha": true,
+    "check": "Full text decoded",
+    "lines": 70,
+    "status": "PASS"
+  },
+  {
+    "path": "Supplementary_Materials_Index_Ramin_Nassiri_MEM_OTH_Regensburg.docx",
+    "bytes": 26336,
+    "matches_published_sha": true,
+    "check": "ZIP CRC and every XML part parsed",
+    "xml_parts": 15,
+    "status": "PASS"
+  },
+  {
+    "path": "Supplementary_Materials_Index_Ramin_Nassiri_MEM_OTH_Regensburg.pdf",
+    "bytes": 468890,
+    "matches_published_sha": true,
+    "check": "Every PDF page extracted and rendered",
+    "pages": 6,
+    "text_chars": 11952,
+    "status": "PASS"
+  },
+  {
+    "path": "docs/RUNNING.md",
+    "bytes": 3107,
+    "matches_published_sha": true,
+    "check": "Full text decoded",
+    "lines": 66,
+    "status": "PASS"
+  },
+  {
+    "path": "docs/VALIDATION.md",
+    "bytes": 1485,
+    "matches_published_sha": true,
+    "check": "Full text decoded",
+    "lines": 23,
+    "status": "PASS"
+  },
+  {
+    "path": "docs/original-supplementary-readme.md",
+    "bytes": 853,
+    "matches_published_sha": true,
+    "check": "Full text decoded",
+    "lines": 25,
+    "status": "PASS"
+  },
+  {
+    "path": "requirements-export.txt",
+    "bytes": 97,
+    "matches_published_sha": true,
+    "check": "Full text decoded",
+    "lines": 3,
+    "status": "PASS"
+  },
+  {
+    "path": "requirements.txt",
+    "bytes": 235,
+    "matches_published_sha": true,
+    "check": "Full text decoded",
+    "lines": 11,
+    "status": "PASS"
+  },
+  {
+    "path": "scripts/check_snapshot.py",
+    "bytes": 3173,
+    "matches_published_sha": true,
+    "check": "AST syntax parsed",
+    "lines": 86,
+    "functions": [
+      "main"
+    ],
+    "status": "PASS"
+  }
+]
