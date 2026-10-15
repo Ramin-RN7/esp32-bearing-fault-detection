@@ -435,5 +435,19 @@
     "Malformed partial-row writes in run_variant_ov75.py",
     "A45 RF-named exporter is an ExtraTrees placeholder",
     "No software license declared"
-  ]
+  ],
+  "second_pass_review": {
+    "reviewed_commit": "8c9a5a9dc69d13e3eab17dea69bdcb3a268c8280",
+    "evidence": "recheck.json",
+    "files_verified": 240,
+    "original_splitter_matches_reconstruction": true,
+    "validation_threshold_recovered_exactly": true,
+    "additional_issues": [
+      "RF/ET segment F1 mislabeled as file F1",
+      "RF/ET feature functions produce 23 dimensions and use different preprocessing from A16",
+      "Summary PCA/envelope errors affect multiple configurations",
+      "Presentation slide 19 timing/accuracy claims are unsupported",
+      "Minimal MLP C exporter modifies caller input; repeated predictions may change"
+    ]
+  }
 }

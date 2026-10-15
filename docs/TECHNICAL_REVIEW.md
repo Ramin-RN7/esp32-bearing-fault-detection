@@ -23,6 +23,20 @@ See the [per-file inventory](review/file_inventory.json) and [machine-readable s
 
 The host review used Python 3.12.14, NumPy 2.3.5, SciPy 1.17.0, scikit-learn 1.7.1, librosa 0.11.0 and soundfile 0.13.1. Only scikit-learn's original version was recorded in the archive. Full historical environment equivalence is not established.
 
+## Second-pass verification
+
+A second pass on 15 October 2026 checked all **240 files** at [`8c9a5a9`](https://github.com/Ramin-RN7/esp32-bearing-fault-detection/commit/8c9a5a9dc69d13e3eab17dea69bdcb3a268c8280), including the first review and its diagnostic script. Every file matched the published Git blob; format checks and internal Markdown links passed. All 92 confusion-matrix images were checked again, with the same 91 full-metric matches and one rounded A44 file-F1 match. The selected host diagnostic results repeated exactly. See the [second-pass evidence](review/recheck.json).
+
+The original segmentation and split scripts were also run **without source changes** in an isolated directory. They produced 540 windows from all 60 recordings and the same 42/9/9 recording split (378/81/81 windows). Refitting only the A8/A16 scalers and PCA on the reconstructed training windows gave numerically close preprocessing parameters, with small differences from the saved historical objects. The A8 validation-threshold search, using the archived model, recovered **-11.218337179787783 exactly**. These checks strengthen the reconstruction; they do not recover the missing original manifests or establish an identical historical environment. No classifier was retrained.
+
+This pass found additional issues that the first review did not identify:
+
+- **Evaluation units are mixed in `best_of_table.csv`.** A42-RF's 0.789916 and A43-ET's 0.819672 appear under `file_F1`, but their source scripts and confusion matrices evaluate 81 segments. Their matrices are `[[9,18],[7,47]]` and `[[9,18],[4,50]]`. They must not be compared as file-level scores with the nine-recording MLP/GMM results.
+- **A42/A43 use 23 features, not the commented 25.** Their actual functions return 10 time statistics + 6 band powers + 7 spectral/autocorrelation values. They also use raw Hilbert magnitude plus `log1p`, omitting A16's band-pass, smoothing, percentile normalization and RMS matching. Their train/test dimensions are internally consistent, but these runs do not isolate a classifier change on the exact A16 representation.
+- **The summary metadata errors are widespread.** Besides A16, `ablation_summary.csv` labels A8, A17 and A31 as having no PCA despite their source pipelines using PCA(4), PCA(8) and PCA(8). Other envelope/PCA entries also require reconstruction from the source; the table is not reliable configuration metadata.
+- **Presentation slide 19 is inconsistent with the archived evidence.** Its approximately 70–75 ms frame latency and “same accuracy as offline” claims are unsupported by the incompatible feature definitions and conflict with the thesis's approximately 11.2-second feature time. The presentation remains a historical document; those claims must not be reused as verified results.
+- **The minimal MLP C exporter overwrites its input.** The generated buffer swap in [`a46_export_mlp_MIN.py`](../05_model_export/a46_export_mlp_MIN.py) assigns a scratch pointer to the caller's `const float *x_in`, then writes the next layer's result there. The second scratch buffer is unused. A host-compiled export of the archived A16 model matched scikit-learn on the first call for all 81 reconstructed test windows, but modified all 81 input vectors. Calling it again without restoring the input changed **78/81 decisions**. This requires a buffer-management repair before reuse, particularly with shared or read-only input memory. It is a separate C-export defect; it does not explain the GMM feature mismatch. The test used writable host arrays and did not execute an ESP32.
+
 ## 1. Desktop and device features have different meanings
 
 The desktop [`a8_bandpass_1_5k.py`](../03_feature_extraction/a8_bandpass_1_5k.py) filters a two-second segment and computes:
@@ -114,7 +128,7 @@ The source dataset also has limited operating-condition coverage. Its paper desc
 |---|---|
 | A16 scoring preprocessing differs from training | Training uses an upper band-pass cutoff of 3500 Hz. `a35b_aggregate_A16_MLP_per_file.py` clamps its requested 5000 Hz to 3600 Hz. In the reconstruction this changes segment predictions, although mean file decisions remain the same. |
 | Some aggregation/re-segmentation comparisons change the front end | A40/A41 and B1/B2 A16 helpers use resampling, Hilbert magnitude and `log1p` without the full training band-pass/smoothing/percentile normalization/RMS matching. Their results do not isolate aggregation or window length alone. |
-| A16 metadata is wrong | `ablation_summary.csv` marks A16-MLP as no envelope and no PCA, contradicting the code, bundle dimensions and `variants.csv`. Use the detailed source and bundle as evidence; do not infer ablation effects from that metadata without repair. |
+| Configuration metadata is wrong | `ablation_summary.csv` marks A16-MLP as no envelope and no PCA, contradicting the code, bundle dimensions and `variants.csv`. The second pass confirmed that PCA errors also affect A8, A17 and A31. Use source and model objects as evidence; do not infer ablation effects from this metadata without repair. |
 | Logged rows are not unique configurations | `variants.csv` has 104 rows and 93 distinct IDs. Repeated IDs include A1, A14, B1/B2-A8 and A44-ET. Counts include repeat runs and aggregation entries. |
 | Per-run artifacts are not all present | Absolute Windows paths in `variants.csv` refer to historical `params.json`, `metrics.json`, `code.py` and model outputs that are mostly absent. The logging code supports their creation; the published archive does not contain every run directory. |
 | A legacy feature writer emits incomplete rows | `run_variant_ov75.py` calls `writerow` inside the loop over 11 feature values, producing 11 rows per window, of which the first 10 have missing feature fields. That script needs repair before reuse. |
@@ -144,4 +158,5 @@ Successful completion means the diagnostic ran. It does not mean the known featu
 1. Define and enforce one desktop/device feature and label contract. Add feature-to-decision parity fixtures.
 2. Re-evaluate with nested physical-bearing grouping and publish explicit split manifests and out-of-fold predictions.
 3. Complete the firmware/WAV path, cache model parameters, use the board's supported FFT API and benchmark correct predictions stage by stage.
-4. Consolidate duplicated experiment code, repair legacy writers and metadata, and declare an appropriate license after ownership and reuse terms are decided.
+4. Repair the optional MLP C exporter's buffer handling and verify repeated-call behavior before using that export path.
+5. Consolidate duplicated experiment code, repair legacy writers and metadata/evaluation units, and declare an appropriate license after ownership and reuse terms are decided.
