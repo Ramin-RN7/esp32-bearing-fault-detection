@@ -16,3 +16,8 @@ artifacts/
 04_model_training_ablation/data/
 04_model_training_ablation/manifests/
 05_model_export/exports/
+
+# Python packaging
+*.egg-info/
+build/
+dist/

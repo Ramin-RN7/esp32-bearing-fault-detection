@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bearing-audio"
+version = "0.1.0"
+description = "Acoustic bearing-fault detection pipelines from a master's thesis (OTH Regensburg, 2025), with evaluation protocols and an ESP32 prototype"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Ramin Nassiri" }]
+requires-python = ">=3.10"
+dependencies = ["numpy", "scipy", "scikit-learn>=1.3", "librosa>=0.10", "soundfile"]
+
+[project.optional-dependencies]
+test = ["pytest", "joblib"]
+
+[project.urls]
+Repository = "https://github.com/Ramin-RN7/esp32-bearing-fault-detection"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::sklearn.exceptions.ConvergenceWarning"]
