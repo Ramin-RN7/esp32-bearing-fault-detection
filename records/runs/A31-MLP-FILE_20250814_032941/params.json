@@ -1,0 +1,17 @@
+{
+  "base_run": "A31-MLP",
+  "mode": "aggregation(mean probability >= 0.5)",
+  "sr": 16000,
+  "win_s": 2.0,
+  "preprocess": [
+    "bandpass_1000_5000",
+    "hilbert_envelope",
+    "smooth_20ms",
+    "log1p_norm95pct"
+  ],
+  "features": "25D",
+  "scaler": "minmax",
+  "pca_dims": 8,
+  "model": "MLP(1x10, ReLU)",
+  "rng": 42
+}

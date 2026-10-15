@@ -1,0 +1,22 @@
+{
+  "scaler": "zscore",
+  "pca_dims": 4,
+  "outlier_pct": 0.05,
+  "threshold": "val-opt",
+  "sr": 16000,
+  "win_s": 2.0,
+  "preprocess": [
+    "notch_60.0Hz_Q30.0"
+  ],
+  "rng": 42,
+  "split_sizes": {
+    "train": 378,
+    "val": 81,
+    "test": 81
+  },
+  "model_hparams": {
+    "n_components": 3,
+    "cov_type": "diag",
+    "thr": -4.412646303224803
+  }
+}

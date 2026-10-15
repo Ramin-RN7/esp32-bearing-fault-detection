@@ -1,0 +1,15 @@
+{
+  "base_run": "A8-GMM",
+  "mode": "aggregation(mean score vs thr)",
+  "sr": 16000,
+  "win_s": 2.0,
+  "preprocess": [
+    "bandpass_1_5k"
+  ],
+  "features": "25D",
+  "scaler": "zscore",
+  "pca_dims": 4,
+  "model": "GMM(diag,3)",
+  "thr": -11.218337179787783,
+  "rng": 42
+}

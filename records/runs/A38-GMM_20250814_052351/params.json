@@ -1,0 +1,29 @@
+{
+  "sr": 16000,
+  "win_s": 2.0,
+  "rng": 42,
+  "scaler": "zscore",
+  "pca_dims": 8,
+  "threshold": "val-opt",
+  "features": "mfcc20_means+centroid+bw+rolloff+flatness+zcr (25D->PCA8)",
+  "mfcc": {
+    "n_mfcc": 20,
+    "n_mels": 40,
+    "n_fft": 512,
+    "win_len": 400,
+    "hop_len": 160,
+    "dct_type": 2,
+    "lifter": 0,
+    "log_base": "ln"
+  },
+  "split_sizes": {
+    "train": 378,
+    "val": 81,
+    "test": 81
+  },
+  "model_hparams": {
+    "n_components": 3,
+    "cov_type": "diag",
+    "thr": -9.524243404637629
+  }
+}

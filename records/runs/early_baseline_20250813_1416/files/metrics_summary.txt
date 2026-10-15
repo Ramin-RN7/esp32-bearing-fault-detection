@@ -1,0 +1,8 @@
+
+== Test metrics ==
+GMM(one-class, healthy-only): acc=0.716  P=0.701  R=1.000  F1=0.824  th=-0.9176
+MLP(tiny):                   acc=0.679  P=1.000  R=0.519  F1=0.683
+
+Artifacts in: C:\Users\ramin\Desktop\bearing-ml\artifacts
+  GMM: cm=C:\Users\ramin\Desktop\bearing-ml\artifacts\cm_gmm_test.png, model(joblib)=C:\Users\ramin\Desktop\bearing-ml\artifacts\gmm_model.joblib (1565 B), params(json)=C:\Users\ramin\Desktop\bearing-ml\artifacts\gmm_portable.json
+  MLP: cm=C:\Users\ramin\Desktop\bearing-ml\artifacts\cm_mlp_test.png, model=C:\Users\ramin\Desktop\bearing-ml\artifacts\mlp_model.joblib (11057 B)

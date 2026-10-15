@@ -1,0 +1,19 @@
+{
+  "scaler": "minmax",
+  "pca_dims": 8,
+  "sr": 8000,
+  "win_s": 2.0,
+  "preprocess": [
+    "hilbert_envelope_log"
+  ],
+  "rng": 42,
+  "model_hparams": {
+    "model": "ET",
+    "n_estimators": 15,
+    "max_depth": 6
+  },
+  "export": {
+    "emlearn_ok": false,
+    "header": "C:\\Users\\ramin\\Desktop\\bearing-ml\\artifacts\\exports\\A44_ET\\model_et.h"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "sr": 8000,
+  "win_s": 2.0,
+  "rng": 42,
+  "scaler": "minmax",
+  "pca_dims": 8,
+  "preprocess": "hilbert_envelope_log @8k",
+  "features": "baseline25_on_envelope",
+  "model_hparams": {
+    "n_estimators": 50,
+    "max_depth": 8,
+    "bootstrap": false
+  }
+}

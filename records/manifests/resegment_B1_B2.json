@@ -1,0 +1,46 @@
+{
+  "sr": 16000,
+  "inputs": "C:\\Users\\ramin\\Desktop\\bearing-ml\\data\\raw",
+  "outputs": {
+    "B1": "C:\\Users\\ramin\\Desktop\\bearing-ml\\data\\segments_split_B1",
+    "B2": "C:\\Users\\ramin\\Desktop\\bearing-ml\\data\\segments_split_B2"
+  },
+  "b1": {
+    "win_s": 1.0,
+    "hop_s": 0.5
+  },
+  "b2": {
+    "win_s": 2.0,
+    "hop_s": 0.5
+  },
+  "counts": {
+    "B1": {
+      "train": {
+        "normal": 266,
+        "anomaly": 532
+      },
+      "val": {
+        "normal": 57,
+        "anomaly": 114
+      },
+      "test": {
+        "normal": 57,
+        "anomaly": 114
+      }
+    },
+    "B2": {
+      "train": {
+        "normal": 238,
+        "anomaly": 476
+      },
+      "val": {
+        "normal": 51,
+        "anomaly": 102
+      },
+      "test": {
+        "normal": 51,
+        "anomaly": 102
+      }
+    }
+  }
+}

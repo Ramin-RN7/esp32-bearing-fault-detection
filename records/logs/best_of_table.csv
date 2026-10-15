@@ -1,0 +1,6 @@
+label,id,file_F1,segment_F1,scaler,pca,notes
+A16-MLP (env+log@8k),A16-MLP-FILE,0.923076923,,,,Per-file aggregation
+A31-MLP (env+log@16k),A31-MLP-FILE,0.923076923,,,,Per-file aggregation
+A8-GMM (BP1–5k@16k),A8-GMM-FILE,0.909090909,,,,Per-file aggregation
+"RF(50,depth≤8) on A16",A42-RF,0.7899159663865546,,,,
+"ET(50,depth≤8) on A16",A43-ET,0.819672131147541,,,,
