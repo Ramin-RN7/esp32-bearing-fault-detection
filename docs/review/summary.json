@@ -449,5 +449,53 @@
       "Presentation slide 19 timing/accuracy claims are unsupported",
       "Minimal MLP C exporter modifies caller input; repeated predictions may change"
     ]
-  }
+  },
+  "corrections": [
+    {
+      "date": "2026-10-15",
+      "claim": "A16 false-positive windows all came from H_13_0",
+      "status": "Incorrect; corrected after comparison with the per-window diagnostic output.",
+      "evidence": {
+        "A16_train_features": {
+          "false_positive_windows_by_recording": {
+            "H_10_0_mic_16000Hz.wav": 1,
+            "H_13_0_mic_16000Hz.wav": 7,
+            "H_18_0_mic_16000Hz.wav": 1
+          },
+          "false_positive_windows": [
+            "H_10_0_mic_16000Hz__seg0006.wav",
+            "H_13_0_mic_16000Hz__seg0001.wav",
+            "H_13_0_mic_16000Hz__seg0004.wav",
+            "H_13_0_mic_16000Hz__seg0005.wav",
+            "H_13_0_mic_16000Hz__seg0006.wav",
+            "H_13_0_mic_16000Hz__seg0007.wav",
+            "H_13_0_mic_16000Hz__seg0008.wav",
+            "H_13_0_mic_16000Hz__seg0009.wav",
+            "H_18_0_mic_16000Hz__seg0004.wav"
+          ],
+          "false_negative_windows": []
+        },
+        "A16_file_features": {
+          "false_positive_windows_by_recording": {
+            "H_10_0_mic_16000Hz.wav": 1,
+            "H_13_0_mic_16000Hz.wav": 5,
+            "H_18_0_mic_16000Hz.wav": 1
+          },
+          "false_positive_windows": [
+            "H_10_0_mic_16000Hz__seg0006.wav",
+            "H_13_0_mic_16000Hz__seg0004.wav",
+            "H_13_0_mic_16000Hz__seg0005.wav",
+            "H_13_0_mic_16000Hz__seg0006.wav",
+            "H_13_0_mic_16000Hz__seg0007.wav",
+            "H_13_0_mic_16000Hz__seg0008.wav",
+            "H_18_0_mic_16000Hz__seg0004.wav"
+          ],
+          "false_negative_windows": [
+            "B_15_1_mic_16000Hz__seg0008.wav"
+          ]
+        }
+      },
+      "file_level_metrics_changed": false
+    }
+  ]
 }
