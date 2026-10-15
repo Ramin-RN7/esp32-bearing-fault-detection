@@ -73,6 +73,8 @@ The archived `feat_a8.py` is incompatible with the feature meanings used to trai
 
 `predict_gmm()` currently loads both JSON files on every call. Cache parameters before measuring arithmetic separately. Verify the actual ulab FFT API and return format on the board; changing only the import path does not establish compatibility. This archive does not include a complete ESP-IDF firmware tree, original WAV loader/evaluation helpers or tested flashing procedure.
 
+The optional `a46_export_mlp_MIN.py` path has a separate issue: its generated C predictor writes into the caller's input buffer despite accepting a `const` input pointer. Reusing that input without restoring it can change predictions. Repair the scratch-buffer swap and check input preservation and repeated calls before integrating this export. See the [second-pass review](TECHNICAL_REVIEW.md#second-pass-verification).
+
 ## Evaluation boundaries
 
 The historical file-level scores use nine test recordings. The reconstructed split shares physical bearings across training/validation/test and therefore cannot support unseen-bearing accuracy claims. Some A16 aggregation/re-segmentation scripts also change preprocessing relative to training. Review their differences before interpreting them as controlled comparisons.

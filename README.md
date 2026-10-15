@@ -27,6 +27,8 @@ The desktop A8 model takes **25 handcrafted descriptors: 10 time-domain statisti
 
 See the [results tables](06_results_evaluation/), [thesis](Master_Thesis_Audio_ESP32.pdf) and [technical review](docs/TECHNICAL_REVIEW.md). The tables and thesis retain the historical experiment record.
 
+A second review verified all 240 files at `8c9a5a9` and repeated the host results. It also found mislabeled RF/ET evaluation levels, broader summary-metadata errors, unsupported presentation timing claims, and input mutation in the optional MLP C exporter. These findings and their evidence are recorded in the [review](docs/TECHNICAL_REVIEW.md#second-pass-verification).
+
 ## Timing interpretation
 
 The thesis reports approximately **64 ms per predictor call over 500 calls**. In the archived code, each `predict_gmm()` call reads and parses two JSON files, constructs parameter arrays, and performs normalization, PCA and GMM scoring. The timing therefore includes repeated model loading and is not an isolated arithmetic benchmark. Spectral feature extraction is excluded, and the code does not measure live microphone latency.
