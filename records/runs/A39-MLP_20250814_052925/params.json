@@ -1,0 +1,33 @@
+{
+  "sr": 16000,
+  "win_s": 2.0,
+  "rng": 42,
+  "scaler": "zscore",
+  "pca_dims": 8,
+  "threshold": "val-opt",
+  "features": "mfcc20+delta_means + centroid/bw/rolloff/flatness/zcr (45D->PCA8)",
+  "mfcc": {
+    "n_mfcc": 20,
+    "n_mels": 40,
+    "n_fft": 512,
+    "win_len": 400,
+    "hop_len": 160,
+    "dct_type": 2,
+    "lifter": 0,
+    "log_base": "ln",
+    "delta_order": 1
+  },
+  "split_sizes": {
+    "train": 378,
+    "val": 81,
+    "test": 81
+  },
+  "model_hparams": {
+    "hidden": [
+      10
+    ],
+    "act": "relu",
+    "solver": "adam",
+    "max_iter": 500
+  }
+}

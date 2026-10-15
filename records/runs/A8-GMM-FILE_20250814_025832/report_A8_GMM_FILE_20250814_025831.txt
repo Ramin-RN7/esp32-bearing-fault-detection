@@ -1,0 +1,31 @@
+Per-file aggregation report — A8-GMM
+Timestamp: 20250814_025831
+
+What & why:
+- We aggregate decisions per original recording (grouped by prefix before "__seg####").
+- This matches deployment (alarm per file), reduces segment noise, and gives fairer, more stable metrics.
+
+How:
+- We re-computed A8 features on TEST: BP 1–5 kHz -> 25D features -> StandardScaler -> PCA(4) -> GMM.
+- We used the saved validation-optimized threshold (thr = -11.218337) on GMM log-likelihood scores.
+- Segment decision: score < thr -> anomaly.
+- File decision: mean(score) across segments < thr -> anomaly (we also log median & fraction anomalous).
+
+Why the results matter:
+- Segment-level metrics show raw detector sensitivity.
+- File-level metrics reflect actual decision units in practice.
+- If file-level F1 stays strong (or improves), the variant is robust for real-world use.
+
+Results (TEST):
+- Segment-level: acc=0.877, prec=0.978, rec=0.833, f1=0.900
+- File-level:   acc=0.889, prec=1.000, rec=0.833, f1=0.909
+
+Artifacts:
+- Segment CSV: segments_A8_GMM_20250814_025831.csv
+- File CSV:    files_A8_GMM_20250814_025831.csv
+- CM (file):   cm_A8_GMM_FILE.png
+
+Interpretation guide:
+- If file-level F1 > segment-level F1: aggregation reduced false alarms (good).
+- If recall drops a little but precision rises a lot: aggregation is filtering noise (likely good trade-off).
+- Inspect files_A8_GMM_*.csv for borderline cases: mean_score close to thr.

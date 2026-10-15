@@ -1,0 +1,19 @@
+{
+  "sample_rate": 16000,
+  "window_seconds": 2.0,
+  "overlap": 0.5,
+  "nfft": 4096,
+  "features": [
+    "rms",
+    "zcr",
+    "centroid_hz",
+    "bandwidth_hz",
+    "flatness",
+    "kurtosis",
+    "crest",
+    "bp_0_1k",
+    "bp_1_3k",
+    "bp_3_8k",
+    "hf_ratio"
+  ]
+}

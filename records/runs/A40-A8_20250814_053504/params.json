@@ -1,0 +1,8 @@
+{
+  "base_run": "A8-GMM",
+  "rule": "majority(pred)",
+  "sr": 16000,
+  "preprocess": "bandpass_1_5k",
+  "features": "baseline25",
+  "thr": -11.218337179787783
+}

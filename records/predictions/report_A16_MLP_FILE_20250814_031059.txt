@@ -1,0 +1,29 @@
+Per-file aggregation report — A16-MLP
+Timestamp: 20250814_031059
+
+What & why:
+- We aggregate segment predictions per original recording (prefix before "__seg####").
+- File-level evaluation matches deployment, reduces segment noise, and yields fairer metrics.
+
+How:
+- TEST pipeline re-used: 8 kHz -> Hilbert envelope -> 20 ms moving average -> log1p with 95th-percentile normalization.
+- 25-D features -> MinMax scaler -> PCA(8) -> MLP(1x10, ReLU).
+- Segment decision: prob(anomaly) >= 0.5.
+- File decision: mean prob(anomaly) >= 0.5 (we also log median & fraction anomalous).
+
+Why the results matter:
+- Segment metrics show raw detector behavior; file metrics reflect actual user-facing decisions.
+- If file-level F1 stays high or improves, the variant is robust and less sensitive to transient noise.
+
+Results (TEST):
+- Segment-level: acc=0.901, prec=0.883, rec=0.981, f1=0.930
+- File-level:   acc=0.889, prec=0.857, rec=1.000, f1=0.923
+
+Artifacts:
+- Segment CSV: segments_A16_MLP_20250814_031059.csv
+- File CSV:    files_A16_MLP_20250814_031059.csv
+- CM (file):   cm_A16_MLP_FILE.png
+
+Interpretation guide:
+- If precision rises at file-level with similar recall, aggregation reduced false alarms (good).
+- Mean_proba near 0.5 indicates borderline files worth manual listening/inspection.

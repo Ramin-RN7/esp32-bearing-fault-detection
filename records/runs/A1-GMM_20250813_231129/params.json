@@ -1,0 +1,18 @@
+{
+  "scaler": "zscore",
+  "pca_dims": 4,
+  "outlier_pct": 0.05,
+  "threshold": "val-opt",
+  "sr": 16000,
+  "win_s": 2.0,
+  "overlap": 0.5,
+  "preprocess": [
+    "hpf_100Hz"
+  ],
+  "rng": 42,
+  "model_hparams": {
+    "n_components": 3,
+    "cov_type": "diag",
+    "thr": -7.635011600130167
+  }
+}

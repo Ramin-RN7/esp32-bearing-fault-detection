@@ -1,0 +1,19 @@
+(name='micropython', version=(1, 20, 0), _machine='Core2 (spiram-16m) with ESP32', _mpy=10502)
+FastSpi           fadc              uasyncio/lock     upysh
+ILI934x           flashbdev         uasyncio/stream   urandom
+__main__          framebuf          ubinascii         ure
+_boot             gc                ubluetooth        urequests
+_espnow           inisetup          ucollections      uselect
+_onewire          math              ucryptolib        usocket
+_thread           microlite         uctypes           ussl
+_uasyncio         micropython       uerrno            ustruct
+_webrepl          mip/__init__      uhashlib          usys
+apa106            neopixel          uheapq            utime
+btree             network           uio               utimeq
+builtins          ntptime           ujson             uwebsocket
+cmath             onewire           ulab              uzlib
+dht               uarray            umachine          webrepl
+ds18x20           uasyncio/__init__ umqtt/robust      webrepl_setup
+esp               uasyncio/core     umqtt/simple
+esp32             uasyncio/event    uos
+espnow            uasyncio/funcs    uplatform

@@ -1,0 +1,28 @@
+{
+  "scaler": "minmax",
+  "pca_dims": 8,
+  "outlier_pct": 0.0,
+  "threshold": "val-opt",
+  "sr": 8000,
+  "win_s": 2.0,
+  "preprocess": [
+    "bandpass_1000_3500",
+    "hilbert_envelope",
+    "smooth_20ms",
+    "log1p_norm95pct"
+  ],
+  "rng": 42,
+  "split_sizes": {
+    "train": 378,
+    "val": 81,
+    "test": 81
+  },
+  "model_hparams": {
+    "hidden": [
+      10
+    ],
+    "act": "relu",
+    "solver": "adam",
+    "max_iter": 500
+  }
+}
