@@ -12,6 +12,16 @@ python scripts/check_snapshot.py
 
 This requires only Python's standard library. It checks syntax, WAV readability/durations and the archived best-results table. It does not run training or test an ESP32.
 
+## Reproduce the later host review
+
+Read the [technical review and known issues](TECHNICAL_REVIEW.md), then install the desktop requirements and run:
+
+```bash
+python scripts/review_models.py
+```
+
+This reconstructs the missing split, re-scores the two archived models, exports the GMM and demonstrates the desktop/device feature mismatch using a NumPy host emulation. It writes to `artifacts/technical_review/`. No retraining or ESP32 execution occurs. Other historical dependency versions are unknown, so matching the original environment fully is not established.
+
 ## Desktop environment
 
 Create a virtual environment, for example with Python 3.11 or 3.12:
@@ -59,8 +69,12 @@ The runtime expects `/models/A8_GMM/preprocess.json` and `/models/A8_GMM/gmm.jso
 python 05_model_export/a47_export_gmm_json.py --bundle 05_model_export/gmm_A8.joblib --out 05_model_export/exports/A8_GMM
 ```
 
-Exported parameters and runtime scripts still need to be checked on compatible firmware before device use. This archive does not include a complete ESP-IDF firmware source tree or a tested one-command flashing procedure.
+The archived `feat_a8.py` is incompatible with the feature meanings used to train this GMM. Do not join that extractor to the bundle as a validated audio classifier. Define a matching feature contract and verify feature-to-score parity first. Device label 1 means normal, while offline label 1 means fault.
+
+`predict_gmm()` currently loads both JSON files on every call. Cache parameters before measuring arithmetic separately. Verify the actual ulab FFT API and return format on the board; changing only the import path does not establish compatibility. This archive does not include a complete ESP-IDF firmware tree, original WAV loader/evaluation helpers or tested flashing procedure.
 
 ## Evaluation boundaries
 
-Scores are file-level offline results. Recording-level grouping does not establish bearing-level holdout. The approximately 64 ms thesis measurement excludes spectral extraction. These scores and hardware timings are not reproduced by the snapshot checker.
+The historical file-level scores use nine test recordings. The reconstructed split shares physical bearings across training/validation/test and therefore cannot support unseen-bearing accuracy claims. Some A16 aggregation/re-segmentation scripts also change preprocessing relative to training. Review their differences before interpreting them as controlled comparisons.
+
+The approximately 64 ms thesis predictor measurement excludes feature extraction but includes repeated JSON loading/parsing. The snapshot checker does not reproduce predictions or hardware timings. The host review script reproduces selected offline predictions and exposes the feature mismatch; hardware timings remain unverified.
