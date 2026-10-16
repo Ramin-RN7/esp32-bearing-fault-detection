@@ -1,5 +1,29 @@
 {
  "version": "0.1.0",
+ "provenance": {
+  "git_commit": "7017a9eac5fd3cc8428a3fb735094e7d728061de",
+  "audio_sha256": "cee6d19bf8efa83b7a0fe149c262e09637b8ac9ed9aabd96ac10243f89abc5b6",
+  "n_recordings": 60,
+  "feature_spec_version": "1",
+  "feature_code_sha256": {
+   "features.py": "cc02104b5ebd8faeec7cc71775c52967df2937ac52edc3522f222565870b6adc",
+   "data.py": "6d594d3f1bedb6411c8aafc7b731df27abdfcd222f2828d750508dd045effb04"
+  },
+  "libraries": {
+   "numpy": "2.5.3",
+   "scipy": "1.18.1",
+   "librosa": "1.0.0",
+   "soxr": "1.1.0",
+   "soundfile": "0.14.0"
+  },
+  "python": "3.13.16",
+  "packages": {
+   "numpy": "2.5.3",
+   "scipy": "1.18.1",
+   "scikit-learn": "1.7.1",
+   "librosa": "1.0.0"
+  }
+ },
  "original_split": {
   "a8_gmm": {
    "test": [
@@ -35,6 +59,18 @@
     0,
     0
    ],
+   "score": [
+    -18.86949920654297,
+    -28.846147537231445,
+    -17.931896209716797,
+    -13.891368865966797,
+    -14.456812858581543,
+    -8.513029098510742,
+    -10.65761947631836,
+    -9.21439266204834,
+    -7.626115798950195
+   ],
+   "threshold": -11.21833171365248,
    "recording": {
     "confusion_matrix": [
      [
@@ -109,6 +145,18 @@
     1,
     0
    ],
+   "score": [
+    0.7230318188667297,
+    0.8951737284660339,
+    0.6680196523666382,
+    0.8767529129981995,
+    0.9362338185310364,
+    0.6803175210952759,
+    0.3316275179386139,
+    0.5603543519973755,
+    0.43048611283302307
+   ],
+   "threshold": 0.5,
    "recording": {
     "confusion_matrix": [
      [
@@ -183,6 +231,18 @@
     1,
     0
    ],
+   "score": [
+    0.9084519724494867,
+    0.5073257613277053,
+    0.18289650852210243,
+    0.9777232256654348,
+    0.988636200114649,
+    0.14989106706973415,
+    0.6749948122750276,
+    0.849113993966894,
+    0.0761125855867523
+   ],
+   "threshold": 0.5,
    "recording": {
     "confusion_matrix": [
      [
@@ -227,6 +287,16 @@
    ]
   }
  },
+ "lobo_design": {
+  "n_folds": 20,
+  "train_bearings_per_fold": 16,
+  "validation_bearings_per_fold": 3,
+  "validation_choice": "next three bearing IDs after the test bearing (protocol v1)",
+  "validation_used_by": [
+   "a8_gmm"
+  ],
+  "single_type_validation_folds": 12
+ },
  "leave_one_bearing_out": {
   "a8_gmm": {
    "confusion_matrix": [
@@ -267,306 +337,628 @@
     "C_19_2",
     "H_19_0"
    ],
+   "folds": [
+    {
+     "test_bearing": 1,
+     "validation_bearings": [
+      2,
+      3,
+      4
+     ],
+     "n_train_recordings": 48,
+     "threshold": -10.492832905563295
+    },
+    {
+     "test_bearing": 2,
+     "validation_bearings": [
+      3,
+      4,
+      5
+     ],
+     "n_train_recordings": 48,
+     "threshold": -8.566383554468198
+    },
+    {
+     "test_bearing": 3,
+     "validation_bearings": [
+      4,
+      5,
+      6
+     ],
+     "n_train_recordings": 48,
+     "threshold": -4.779327359511034
+    },
+    {
+     "test_bearing": 4,
+     "validation_bearings": [
+      5,
+      6,
+      7
+     ],
+     "n_train_recordings": 48,
+     "threshold": -4.1641229629516605
+    },
+    {
+     "test_bearing": 5,
+     "validation_bearings": [
+      6,
+      7,
+      8
+     ],
+     "n_train_recordings": 48,
+     "threshold": -4.110221840269003
+    },
+    {
+     "test_bearing": 6,
+     "validation_bearings": [
+      7,
+      8,
+      9
+     ],
+     "n_train_recordings": 48,
+     "threshold": -7.0099631898966726
+    },
+    {
+     "test_bearing": 7,
+     "validation_bearings": [
+      8,
+      9,
+      10
+     ],
+     "n_train_recordings": 48,
+     "threshold": -9.019946241139175
+    },
+    {
+     "test_bearing": 8,
+     "validation_bearings": [
+      9,
+      10,
+      11
+     ],
+     "n_train_recordings": 48,
+     "threshold": -8.957318699899032
+    },
+    {
+     "test_bearing": 9,
+     "validation_bearings": [
+      10,
+      11,
+      12
+     ],
+     "n_train_recordings": 48,
+     "threshold": -5.224889994865686
+    },
+    {
+     "test_bearing": 10,
+     "validation_bearings": [
+      11,
+      12,
+      13
+     ],
+     "n_train_recordings": 48,
+     "threshold": -11.538380301777439
+    },
+    {
+     "test_bearing": 11,
+     "validation_bearings": [
+      12,
+      13,
+      14
+     ],
+     "n_train_recordings": 48,
+     "threshold": -10.021062519322687
+    },
+    {
+     "test_bearing": 12,
+     "validation_bearings": [
+      13,
+      14,
+      15
+     ],
+     "n_train_recordings": 48,
+     "threshold": -10.97996139909754
+    },
+    {
+     "test_bearing": 13,
+     "validation_bearings": [
+      14,
+      15,
+      16
+     ],
+     "n_train_recordings": 48,
+     "threshold": -9.901162713496554
+    },
+    {
+     "test_bearing": 14,
+     "validation_bearings": [
+      15,
+      16,
+      17
+     ],
+     "n_train_recordings": 48,
+     "threshold": -8.307972580224424
+    },
+    {
+     "test_bearing": 15,
+     "validation_bearings": [
+      16,
+      17,
+      18
+     ],
+     "n_train_recordings": 48,
+     "threshold": -10.76230985075986
+    },
+    {
+     "test_bearing": 16,
+     "validation_bearings": [
+      17,
+      18,
+      19
+     ],
+     "n_train_recordings": 48,
+     "threshold": -14.015258040500042
+    },
+    {
+     "test_bearing": 17,
+     "validation_bearings": [
+      18,
+      19,
+      20
+     ],
+     "n_train_recordings": 48,
+     "threshold": -6.234546861696483
+    },
+    {
+     "test_bearing": 18,
+     "validation_bearings": [
+      1,
+      19,
+      20
+     ],
+     "n_train_recordings": 48,
+     "threshold": -6.291148265282712
+    },
+    {
+     "test_bearing": 19,
+     "validation_bearings": [
+      1,
+      2,
+      20
+     ],
+     "n_train_recordings": 48,
+     "threshold": -11.277489306579286
+    },
+    {
+     "test_bearing": 20,
+     "validation_bearings": [
+      1,
+      2,
+      3
+     ],
+     "n_train_recordings": 48,
+     "threshold": -8.321866333544552
+    }
+   ],
    "predictions": [
     {
      "recording": "H_1_0",
+     "test_bearing": 1,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -7.356453895568848
     },
     {
      "recording": "I_1_1",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -18.028196334838867
     },
     {
      "recording": "I_1_2",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": -9.338882446289062
     },
     {
      "recording": "H_2_0",
+     "test_bearing": 2,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -2359.62060546875
     },
     {
      "recording": "I_2_1",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -28.652618408203125
     },
     {
      "recording": "I_2_2",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -19.026269912719727
     },
     {
      "recording": "H_3_0",
+     "test_bearing": 3,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -6.416561126708984
     },
     {
      "recording": "I_3_1",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -14.689827919006348
     },
     {
      "recording": "I_3_2",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -13.13904857635498
     },
     {
      "recording": "H_4_0",
+     "test_bearing": 4,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -4.57573127746582
     },
     {
      "recording": "I_4_1",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -10.08198070526123
     },
     {
      "recording": "I_4_2",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -9.809799194335938
     },
     {
      "recording": "H_5_0",
+     "test_bearing": 5,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -4.927589416503906
     },
     {
      "recording": "I_5_1",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -15.911738395690918
     },
     {
      "recording": "I_5_2",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -12.763882637023926
     },
     {
      "recording": "H_6_0",
+     "test_bearing": 6,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -4.639068603515625
     },
     {
      "recording": "O_6_1",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": -5.689055919647217
     },
     {
      "recording": "O_6_2",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": -4.360581874847412
     },
     {
      "recording": "H_7_0",
+     "test_bearing": 7,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -3.788607358932495
     },
     {
      "recording": "O_7_1",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -17.581666946411133
     },
     {
      "recording": "O_7_2",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -18.571475982666016
     },
     {
      "recording": "H_8_0",
+     "test_bearing": 8,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -12.200258255004883
     },
     {
      "recording": "O_8_1",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -17.652565002441406
     },
     {
      "recording": "O_8_2",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -11.14737606048584
     },
     {
      "recording": "H_9_0",
+     "test_bearing": 9,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -13.872434616088867
     },
     {
      "recording": "O_9_1",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -22.427833557128906
     },
     {
      "recording": "O_9_2",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -17.617843627929688
     },
     {
      "recording": "H_10_0",
+     "test_bearing": 10,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -10.044209480285645
     },
     {
      "recording": "O_10_1",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -12.789361000061035
     },
     {
      "recording": "O_10_2",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -22.354841232299805
     },
     {
      "recording": "B_11_1",
+     "test_bearing": 11,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -48.3296012878418
     },
     {
      "recording": "B_11_2",
+     "test_bearing": 11,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -17.119943618774414
     },
     {
      "recording": "H_11_0",
+     "test_bearing": 11,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -5.065981388092041
     },
     {
      "recording": "B_12_1",
+     "test_bearing": 12,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": -4.456478595733643
     },
     {
      "recording": "B_12_2",
+     "test_bearing": 12,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -11.268106460571289
     },
     {
      "recording": "H_12_0",
+     "test_bearing": 12,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -5.519070625305176
     },
     {
      "recording": "B_13_1",
+     "test_bearing": 13,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -16.22534942626953
     },
     {
      "recording": "B_13_2",
+     "test_bearing": 13,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -15.645524978637695
     },
     {
      "recording": "H_13_0",
+     "test_bearing": 13,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -9.647286415100098
     },
     {
      "recording": "B_14_1",
+     "test_bearing": 14,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -19.153873443603516
     },
     {
      "recording": "B_14_2",
+     "test_bearing": 14,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -22.440719604492188
     },
     {
      "recording": "H_14_0",
+     "test_bearing": 14,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -5.017299175262451
     },
     {
      "recording": "B_15_1",
+     "test_bearing": 15,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -11.758858680725098
     },
     {
      "recording": "B_15_2",
+     "test_bearing": 15,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -15.144710540771484
     },
     {
      "recording": "H_15_0",
+     "test_bearing": 15,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -4.0611252784729
     },
     {
      "recording": "C_16_1",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -34.808204650878906
     },
     {
      "recording": "C_16_2",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -33.409767150878906
     },
     {
      "recording": "H_16_0",
+     "test_bearing": 16,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -10.156606674194336
     },
     {
      "recording": "C_17_1",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -68.06050872802734
     },
     {
      "recording": "C_17_2",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -38.12791442871094
     },
     {
      "recording": "H_17_0",
+     "test_bearing": 17,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -5.432880878448486
     },
     {
      "recording": "C_18_1",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -14.942975997924805
     },
     {
      "recording": "C_18_2",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -16.010887145996094
     },
     {
      "recording": "H_18_0",
+     "test_bearing": 18,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -5.336448669433594
     },
     {
      "recording": "C_19_1",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -19.250133514404297
     },
     {
      "recording": "C_19_2",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": -5.517936706542969
     },
     {
      "recording": "H_19_0",
+     "test_bearing": 19,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -49683.46875
     },
     {
      "recording": "C_20_1",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -23.635835647583008
     },
     {
      "recording": "C_20_2",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -12.917189598083496
     },
     {
      "recording": "H_20_0",
+     "test_bearing": 20,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -7.659887313842773
     }
    ]
   },
@@ -606,306 +998,628 @@
     "C_19_1",
     "C_20_1"
    ],
+   "folds": [
+    {
+     "test_bearing": 1,
+     "validation_bearings": [
+      2,
+      3,
+      4
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 2,
+     "validation_bearings": [
+      3,
+      4,
+      5
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 3,
+     "validation_bearings": [
+      4,
+      5,
+      6
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 4,
+     "validation_bearings": [
+      5,
+      6,
+      7
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 5,
+     "validation_bearings": [
+      6,
+      7,
+      8
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 6,
+     "validation_bearings": [
+      7,
+      8,
+      9
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 7,
+     "validation_bearings": [
+      8,
+      9,
+      10
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 8,
+     "validation_bearings": [
+      9,
+      10,
+      11
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 9,
+     "validation_bearings": [
+      10,
+      11,
+      12
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 10,
+     "validation_bearings": [
+      11,
+      12,
+      13
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 11,
+     "validation_bearings": [
+      12,
+      13,
+      14
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 12,
+     "validation_bearings": [
+      13,
+      14,
+      15
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 13,
+     "validation_bearings": [
+      14,
+      15,
+      16
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 14,
+     "validation_bearings": [
+      15,
+      16,
+      17
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 15,
+     "validation_bearings": [
+      16,
+      17,
+      18
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 16,
+     "validation_bearings": [
+      17,
+      18,
+      19
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 17,
+     "validation_bearings": [
+      18,
+      19,
+      20
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 18,
+     "validation_bearings": [
+      1,
+      19,
+      20
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 19,
+     "validation_bearings": [
+      1,
+      2,
+      20
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 20,
+     "validation_bearings": [
+      1,
+      2,
+      3
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    }
+   ],
    "predictions": [
     {
      "recording": "H_1_0",
+     "test_bearing": 1,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3454248011112213
     },
     {
      "recording": "I_1_1",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9079505205154419
     },
     {
      "recording": "I_1_2",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.016860924661159515
     },
     {
      "recording": "H_2_0",
+     "test_bearing": 2,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 7.547932909801602e-07
     },
     {
      "recording": "I_2_1",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9861429929733276
     },
     {
      "recording": "I_2_2",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9758049845695496
     },
     {
      "recording": "H_3_0",
+     "test_bearing": 3,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.2769581079483032
     },
     {
      "recording": "I_3_1",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9192371368408203
     },
     {
      "recording": "I_3_2",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9728556871414185
     },
     {
      "recording": "H_4_0",
+     "test_bearing": 4,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.4702213704586029
     },
     {
      "recording": "I_4_1",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9641246795654297
     },
     {
      "recording": "I_4_2",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.982112467288971
     },
     {
      "recording": "H_5_0",
+     "test_bearing": 5,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.436868280172348
     },
     {
      "recording": "I_5_1",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9668301343917847
     },
     {
      "recording": "I_5_2",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9903877973556519
     },
     {
      "recording": "H_6_0",
+     "test_bearing": 6,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3354223668575287
     },
     {
      "recording": "O_6_1",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.5590816736221313
     },
     {
      "recording": "O_6_2",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.7322820425033569
     },
     {
      "recording": "H_7_0",
+     "test_bearing": 7,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3632524609565735
     },
     {
      "recording": "O_7_1",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9731061458587646
     },
     {
      "recording": "O_7_2",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9701473712921143
     },
     {
      "recording": "H_8_0",
+     "test_bearing": 8,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8185533881187439
     },
     {
      "recording": "O_8_1",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9843295216560364
     },
     {
      "recording": "O_8_2",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9887646436691284
     },
     {
      "recording": "H_9_0",
+     "test_bearing": 9,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.28995460271835327
     },
     {
      "recording": "O_9_1",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.5610333681106567
     },
     {
      "recording": "O_9_2",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.5298745036125183
     },
     {
      "recording": "H_10_0",
+     "test_bearing": 10,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.170691579580307
     },
     {
      "recording": "O_10_1",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.6486904621124268
     },
     {
      "recording": "O_10_2",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9910950064659119
     },
     {
      "recording": "B_11_1",
+     "test_bearing": 11,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.936481237411499
     },
     {
      "recording": "B_11_2",
+     "test_bearing": 11,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.7192771434783936
     },
     {
      "recording": "H_11_0",
+     "test_bearing": 11,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.37249815464019775
     },
     {
      "recording": "B_12_1",
+     "test_bearing": 12,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.40841346979141235
     },
     {
      "recording": "B_12_2",
+     "test_bearing": 12,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.22357051074504852
     },
     {
      "recording": "H_12_0",
+     "test_bearing": 12,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.42977291345596313
     },
     {
      "recording": "B_13_1",
+     "test_bearing": 13,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.32770463824272156
     },
     {
      "recording": "B_13_2",
+     "test_bearing": 13,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.6323072910308838
     },
     {
      "recording": "H_13_0",
+     "test_bearing": 13,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.5466632843017578
     },
     {
      "recording": "B_14_1",
+     "test_bearing": 14,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8448907732963562
     },
     {
      "recording": "B_14_2",
+     "test_bearing": 14,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9817853569984436
     },
     {
      "recording": "H_14_0",
+     "test_bearing": 14,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.48886749148368835
     },
     {
      "recording": "B_15_1",
+     "test_bearing": 15,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.7724359035491943
     },
     {
      "recording": "B_15_2",
+     "test_bearing": 15,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8974411487579346
     },
     {
      "recording": "H_15_0",
+     "test_bearing": 15,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.33058255910873413
     },
     {
      "recording": "C_16_1",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9754093885421753
     },
     {
      "recording": "C_16_2",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9928714036941528
     },
     {
      "recording": "H_16_0",
+     "test_bearing": 16,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9351814985275269
     },
     {
      "recording": "C_17_1",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8398659825325012
     },
     {
      "recording": "C_17_2",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.827964723110199
     },
     {
      "recording": "H_17_0",
+     "test_bearing": 17,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.4624454081058502
     },
     {
      "recording": "C_18_1",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8719872832298279
     },
     {
      "recording": "C_18_2",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9619520902633667
     },
     {
      "recording": "H_18_0",
+     "test_bearing": 18,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.1910676211118698
     },
     {
      "recording": "C_19_1",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3065609633922577
     },
     {
      "recording": "C_19_2",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.5669533014297485
     },
     {
      "recording": "H_19_0",
+     "test_bearing": 19,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 7.350968758146337e-07
     },
     {
      "recording": "C_20_1",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.2752622067928314
     },
     {
      "recording": "C_20_2",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9228798747062683
     },
     {
      "recording": "H_20_0",
+     "test_bearing": 20,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3018135130405426
     }
    ]
   },
@@ -951,307 +1665,662 @@
     "C_19_2",
     "C_20_1"
    ],
+   "folds": [
+    {
+     "test_bearing": 1,
+     "validation_bearings": [
+      2,
+      3,
+      4
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 2,
+     "validation_bearings": [
+      3,
+      4,
+      5
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 3,
+     "validation_bearings": [
+      4,
+      5,
+      6
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 4,
+     "validation_bearings": [
+      5,
+      6,
+      7
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 5,
+     "validation_bearings": [
+      6,
+      7,
+      8
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 6,
+     "validation_bearings": [
+      7,
+      8,
+      9
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 7,
+     "validation_bearings": [
+      8,
+      9,
+      10
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 8,
+     "validation_bearings": [
+      9,
+      10,
+      11
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 9,
+     "validation_bearings": [
+      10,
+      11,
+      12
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 10,
+     "validation_bearings": [
+      11,
+      12,
+      13
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 11,
+     "validation_bearings": [
+      12,
+      13,
+      14
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 12,
+     "validation_bearings": [
+      13,
+      14,
+      15
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 13,
+     "validation_bearings": [
+      14,
+      15,
+      16
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 14,
+     "validation_bearings": [
+      15,
+      16,
+      17
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 15,
+     "validation_bearings": [
+      16,
+      17,
+      18
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 16,
+     "validation_bearings": [
+      17,
+      18,
+      19
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 17,
+     "validation_bearings": [
+      18,
+      19,
+      20
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 18,
+     "validation_bearings": [
+      1,
+      19,
+      20
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 19,
+     "validation_bearings": [
+      1,
+      2,
+      20
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 20,
+     "validation_bearings": [
+      1,
+      2,
+      3
+     ],
+     "n_train_recordings": 48,
+     "threshold": 0.5
+    }
+   ],
    "predictions": [
     {
      "recording": "H_1_0",
+     "test_bearing": 1,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.11036048162283836
     },
     {
      "recording": "I_1_1",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9030788791313713
     },
     {
      "recording": "I_1_2",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.38771337687272517
     },
     {
      "recording": "H_2_0",
+     "test_bearing": 2,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.0633313978841618
     },
     {
      "recording": "I_2_1",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8755554135176724
     },
     {
      "recording": "I_2_2",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.94173718624829
     },
     {
      "recording": "H_3_0",
+     "test_bearing": 3,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.11251959122978855
     },
     {
      "recording": "I_3_1",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9651109501286967
     },
     {
      "recording": "I_3_2",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9502612802335998
     },
     {
      "recording": "H_4_0",
+     "test_bearing": 4,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.12638154036976915
     },
     {
      "recording": "I_4_1",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9210101146045014
     },
     {
      "recording": "I_4_2",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.7132040434009834
     },
     {
      "recording": "H_5_0",
+     "test_bearing": 5,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3014794436682068
     },
     {
      "recording": "I_5_1",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.943165680334778
     },
     {
      "recording": "I_5_2",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9455345045070946
     },
     {
      "recording": "H_6_0",
+     "test_bearing": 6,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.17477016083849553
     },
     {
      "recording": "O_6_1",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.39150487507777115
     },
     {
      "recording": "O_6_2",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.2474646778384567
     },
     {
      "recording": "H_7_0",
+     "test_bearing": 7,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.20555818882495216
     },
     {
      "recording": "O_7_1",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9974262065941674
     },
     {
      "recording": "O_7_2",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9986107508692442
     },
     {
      "recording": "H_8_0",
+     "test_bearing": 8,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.5620894031249148
     },
     {
      "recording": "O_8_1",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9671915404762012
     },
     {
      "recording": "O_8_2",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8960667297870137
     },
     {
      "recording": "H_9_0",
+     "test_bearing": 9,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8563855786452247
     },
     {
      "recording": "O_9_1",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9994728805954011
     },
     {
      "recording": "O_9_2",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.997492901585782
     },
     {
      "recording": "H_10_0",
+     "test_bearing": 10,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.7598289509984739
     },
     {
      "recording": "O_10_1",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.99076557663613
     },
     {
      "recording": "O_10_2",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9996630960941886
     },
     {
      "recording": "B_11_1",
+     "test_bearing": 11,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.5327614654915388
     },
     {
      "recording": "B_11_2",
+     "test_bearing": 11,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8749227986988416
     },
     {
      "recording": "H_11_0",
+     "test_bearing": 11,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.26514248446388045
     },
     {
      "recording": "B_12_1",
+     "test_bearing": 12,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.2265251579505871
     },
     {
      "recording": "B_12_2",
+     "test_bearing": 12,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3612861317132
     },
     {
      "recording": "H_12_0",
+     "test_bearing": 12,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.08938264969365789
     },
     {
      "recording": "B_13_1",
+     "test_bearing": 13,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9393084219638855
     },
     {
      "recording": "B_13_2",
+     "test_bearing": 13,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8851692549634999
     },
     {
      "recording": "H_13_0",
+     "test_bearing": 13,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8194152813044384
     },
     {
      "recording": "B_14_1",
+     "test_bearing": 14,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3482035576726373
     },
     {
      "recording": "B_14_2",
+     "test_bearing": 14,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.44838257195257836
     },
     {
      "recording": "H_14_0",
+     "test_bearing": 14,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.09286353104940216
     },
     {
      "recording": "B_15_1",
+     "test_bearing": 15,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.22040530443434384
     },
     {
      "recording": "B_15_2",
+     "test_bearing": 15,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.4266642390550248
     },
     {
      "recording": "H_15_0",
+     "test_bearing": 15,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.1315216956794696
     },
     {
      "recording": "C_16_1",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9644082802640441
     },
     {
      "recording": "C_16_2",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9040617903479232
     },
     {
      "recording": "H_16_0",
+     "test_bearing": 16,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.0902271340417228
     },
     {
      "recording": "C_17_1",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9997245594682957
     },
     {
      "recording": "C_17_2",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9832465116325975
     },
     {
      "recording": "H_17_0",
+     "test_bearing": 17,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.08433584987767645
     },
     {
      "recording": "C_18_1",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9435631986475292
     },
     {
      "recording": "C_18_2",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9666017016112731
     },
     {
      "recording": "H_18_0",
+     "test_bearing": 18,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.0985679508875704
     },
     {
      "recording": "C_19_1",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8006285959610598
     },
     {
      "recording": "C_19_2",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.12990998204543316
     },
     {
      "recording": "H_19_0",
+     "test_bearing": 19,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.23085439275975725
     },
     {
      "recording": "C_20_1",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3302360045799875
     },
     {
      "recording": "C_20_2",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9340145413339004
     },
     {
      "recording": "H_20_0",
+     "test_bearing": 20,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.08964586150935866
     }
+   ]
+  }
+ },
+ "lobo_bootstrap": {
+  "n_resamples": 10000,
+  "seed": 42,
+  "n_bearings": 20,
+  "balanced_accuracy_95": {
+   "a8_gmm": [
+    0.65,
+    0.875
+   ],
+   "a16_mlp": [
+    0.7375,
+    0.9375
+   ],
+   "baseline_rms_kurtosis": [
+    0.6625,
+    0.8625
+   ]
+  },
+  "paired_difference_95": {
+   "a16_mlp - baseline_rms_kurtosis": [
+    -0.025000000000000022,
+    0.20000000000000007
+   ],
+   "a16_mlp - a8_gmm": [
+    -0.07499999999999996,
+    0.23750000000000004
+   ],
+   "a8_gmm - baseline_rms_kurtosis": [
+    -0.15000000000000002,
+    0.15000000000000002
    ]
   }
  },
@@ -1278,7 +2347,7 @@
    "recall_by_condition": {
     "I": 0.9,
     "O": 0.8,
-    "B": NaN,
+    "B": null,
     "C": 0.9
    },
    "misclassified": [
@@ -1293,231 +2362,473 @@
     "H_19_0",
     "H_20_0"
    ],
+   "folds": [
+    {
+     "test_bearing": 1,
+     "validation_bearings": [
+      2,
+      3,
+      4
+     ],
+     "n_train_recordings": 33,
+     "threshold": -13.665055841417168
+    },
+    {
+     "test_bearing": 2,
+     "validation_bearings": [
+      3,
+      4,
+      5
+     ],
+     "n_train_recordings": 33,
+     "threshold": -10.738128159872858
+    },
+    {
+     "test_bearing": 3,
+     "validation_bearings": [
+      4,
+      5,
+      6
+     ],
+     "n_train_recordings": 33,
+     "threshold": -6.104544936232831
+    },
+    {
+     "test_bearing": 4,
+     "validation_bearings": [
+      5,
+      6,
+      7
+     ],
+     "n_train_recordings": 33,
+     "threshold": -6.189137716628798
+    },
+    {
+     "test_bearing": 5,
+     "validation_bearings": [
+      6,
+      7,
+      8
+     ],
+     "n_train_recordings": 33,
+     "threshold": -5.8759312821393035
+    },
+    {
+     "test_bearing": 6,
+     "validation_bearings": [
+      7,
+      8,
+      9
+     ],
+     "n_train_recordings": 33,
+     "threshold": -11.166821321650366
+    },
+    {
+     "test_bearing": 7,
+     "validation_bearings": [
+      8,
+      9,
+      10
+     ],
+     "n_train_recordings": 33,
+     "threshold": -12.716658834716183
+    },
+    {
+     "test_bearing": 8,
+     "validation_bearings": [
+      9,
+      10,
+      16
+     ],
+     "n_train_recordings": 33,
+     "threshold": -15.741270528247037
+    },
+    {
+     "test_bearing": 9,
+     "validation_bearings": [
+      10,
+      16,
+      17
+     ],
+     "n_train_recordings": 33,
+     "threshold": -20.073899256644022
+    },
+    {
+     "test_bearing": 10,
+     "validation_bearings": [
+      16,
+      17,
+      18
+     ],
+     "n_train_recordings": 33,
+     "threshold": -30.625716308133867
+    },
+    {
+     "test_bearing": 16,
+     "validation_bearings": [
+      17,
+      18,
+      19
+     ],
+     "n_train_recordings": 33,
+     "threshold": -11.721469474677466
+    },
+    {
+     "test_bearing": 17,
+     "validation_bearings": [
+      18,
+      19,
+      20
+     ],
+     "n_train_recordings": 33,
+     "threshold": -5.9489952830214
+    },
+    {
+     "test_bearing": 18,
+     "validation_bearings": [
+      1,
+      19,
+      20
+     ],
+     "n_train_recordings": 33,
+     "threshold": -5.389325047497773
+    },
+    {
+     "test_bearing": 19,
+     "validation_bearings": [
+      1,
+      2,
+      20
+     ],
+     "n_train_recordings": 33,
+     "threshold": -9.431087381755885
+    },
+    {
+     "test_bearing": 20,
+     "validation_bearings": [
+      1,
+      2,
+      3
+     ],
+     "n_train_recordings": 33,
+     "threshold": -7.011470083495485
+    }
+   ],
    "predictions": [
     {
      "recording": "H_1_0",
+     "test_bearing": 1,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -6.462236404418945
     },
     {
      "recording": "I_1_1",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -22.420228958129883
     },
     {
      "recording": "I_1_2",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": -8.112348556518555
     },
     {
      "recording": "H_2_0",
+     "test_bearing": 2,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -1453.40673828125
     },
     {
      "recording": "I_2_1",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -33.52491760253906
     },
     {
      "recording": "I_2_2",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -21.91099739074707
     },
     {
      "recording": "H_3_0",
+     "test_bearing": 3,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -6.577029705047607
     },
     {
      "recording": "I_3_1",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -14.12386703491211
     },
     {
      "recording": "I_3_2",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -16.265975952148438
     },
     {
      "recording": "H_4_0",
+     "test_bearing": 4,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -5.6521687507629395
     },
     {
      "recording": "I_4_1",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -12.102972984313965
     },
     {
      "recording": "I_4_2",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -10.921710968017578
     },
     {
      "recording": "H_5_0",
+     "test_bearing": 5,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -7.2934136390686035
     },
     {
      "recording": "I_5_1",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -14.49561882019043
     },
     {
      "recording": "I_5_2",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -12.19781494140625
     },
     {
      "recording": "H_6_0",
+     "test_bearing": 6,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -7.177802085876465
     },
     {
      "recording": "O_6_1",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": -5.452136039733887
     },
     {
      "recording": "O_6_2",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": -4.932270526885986
     },
     {
      "recording": "H_7_0",
+     "test_bearing": 7,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -6.452519416809082
     },
     {
      "recording": "O_7_1",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -35.46906280517578
     },
     {
      "recording": "O_7_2",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -38.164405822753906
     },
     {
      "recording": "H_8_0",
+     "test_bearing": 8,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -11.690478324890137
     },
     {
      "recording": "O_8_1",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -17.144668579101562
     },
     {
      "recording": "O_8_2",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -19.399063110351562
     },
     {
      "recording": "H_9_0",
+     "test_bearing": 9,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -7.18428897857666
     },
     {
      "recording": "O_9_1",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -32.82536315917969
     },
     {
      "recording": "O_9_2",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -20.556184768676758
     },
     {
      "recording": "H_10_0",
+     "test_bearing": 10,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -9.842836380004883
     },
     {
      "recording": "O_10_1",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -32.991905212402344
     },
     {
      "recording": "O_10_2",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -49.54633712768555
     },
     {
      "recording": "C_16_1",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -32.440673828125
     },
     {
      "recording": "C_16_2",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -32.747657775878906
     },
     {
      "recording": "H_16_0",
+     "test_bearing": 16,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -11.484874725341797
     },
     {
      "recording": "C_17_1",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -72.29130554199219
     },
     {
      "recording": "C_17_2",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -40.45106506347656
     },
     {
      "recording": "H_17_0",
+     "test_bearing": 17,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": -4.552240371704102
     },
     {
      "recording": "C_18_1",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -17.045013427734375
     },
     {
      "recording": "C_18_2",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -19.807632446289062
     },
     {
      "recording": "H_18_0",
+     "test_bearing": 18,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -6.110418319702148
     },
     {
      "recording": "C_19_1",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -31.493173599243164
     },
     {
      "recording": "C_19_2",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": -7.484313011169434
     },
     {
      "recording": "H_19_0",
+     "test_bearing": 19,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -34040.265625
     },
     {
      "recording": "C_20_1",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -25.918582916259766
     },
     {
      "recording": "C_20_2",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": -34.68898391723633
     },
     {
      "recording": "H_20_0",
+     "test_bearing": 20,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": -8.451589584350586
     }
    ]
   },
@@ -1543,7 +2854,7 @@
    "recall_by_condition": {
     "I": 0.9,
     "O": 0.7,
-    "B": NaN,
+    "B": null,
     "C": 0.8
    },
    "misclassified": [
@@ -1557,231 +2868,473 @@
     "C_19_1",
     "C_20_1"
    ],
+   "folds": [
+    {
+     "test_bearing": 1,
+     "validation_bearings": [
+      2,
+      3,
+      4
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 2,
+     "validation_bearings": [
+      3,
+      4,
+      5
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 3,
+     "validation_bearings": [
+      4,
+      5,
+      6
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 4,
+     "validation_bearings": [
+      5,
+      6,
+      7
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 5,
+     "validation_bearings": [
+      6,
+      7,
+      8
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 6,
+     "validation_bearings": [
+      7,
+      8,
+      9
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 7,
+     "validation_bearings": [
+      8,
+      9,
+      10
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 8,
+     "validation_bearings": [
+      9,
+      10,
+      16
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 9,
+     "validation_bearings": [
+      10,
+      16,
+      17
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 10,
+     "validation_bearings": [
+      16,
+      17,
+      18
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 16,
+     "validation_bearings": [
+      17,
+      18,
+      19
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 17,
+     "validation_bearings": [
+      18,
+      19,
+      20
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 18,
+     "validation_bearings": [
+      1,
+      19,
+      20
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 19,
+     "validation_bearings": [
+      1,
+      2,
+      20
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 20,
+     "validation_bearings": [
+      1,
+      2,
+      3
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    }
+   ],
    "predictions": [
     {
      "recording": "H_1_0",
+     "test_bearing": 1,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3545772135257721
     },
     {
      "recording": "I_1_1",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.901398777961731
     },
     {
      "recording": "I_1_2",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.029324620962142944
     },
     {
      "recording": "H_2_0",
+     "test_bearing": 2,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 7.271042363754532e-07
     },
     {
      "recording": "I_2_1",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9877091646194458
     },
     {
      "recording": "I_2_2",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.955834686756134
     },
     {
      "recording": "H_3_0",
+     "test_bearing": 3,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.2935931980609894
     },
     {
      "recording": "I_3_1",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8293931484222412
     },
     {
      "recording": "I_3_2",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9291672110557556
     },
     {
      "recording": "H_4_0",
+     "test_bearing": 4,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.31537899374961853
     },
     {
      "recording": "I_4_1",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9269406199455261
     },
     {
      "recording": "I_4_2",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9826362133026123
     },
     {
      "recording": "H_5_0",
+     "test_bearing": 5,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.4130617082118988
     },
     {
      "recording": "I_5_1",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9550331830978394
     },
     {
      "recording": "I_5_2",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9852187037467957
     },
     {
      "recording": "H_6_0",
+     "test_bearing": 6,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.2378024309873581
     },
     {
      "recording": "O_6_1",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.4372847080230713
     },
     {
      "recording": "O_6_2",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.604198157787323
     },
     {
      "recording": "H_7_0",
+     "test_bearing": 7,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3385293483734131
     },
     {
      "recording": "O_7_1",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9207748770713806
     },
     {
      "recording": "O_7_2",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9155380725860596
     },
     {
      "recording": "H_8_0",
+     "test_bearing": 8,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8046355843544006
     },
     {
      "recording": "O_8_1",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9783808588981628
     },
     {
      "recording": "O_8_2",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9887860417366028
     },
     {
      "recording": "H_9_0",
+     "test_bearing": 9,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.4345131814479828
     },
     {
      "recording": "O_9_1",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.20624928176403046
     },
     {
      "recording": "O_9_2",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.14923590421676636
     },
     {
      "recording": "H_10_0",
+     "test_bearing": 10,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3487488627433777
     },
     {
      "recording": "O_10_1",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.7063855528831482
     },
     {
      "recording": "O_10_2",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9994358420372009
     },
     {
      "recording": "C_16_1",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9307244420051575
     },
     {
      "recording": "C_16_2",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9695074558258057
     },
     {
      "recording": "H_16_0",
+     "test_bearing": 16,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8565791845321655
     },
     {
      "recording": "C_17_1",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.7760244011878967
     },
     {
      "recording": "C_17_2",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.7540287375450134
     },
     {
      "recording": "H_17_0",
+     "test_bearing": 17,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.535875141620636
     },
     {
      "recording": "C_18_1",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8375524878501892
     },
     {
      "recording": "C_18_2",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9258078336715698
     },
     {
      "recording": "H_18_0",
+     "test_bearing": 18,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.24846823513507843
     },
     {
      "recording": "C_19_1",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.2822912931442261
     },
     {
      "recording": "C_19_2",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.5558801293373108
     },
     {
      "recording": "H_19_0",
+     "test_bearing": 19,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 8.222445103456266e-06
     },
     {
      "recording": "C_20_1",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.30985575914382935
     },
     {
      "recording": "C_20_2",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8912798762321472
     },
     {
      "recording": "H_20_0",
+     "test_bearing": 20,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.23994949460029602
     }
    ]
   },
@@ -1807,7 +3360,7 @@
    "recall_by_condition": {
     "I": 0.9,
     "O": 0.8,
-    "B": NaN,
+    "B": null,
     "C": 0.8
    },
    "misclassified": [
@@ -1820,232 +3373,528 @@
     "C_19_2",
     "C_20_1"
    ],
+   "folds": [
+    {
+     "test_bearing": 1,
+     "validation_bearings": [
+      2,
+      3,
+      4
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 2,
+     "validation_bearings": [
+      3,
+      4,
+      5
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 3,
+     "validation_bearings": [
+      4,
+      5,
+      6
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 4,
+     "validation_bearings": [
+      5,
+      6,
+      7
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 5,
+     "validation_bearings": [
+      6,
+      7,
+      8
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 6,
+     "validation_bearings": [
+      7,
+      8,
+      9
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 7,
+     "validation_bearings": [
+      8,
+      9,
+      10
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 8,
+     "validation_bearings": [
+      9,
+      10,
+      16
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 9,
+     "validation_bearings": [
+      10,
+      16,
+      17
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 10,
+     "validation_bearings": [
+      16,
+      17,
+      18
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 16,
+     "validation_bearings": [
+      17,
+      18,
+      19
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 17,
+     "validation_bearings": [
+      18,
+      19,
+      20
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 18,
+     "validation_bearings": [
+      1,
+      19,
+      20
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 19,
+     "validation_bearings": [
+      1,
+      2,
+      20
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    },
+    {
+     "test_bearing": 20,
+     "validation_bearings": [
+      1,
+      2,
+      3
+     ],
+     "n_train_recordings": 33,
+     "threshold": 0.5
+    }
+   ],
    "predictions": [
     {
      "recording": "H_1_0",
+     "test_bearing": 1,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.07134101368257936
     },
     {
      "recording": "I_1_1",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8824732351621101
     },
     {
      "recording": "I_1_2",
+     "test_bearing": 1,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.3023404688860177
     },
     {
      "recording": "H_2_0",
+     "test_bearing": 2,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.04674616654709276
     },
     {
      "recording": "I_2_1",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8514254813267004
     },
     {
      "recording": "I_2_2",
+     "test_bearing": 2,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9308143131391609
     },
     {
      "recording": "H_3_0",
+     "test_bearing": 3,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.06263815929805037
     },
     {
      "recording": "I_3_1",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9611432612548073
     },
     {
      "recording": "I_3_2",
+     "test_bearing": 3,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9426897462563212
     },
     {
      "recording": "H_4_0",
+     "test_bearing": 4,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.0725749036294911
     },
     {
      "recording": "I_4_1",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9061730448022757
     },
     {
      "recording": "I_4_2",
+     "test_bearing": 4,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.6409542158516474
     },
     {
      "recording": "H_5_0",
+     "test_bearing": 5,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.2160273280179341
     },
     {
      "recording": "I_5_1",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9322273653875636
     },
     {
      "recording": "I_5_2",
+     "test_bearing": 5,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9352312628193175
     },
     {
      "recording": "H_6_0",
+     "test_bearing": 6,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.12304014198271017
     },
     {
      "recording": "O_6_1",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.320763534297235
     },
     {
      "recording": "O_6_2",
+     "test_bearing": 6,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.1849268078371713
     },
     {
      "recording": "H_7_0",
+     "test_bearing": 7,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.20133088539274407
     },
     {
      "recording": "O_7_1",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9997456869887262
     },
     {
      "recording": "O_7_2",
+     "test_bearing": 7,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9998904915473751
     },
     {
      "recording": "H_8_0",
+     "test_bearing": 8,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.6529540439018366
     },
     {
      "recording": "O_8_1",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9908008990042799
     },
     {
      "recording": "O_8_2",
+     "test_bearing": 8,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9566028391320364
     },
     {
      "recording": "H_9_0",
+     "test_bearing": 9,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.93510395998205
     },
     {
      "recording": "O_9_1",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9999639045179836
     },
     {
      "recording": "O_9_2",
+     "test_bearing": 9,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9997194225603511
     },
     {
      "recording": "H_10_0",
+     "test_bearing": 10,
      "true": 0,
-     "pred": 1
+     "pred": 1,
+     "score": 0.6660479152823079
     },
     {
      "recording": "O_10_1",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9773008543771804
     },
     {
      "recording": "O_10_2",
+     "test_bearing": 10,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9987163732444242
     },
     {
      "recording": "C_16_1",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9640036212758744
     },
     {
      "recording": "C_16_2",
+     "test_bearing": 16,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.8930866022422806
     },
     {
      "recording": "H_16_0",
+     "test_bearing": 16,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.05230221913359129
     },
     {
      "recording": "C_17_1",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9998695670448391
     },
     {
      "recording": "C_17_2",
+     "test_bearing": 17,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9854873943077666
     },
     {
      "recording": "H_17_0",
+     "test_bearing": 17,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.03985424150624891
     },
     {
      "recording": "C_18_1",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.94021914471093
     },
     {
      "recording": "C_18_2",
+     "test_bearing": 18,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9677961347510257
     },
     {
      "recording": "H_18_0",
+     "test_bearing": 18,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.03987350365757014
     },
     {
      "recording": "C_19_1",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.6375409613669876
     },
     {
      "recording": "C_19_2",
+     "test_bearing": 19,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.05049475349292392
     },
     {
      "recording": "H_19_0",
+     "test_bearing": 19,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.18203046809655912
     },
     {
      "recording": "C_20_1",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 0
+     "pred": 0,
+     "score": 0.23393502521269507
     },
     {
      "recording": "C_20_2",
+     "test_bearing": 20,
      "true": 1,
-     "pred": 1
+     "pred": 1,
+     "score": 0.9239427127785201
     },
     {
      "recording": "H_20_0",
+     "test_bearing": 20,
      "true": 0,
-     "pred": 0
+     "pred": 0,
+     "score": 0.04957180322376872
     }
+   ]
+  }
+ },
+ "lobo_validation_sensitivity": {
+  "method": "three validation bearings per fold, drawn from three different fault types",
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "n_selections": 10,
+  "balanced_accuracy": {
+   "a8_gmm": [
+    0.7125,
+    0.7625,
+    0.775,
+    0.725,
+    0.8,
+    0.7375,
+    0.7375,
+    0.7375,
+    0.675,
+    0.7124999999999999
+   ],
+   "a16_mlp": [
+    0.825,
+    0.825,
+    0.7875000000000001,
+    0.8,
+    0.825,
+    0.8875,
+    0.7875,
+    0.7625,
+    0.825,
+    0.8374999999999999
+   ],
+   "baseline_rms_kurtosis": [
+    0.7875,
+    0.7875,
+    0.8,
+    0.7875,
+    0.7875,
+    0.7875,
+    0.7875,
+    0.7875,
+    0.7875,
+    0.8
    ]
   }
  },
@@ -2128,5 +3977,10 @@
    },
    "recording_minus_bearing_balanced_accuracy": -0.01833333333333334
   }
+ },
+ "repeated_design": {
+  "n_repeats": 200,
+  "mean_shared_test_recordings": 1.405,
+  "identical_test_sets": 0
  }
 }

@@ -191,7 +191,8 @@ def markdown(res: dict) -> str:
             "",
         ]
         for k, v in rep.items():
-            lines.append(f"- {NAMES[k]}: {v['recording_minus_bearing_balanced_accuracy']:+.3f}; "
+            d = v["recording_minus_bearing_balanced_accuracy"]
+            lines.append(f"- {NAMES[k]}: {'0.000' if abs(d) < 5e-4 else format(d, '+.3f')}; "
                          f"{v['recording']['share_splits_at_least_original_balanced_accuracy']:.0%} of random splits "
                          f"score at least the archived split's {o[k]['recording']['balanced_accuracy']:.3f}")
         lines += [

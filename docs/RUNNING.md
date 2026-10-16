@@ -9,11 +9,13 @@ The [`bearing_audio`](../src/bearing_audio/) package re-implements the two thesi
 ```bash
 python -m pip install -r requirements-lock.txt
 python -m pytest -q                       # reproduces the thesis split exactly; about 3 minutes the first time
-python scripts/evaluate_protocols.py      # leave-one-bearing-out and matched repeated splits; about 10 minutes
+python scripts/evaluate_protocols.py      # follow-up evaluations (see below); about 15 minutes
 python scripts/build_ablation_table.py    # rebuilds results/ablation_runs.csv from the original run log
 ```
 
-Window features are cached in `artifacts/features.npz`. Delete that file to force them to be recomputed.
+`evaluate_protocols.py` writes `results/protocol_comparison.{json,md}` and `results/repeated_splits.csv`: leave-one-bearing-out with every fold, threshold and held-out score; bearing-level bootstrap intervals; a check with ten other choices of validation bearings; the same evaluation without the ball-fault bearings; and 200 matched repeated splits per protocol, each recorded. The JSON also records the commit, an audio hash, the feature-code hashes and the library versions. These full runs are made by hand. CI runs the tests, which include a one-fold check against the published leave-one-bearing-out results.
+
+Window features are cached in `artifacts/features.npz`. The cache is reused only if the audio content, the feature code, the feature-spec version and the feature libraries are all unchanged; otherwise the features are recomputed.
 
 ## Inspect the snapshot
 
@@ -90,6 +92,6 @@ The optional `a46_export_mlp_MIN.py` path has a separate issue: its generated C 
 
 ## Evaluation boundaries
 
-The historical file-level scores use nine test recordings, which makes them noisy (about ±0.15 balanced accuracy between random splits of that size). The split shares physical bearings across subsets. Matched comparisons show this does not measurably change the scores, but only the leave-one-bearing-out results in [`results/`](../results/) estimate unseen-bearing performance. Some A16 aggregation and re-segmentation scripts also change preprocessing relative to training. Review their differences before interpreting them as controlled comparisons.
+The historical file-level scores use nine test recordings, which makes them noisy (about ±0.15 balanced accuracy between random splits of that size). The split shares physical bearings across subsets. Random splits of the same size that keep bearings apart scored within 0.02 on average, which rules out a large average inflation but does not prove the overlap is harmless. Only the leave-one-bearing-out results in [`results/`](../results/) estimate unseen-bearing performance. Some A16 aggregation and re-segmentation scripts also change preprocessing relative to training. Review their differences before interpreting them as controlled comparisons.
 
-The approximately 64 ms thesis predictor measurement excludes feature extraction but includes repeated JSON loading/parsing. The snapshot checker does not reproduce predictions or hardware timings. The host review script reproduces selected offline predictions and exposes the feature mismatch; hardware timings remain unverified.
+The approximately 64 ms thesis predictor measurement excludes feature extraction but includes repeated JSON loading/parsing. The device-runtime tests run the archived MicroPython code on the host with NumPy standing in for ulab; on-board parity has not been tested. The snapshot checker does not reproduce predictions or hardware timings. The host review script reproduces selected offline predictions and exposes the feature mismatch; hardware timings remain unverified.
