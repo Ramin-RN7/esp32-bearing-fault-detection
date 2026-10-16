@@ -3,8 +3,9 @@
 
 It replaces 06_results_evaluation/ablation_summary.csv, whose configuration columns contain errors, for example
 A8, A16, A17 and A31 being marked "no PCA". Every row comes from records/logs/variants.csv, the experiment log
-written by the ablation scripts, enriched with records/runs/<run>/params.json. It also adds what the log does not
-state:
+written by the ablation scripts. The configuration columns are copied from records/runs/<run>/params.json as
+recorded; where the run's code.py shows otherwise, ``verified_note`` says so. The table also adds what the log
+does not state:
 
 * evaluation level: 81 test windows, or 9 test recordings for the file-aggregation runs
 * confusion counts recovered from the logged accuracy, precision and recall
@@ -18,6 +19,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -58,6 +60,29 @@ def params_summary(run_dir: Path) -> dict:
     }
 
 
+MLP_DECISION = re.compile(r"y_pred_mlp\s*=\s*mlp\.predict\(")
+BAND_LIST = re.compile(r"bands\s*=\s*\[(.*?)\]", re.S)
+
+
+def verified_note(row, run_dir: Path) -> str:
+    """Checks of the logged configuration against the run's own code snapshot."""
+    code = run_dir / "code.py"
+    if not code.exists():
+        return ""
+    src = code.read_text(encoding="utf-8", errors="replace")
+    notes = []
+    if row["model"] == "MLP" and MLP_DECISION.search(src):
+        notes.append("decision checked in code.py: mlp.predict, i.e. probability >= 0.5; the logged threshold "
+                     "setting belongs to the GMM run of the same script")
+    bands = BAND_LIST.search(src)
+    if bands:
+        n = bands.group(1).count("(")
+        if n != 8:
+            notes.append(f"features checked in code.py: {17 + n} (10 time statistics, {n} band powers, "
+                         "7 spectral/autocorrelation), not 25")
+    return "; ".join(notes)
+
+
 def main():
     rows = list(csv.DictReader(open(LOG, encoding="utf-8")))
     last = {r["id"]: i for i, r in enumerate(rows)}
@@ -78,6 +103,7 @@ def main():
             "balanced_accuracy": round(bal, 4), "mcc": round(mcc, 4),
             "equals_always_fault": tp == pos and tn == 0, "counts_consistent": ok,
             **params_summary(run_dir), "run_record": f"records/runs/{run_dir.name}" if run_dir.exists() else "",
+            "verified_note": verified_note(r, run_dir),
         })
     OUT.parent.mkdir(parents=True, exist_ok=True)
     fields = list(dict.fromkeys(k for row in out for k in row))

@@ -72,6 +72,13 @@ def load_windows(rec: Recording) -> list[np.ndarray]:
     return windows
 
 
+def window_count(rec: Recording) -> int:
+    """Number of windows load_windows() returns, from the file header alone."""
+    frames = sf.info(str(rec.path)).frames
+    win, hop = int(WINDOW_S * SAMPLE_RATE), int(HOP_S * SAMPLE_RATE)
+    return max(0, (frames - win) // hop + 1)
+
+
 def load_original_split(manifest_dir: Path | None = None) -> dict[str, str]:
     """Recording name -> 'train' / 'val' / 'test', from the archived manifests used by every thesis run."""
     manifest_dir = Path(manifest_dir or repo_root() / "records" / "manifests")

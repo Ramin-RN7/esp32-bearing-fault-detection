@@ -9,6 +9,8 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.metadata
+import json
 from pathlib import Path
 
 import librosa
@@ -17,7 +19,7 @@ import scipy.signal as sig
 from scipy.signal import butter, filtfilt
 from scipy.stats import kurtosis, skew
 
-from .data import Recording, load_windows
+from .data import Recording, load_windows, window_count
 
 FEATURE_NAMES = (
     "mean", "std", "rms", "max_abs", "peak_to_peak", "skewness", "kurtosis", "mean_abs_diff", "mean_sq_diff",
@@ -92,17 +94,51 @@ def a16_front(y16: np.ndarray) -> np.ndarray:
     return env_ln * (rms_in / rms_env)
 
 
+# Version of the feature contract (window length, front ends, the 25 features). Bump it when a definition changes
+# on purpose. The cache key also covers the source code and libraries below, so accidental changes are caught too.
+FEATURE_SPEC_VERSION = "1"
+_FEATURE_SOURCES = (Path(__file__), Path(__file__).with_name("data.py"))
+_FEATURE_LIBRARIES = ("numpy", "scipy", "librosa", "soxr", "soundfile")
+
+
+def file_sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _library_version(name: str) -> str:
+    try:
+        return importlib.metadata.version(name)
+    except importlib.metadata.PackageNotFoundError:
+        return "not installed"
+
+
+def feature_provenance() -> dict:
+    """Everything the features depend on apart from the audio: spec version, feature code and libraries."""
+    return {
+        "feature_spec_version": FEATURE_SPEC_VERSION,
+        "feature_code_sha256": {p.name: file_sha256(p) for p in _FEATURE_SOURCES},
+        "libraries": {name: _library_version(name) for name in _FEATURE_LIBRARIES},
+    }
+
+
+def cache_key(recordings: list[Recording]) -> str:
+    """Changes when any audio file's content, the feature code, the spec version or a feature library changes."""
+    payload = {**feature_provenance(), "audio_sha256": [[r.name, file_sha256(r.path)] for r in recordings]}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
+
+
 class FeatureTable:
     """Window-level features for all recordings, with the metadata needed to group and split them."""
 
     def __init__(self, recordings: list[Recording], cache: Path | None = None):
         self.recordings = {r.name: r for r in recordings}
-        key = hashlib.sha256("|".join(f"{r.name}:{r.path.stat().st_size}" for r in recordings).encode()).hexdigest()[:16]
-        if cache is not None and Path(cache).exists():
-            z = np.load(cache, allow_pickle=False)
-            if str(z["key"]) == key:
-                self._set(z["a8"], z["a16"], z["rec"].tolist())
-                return
+        key = cache_key(recordings)
+        if cache is not None and Path(cache).exists() and self._load(cache, key, recordings):
+            return
         a8, a16, names = [], [], []
         for r in recordings:
             for w in load_windows(r):
@@ -113,6 +149,25 @@ class FeatureTable:
         if cache is not None:
             Path(cache).parent.mkdir(parents=True, exist_ok=True)
             np.savez(cache, key=key, a8=self.a8, a16=self.a16, rec=np.array(self.rec))
+
+    def _load(self, cache: Path, key: str, recordings: list[Recording]) -> bool:
+        """Use the cache only if its key matches and its arrays line up with the recordings."""
+        try:
+            with np.load(cache, allow_pickle=False) as z:
+                if str(z["key"]) != key:
+                    return False
+                a8, a16, rec = z["a8"], z["a16"], [str(n) for n in z["rec"].tolist()]
+        except (OSError, KeyError, ValueError):
+            return False
+        if not (a8.ndim == 2 and a8.shape == a16.shape == (len(rec), len(FEATURE_NAMES))):
+            return False
+        expected = [n for r in recordings for n in [r.name] * window_count(r)]
+        if rec != expected:                  # every window present, in recording order
+            return False
+        if not (np.isfinite(a8).all() and np.isfinite(a16).all()):
+            return False
+        self._set(a8, a16, rec)
+        return True
 
     def _set(self, a8, a16, names):
         self.a8, self.a16 = a8, a16
