@@ -46,6 +46,13 @@ The original research records are now published in [`records/`](../records/): sp
 - [`scripts/evaluate_protocols.py`](../scripts/evaluate_protocols.py) adds three evaluations: leave-one-bearing-out, the same without the ball-fault bearings, and 200 matched repeated splits by recording and by bearing. Results are in [`results/protocol_comparison.md`](../results/protocol_comparison.md).
 - These checks run on every push via GitHub Actions ([`tests.yml`](../.github/workflows/tests.yml)), using the pinned versions in [`requirements-lock.txt`](../requirements-lock.txt).
 
+## Fourth-pass checks
+
+Checked on 16 October 2026:
+
+- The thesis text was compared with the code and records. Six groups of statements differ; [§5 of the technical review](TECHNICAL_REVIEW.md#5-thesis-text-versus-code-and-records) lists them. The reproduced scores are unaffected.
+- `records/device/exports/A16_MLP/` holds the A9 MLP export. [`tests/test_exports.py`](../tests/test_exports.py) checks every exported parameter against `mlp_A9.joblib`.
+
 ## Boundaries
 
 - The split is now the original one, not a reconstruction. Recordings from the same physical bearing cross subsets, but matched comparisons show this does not measurably change the scores. Leave-one-bearing-out results estimate performance on unseen bearings.
