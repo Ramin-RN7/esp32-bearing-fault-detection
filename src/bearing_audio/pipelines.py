@@ -20,6 +20,7 @@ class A8GMM:
     threshold (a35a_aggregate_A8_GMM_per_file.py).
     """
     name, features = "A8 GMM", "a8"
+    score_name, fault_when = "mean log-likelihood", "below threshold"
 
     def fit(self, X, y, X_val, y_val):
         self.scaler = StandardScaler().fit(X)
@@ -41,8 +42,12 @@ class A8GMM:
     def predict_windows(self, X):
         return (self.score(X) < self.threshold).astype(int)
 
+    def recording_score(self, X):
+        """Mean window log-likelihood; lower means more fault-like."""
+        return float(np.mean(self.score(X)))
+
     def predict_recording(self, X):
-        return int(np.mean(self.score(X)) < self.threshold)
+        return int(self.recording_score(X) < self.threshold)
 
 
 class A16MLP:
@@ -51,6 +56,7 @@ class A16MLP:
     A recording is a fault when the mean window probability is >= 0.5 (a35b_aggregate_A16_MLP_per_file.py).
     """
     name, features = "A16 MLP", "a16"
+    score_name, fault_when, threshold = "mean fault probability", "at or above threshold", 0.5
 
     def fit(self, X, y, X_val=None, y_val=None):
         self.scaler = MinMaxScaler().fit(X)
@@ -66,15 +72,19 @@ class A16MLP:
         return self.mlp.predict_proba(self._z(X))[:, 1]
 
     def predict_windows(self, X):
-        return (self.proba(X) >= 0.5).astype(int)
+        return (self.proba(X) >= self.threshold).astype(int)
+
+    def recording_score(self, X):
+        return float(self.proba(X).mean())
 
     def predict_recording(self, X):
-        return int(self.proba(X).mean() >= 0.5)
+        return int(self.recording_score(X) >= self.threshold)
 
 
 class RmsKurtosisBaseline:
     """Sanity baseline: class-balanced logistic regression on two features of the A8 window (RMS, kurtosis)."""
     name, features = "Baseline: RMS + kurtosis", "a8"
+    score_name, fault_when, threshold = "mean fault probability", "at or above threshold", 0.5
     columns = [2, 6]
 
     def fit(self, X, y, X_val=None, y_val=None):
@@ -86,10 +96,13 @@ class RmsKurtosisBaseline:
         return self.lr.predict_proba(self.scaler.transform(X[:, self.columns]))[:, 1]
 
     def predict_windows(self, X):
-        return (self.proba(X) >= 0.5).astype(int)
+        return (self.proba(X) >= self.threshold).astype(int)
+
+    def recording_score(self, X):
+        return float(self.proba(X).mean())
 
     def predict_recording(self, X):
-        return int(self.proba(X).mean() >= 0.5)
+        return int(self.recording_score(X) >= self.threshold)
 
 
 PIPELINES = {"a8_gmm": A8GMM, "a16_mlp": A16MLP, "baseline_rms_kurtosis": RmsKurtosisBaseline}
