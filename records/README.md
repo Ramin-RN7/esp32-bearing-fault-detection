@@ -16,6 +16,7 @@ These are unchanged copies from the original research workspace (`bearing-ml`, l
 - **Every metric in these records is a test-set metric**, computed on 81 windows from 9 recordings. No validation metrics were logged. Validation data were used only to set the GMM decision threshold inside each run.
 - Paths such as `C:\Users\ramin\Desktop\bearing-ml\...` refer to the original workspace. [`scripts/evaluate_protocols.py`](../scripts/evaluate_protocols.py) reads the published copies instead.
 - **The on-device features don't match the model.** The device feature extractor computes 25 short-frame PSD band energies, but the exported A8 model expects the 25 desktop features. The device notes record this ("parity with PC not established"). On-device classification accuracy was never measured. See the [technical review](../docs/TECHNICAL_REVIEW.md).
+- **`device/exports/A16_MLP/` holds the A9 MLP, not A16.** The exporter writes to that folder name by default. A [note in the folder](device/exports/A16_MLP/README.md) explains; the original files are unchanged.
 - **Not included:**
   - raw and segmented audio, which can be regenerated from [`01_uottawa_wavs/`](../01_uottawa_wavs/)
   - the Python virtual environment

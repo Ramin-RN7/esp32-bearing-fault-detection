@@ -57,7 +57,7 @@ python scripts/evaluate_protocols.py                   # ~10 min: writes results
 |---|---|
 | [`src/bearing_audio/`](src/bearing_audio/) | Feature extraction, the two thesis pipelines and the evaluation protocols |
 | [`scripts/`](scripts/) | `evaluate_protocols.py`, `build_ablation_table.py`, archive checks, earlier review diagnostics |
-| [`tests/`](tests/) | Reproduction, split-integrity and device-runtime tests, run on every push |
+| [`tests/`](tests/) | Reproduction, split-integrity, device-runtime and export tests, run on every push |
 | [`results/`](results/) | Evaluation results and the corrected ablation table |
 | [`records/`](records/) | Original research records: split manifests, 101 run folders, logs, device files, firmware notes |
 | [`01_uottawa_wavs/`](01_uottawa_wavs/) to [`07_confusion_matrices_full/`](07_confusion_matrices_full/) | The supplementary package as submitted: audio, segmentation, feature and ablation scripts, export, results, confusion matrices |
@@ -69,12 +69,13 @@ python scripts/evaluate_protocols.py                   # ~10 min: writes results
 - [Defense slides](Presentation%20Audio-Based%20Bearing%20Fault%20Detection.pptx)
 - [Supplementary-materials index](Supplementary_Materials_Index_Ramin_Nassiri_MEM_OTH_Regensburg.pdf)
 
-These are the documents as submitted and presented. Two of their on-device statements go beyond the archived evidence:
+These are the documents as submitted and presented. Some of their statements go beyond what the code and records show:
 
 - Section 4.2 of the thesis says the WAV test exercised the model "identically to the offline pipeline".
 - Slide 19 reports about 70–75 ms per frame at offline accuracy.
+- The feature table (Table 2.1), the data-preparation listing and some conclusions differ from the code. For example, the real split keeps whole recordings together, which is stricter than the listing shows.
 
-The [technical review](docs/TECHNICAL_REVIEW.md) explains both.
+The [technical review](docs/TECHNICAL_REVIEW.md#5-thesis-text-versus-code-and-records) lists each one. None of them changes the reproduced scores above.
 
 ## Data
 
