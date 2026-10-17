@@ -38,7 +38,7 @@ Full tables, every fold and held-out score: [`results/protocol_comparison.md`](r
 
 | Part | Status |
 |---|---|
-| Custom MicroPython v1.20 image with ulab (ESP-IDF 4.4) | Built and flashed. See the [build notes](records/firmware/). |
+| Firmware | The lab's custom MicroPython v1.20 image with ulab, used for the device measurements. An attempt to extend it by rebuilding it with ESP-IDF 4.4 was not completed ([notes](records/firmware/)). |
 | Model export (scaler, PCA, GMM → JSON) and the ulab runtime | Host check passes: run on a PC with NumPy standing in for ulab, it matches scikit-learn on identical inputs ([`tests/test_device_runtime.py`](tests/test_device_runtime.py)). Not yet checked on the board. |
 | On-device feature extraction | **Doesn't match the model yet.** The device computes 25 short-frame band energies, but the model was trained on 25 window statistics. On-device classification accuracy has not been measured ([device notes](records/device/REPORT_DevicePhase.md)). |
 | Timing (WAV from flash) | About 64 ms per prediction call (63.4 and 64.0 ms in the two archived measurements), including reloading the model JSON on every call. About 11.2 s per feature frame, because a pure-Python DFT was used even though `ulab.numpy.fft` was available. |
@@ -82,7 +82,7 @@ python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablatio
 These are the documents as submitted and presented. Some of their statements go beyond what the code and records show:
 
 - Section 4.2 of the thesis says the WAV test exercised the model "identically to the offline pipeline", and contribution 3 calls the device work "On-device validation".
-- Slide 19 reports about 70–75 ms per frame at offline accuracy. Neither the latency nor the accuracy was measured on the board.
+- Slide 19 gives the PC results for A8 (F1 ≈ 0.90–0.91) as the board's accuracy, and about 70–75 ms per frame: the measured ~64 ms model step plus an assumed fast FFT feature step. On the board, the features didn't match the model and the measured feature step took about 11.2 s per frame, so neither figure describes the board.
 - The feature table (Table 2.1), the data-preparation listing and some conclusions differ from the code. For example, the real split keeps whole recordings together, which is stricter than the listing shows.
 
 [Known issues](docs/KNOWN_ISSUES.md#5-thesis-text-versus-code-and-records) lists each one. None of them changes the reproduced scores above.
