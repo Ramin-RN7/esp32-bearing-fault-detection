@@ -1,6 +1,7 @@
 """Evaluation protocols.
 
-* ``original``: the archived thesis split (42/9/9 recordings), which reproduces the thesis numbers exactly.
+* ``original``: the archived thesis split (42/9/9 recordings), on which the A8 GMM and A16 MLP results of the thesis
+  reproduce exactly.
 * ``leave_one_bearing_out`` (protocol v1): every physical bearing is held out once (all three of its recordings),
   giving 60 out-of-fold recording decisions. In each fold three other bearings form the validation set and all
   models train on the remaining 16 bearings. Only the GMM uses the validation set, to set its threshold; the MLP and

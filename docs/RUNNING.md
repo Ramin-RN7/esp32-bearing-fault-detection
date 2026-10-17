@@ -6,11 +6,12 @@ This repository preserves the thesis supplementary materials. The numbered direc
 
 The [`bearing_audio`](../src/bearing_audio/) package re-implements the two thesis pipelines with connected paths. It reads the WAVs in `01_uottawa_wavs/` and the archived split in `records/manifests/`.
 
-Use Python 3.13, the version CI tests with `requirements-lock.txt`. Other versions can work: an independent re-run on Python 3.12 with older NumPy, SciPy and librosa gave the same original-split and leave-one-bearing-out decisions, with slightly different continuous scores and one of the 1,200 repeated-split rows changed.
+Use Python 3.13, the version CI tests with `requirements-lock.txt`. Other versions can work: an independent re-run of `evaluate_protocols.py` on Python 3.12 with older NumPy, SciPy and librosa gave the same original-split and leave-one-bearing-out decisions for A8 GMM, A16 MLP and the baseline, with slightly different continuous scores and one of the 1,200 repeated-split rows changed.
 
 ```bash
 python -m pip install -r requirements-lock.txt
-python -m pytest -q                       # reproduces the thesis split exactly; about 3 minutes the first time
+python scripts/demo.py                    # A5 MLP on unseen bearings; about 2 minutes the first time
+python -m pytest -q                       # includes the exact A8/A16 reproduction on the thesis split; about 3 minutes the first time
 python scripts/evaluate_protocols.py      # follow-up evaluations (see below); about 15 minutes
 python scripts/build_ablation_table.py    # rebuilds results/ablation_runs.csv from the original run log
 python scripts/evaluate_ablation.py       # every ablation pipeline on unseen bearings; about 75 minutes on 2 cores

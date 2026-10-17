@@ -5,49 +5,73 @@
 Can a microphone and a small microcontroller tell a healthy rolling bearing from a faulty one? This repository holds the master's thesis *Audio-Based Bearing Fault Detection on Resource-Constrained Microcontrollers: An Ablation-Driven Study* (Ramin Nassiri, OTH Regensburg, 2025). It contains:
 
 - **The thesis study:** an ablation of 93 configurations (104 logged runs) of compact DSP features and lightweight classifiers on the University of Ottawa bearing-sound dataset, and a MicroPython inference prototype for an ESP32-based M5Stack Core2.
-- **What you need to check it:** the original data split and run records, and a package that reproduces the thesis numbers exactly.
-- **Stricter follow-up evaluations (2026, not part of the thesis):** every ablation pipeline re-tested on bearings unseen in training. The best, A5 MLP, reaches 0.963 balanced accuracy. Choosing the pipeline without seeing the test bearing gives 0.950, against 0.762 for a two-feature baseline.
+- **What you need to check it:** the original data split and run records, and a package that reproduces the thesis's two headline results (A8 GMM and A16 MLP) exactly and rebuilds 84 of the 86 ablation pipelines to their archived confusion counts.
+- **Stricter follow-up evaluations (2026, not part of the thesis):** every ablation pipeline re-tested on bearings unseen in training. Choosing among them without seeing the test bearing (nested selection) reaches 0.950 balanced accuracy, against 0.762 for logistic regression on RMS and kurtosis.
 
-On the ESP32, the model arithmetic is verified on a PC, but the board's feature extraction does not yet match the model, so on-device accuracy is still unmeasured. A validated audio-to-decision path on an ESP32-DevKitC-VE is the next step.
+**On the device:** the model arithmetic is verified on a PC, but the board computes different features from the ones the model was trained on, so on-device accuracy has not been measured ([details](#on-the-esp32-m5stack-core2)).
+
+## Quick demo
+
+```bash
+pip install -r requirements-lock.txt
+python scripts/demo.py        # about 2 minutes the first time (feature extraction), seconds after that
+```
+
+It runs the best single pipeline, A5 MLP, through leave-one-bearing-out: 20 rounds, each deciding the three recordings of one held-out bearing with a model trained on 16 other bearings. Expected output:
+
+```text
+A5-MLP (100 Hz high-pass, pre-emphasis, 50 Hz notch, 25 features, z-score, PCA(4), MLP(10))
+Leave-one-bearing-out: 20 folds, 60 recordings, each decided by a model that never heard its bearing
+
+Bearing  Recording  Truth    Decision  Mean P(fault)
+     13  H_13_0     healthy  fault             0.727  <- wrong
+     19  C_19_2     fault    healthy           0.105  <- wrong
+
+TP 39, FP 1, TN 19, FN 1: balanced accuracy 0.9625, fault F1 0.9750
+```
+
+`--all` lists all 60 decisions. A5 MLP was picked after seeing all 86 results, so 0.9625 is optimistic; nested selection (0.950, below) accounts for that choice.
 
 ## Results
 
-The table shows balanced accuracy for recording-level decisions (healthy vs. fault). 0.5 is chance level. The first column reproduces the thesis. The other two are follow-up evaluations (2026).
+Balanced accuracy of recording-level decisions (healthy vs. fault); 0.5 is chance level.
 
-| Pipeline | Thesis split (9 test recordings) | Leave-one-bearing-out (60 recordings) [95% interval] | 200 random splits of thesis size (mean ± SD) |
-|---|---:|---:|---:|
-| **A5 MLP** (16 kHz, 100 Hz high-pass, pre-emphasis, 50 Hz notch, 25 time and spectral features, z-score, PCA(4), MLP with 10 units) | 0.917 (F1 0.909) | **0.963** [0.90–1.00] | – |
-| **A16 MLP** (8 kHz, 1–3.5 kHz band-pass, Hilbert envelope + log, MinMax, PCA(8), MLP with 10 units) | 0.833 (F1 0.923) | 0.850 [0.74–0.94] | 0.800 ± 0.143 |
-| **A8 GMM** (16 kHz, 1–5 kHz band-pass, z-score, PCA(4), 3-component GMM fitted on healthy audio) | 0.917 (F1 0.909) | 0.762 [0.65–0.88] | 0.766 ± 0.152 |
-| Baseline: logistic regression on RMS and kurtosis | 0.500 | 0.762 [0.66–0.86] | 0.776 ± 0.124 |
+| Pipeline | Unseen bearings: leave-one-bearing-out, 60 recordings [95% interval] | Original split: 9 test recordings |
+|---|---:|---:|
+| **Nested selection** among all 86 ablation pipelines, chosen in each fold without the held-out bearing | **0.950** [0.89–1.00] | – |
+| A5 MLP, the best single pipeline (picked with hindsight): 16 kHz, 100 Hz high-pass, pre-emphasis, 50 Hz notch, 25 time and spectral features, z-score, PCA(4), MLP with 10 units | 0.963 [0.90–1.00] | 0.917 |
+| A16 MLP, selected in the thesis: 8 kHz, 1–3.5 kHz band-pass, Hilbert envelope + log, MinMax, PCA(8), MLP with 10 units | 0.850 [0.74–0.94] | 0.833 (F1 0.923) |
+| A8 GMM, selected in the thesis and ported to the ESP32: 16 kHz, 1–5 kHz band-pass, z-score, PCA(4), 3-component GMM fitted on healthy audio | 0.762 [0.65–0.88] | 0.917 (F1 0.909) |
+| Baseline: logistic regression on RMS and kurtosis | 0.762 [0.66–0.86] | 0.500 |
 
-Brackets: 95% interval from resampling the 20 bearings, with the predictions fixed. ±: spread between random splits, not a confidence interval. A16 MLP and A8 GMM are the two pipelines the thesis selected; A5 MLP is the best of all 86 ablation pipelines on unseen bearings.
+- **Original split:** the A16 and A8 entries reproduce the thesis's records exactly ([`tests/test_reproduction.py`](tests/test_reproduction.py)); the thesis reported their F1. The A5 and baseline entries on that split are 2026 calculations.
+- **Intervals:** from resampling the 20 bearings with the predictions fixed. They leave out the variation from retraining and from the selection itself, so they understate the uncertainty.
+- **Against the baseline** (paired 95% intervals): nested selection +0.09 to +0.29; A16 MLP −0.03 to +0.20, so its lead is not established.
+- **Nested selection** chose A5 MLP in 12 of 20 folds, A2 MLP in 4, A7 MLP in 3 and A38 MLP in 1.
+- **Limit:** 20 bearings from one test rig and one microphone. This is not evidence for other machines, microphones or loads.
 
-- **A better pipeline was already in the ablation.** All 86 ablation pipelines were rebuilt from their run records and tested on unseen bearings; 84 reproduce their archived counts exactly ([details](results/ablation_lobo.md)). A5 MLP and A7 MLP (the same with a 60 Hz notch) score highest, at 0.963. It was already the best on the thesis's own test split by balanced accuracy (0.917, against 0.833 for A16), but the thesis ranked by F1, where A16 led (0.923 against 0.909). A5 also holds up without the ball-fault bearings (0.983), with other validation bearings (0.938–0.975) and with other MLP seeds (0.925–0.988).
-- **The result survives honest selection.** Choosing among all 86 pipelines in each fold, without seeing the held-out bearing (nested selection), gives 0.950 [0.89–1.00], ahead of the two-feature baseline by +0.09 to +0.29. The 20 bearings come from one test rig, so this is not evidence for other machines or microphones.
-- **The thesis results reproduce exactly.** Retraining on the archived split gives the same confusion matrices ([`tests/test_reproduction.py`](tests/test_reproduction.py)).
-- **A 9-recording test set is noisy.** Between random splits of that size, balanced accuracy varies with a standard deviation of about 0.15. The thesis split was a favourable draw for the GMM: only about a quarter of random splits score as high. It was an unfavourable draw for the baseline.
-- **Splitting by recording instead of by bearing made little difference on average in these splits.** In the thesis split, recordings of one physical bearing appear in both training and test. Over 200 random splits of the same size, mean balanced accuracy differed by less than 0.02 between splitting by recording and by bearing, so no large average difference was seen. The 200 splits reuse the same 20 bearings, so this doesn't prove the overlap is harmless or measure its effect on the thesis split ([details](results/protocol_comparison.md)).
-- **Of the two thesis pipelines, A16 MLP scored higher on unseen bearings, but its lead over the baseline isn't established.** Leave-one-bearing-out gives 0.850 (fault F1 0.883, against 0.923 on the thesis split). Its paired difference from the two-feature baseline is −0.03 to +0.20. The baseline matches it on bearing-grouped splits (0.794 vs. 0.790) and without the ball-fault bearings, which were recorded without load (0.817 vs. 0.800).
-- **The choice of validation bearings matters.** Each leave-one-bearing-out fold sets aside 3 bearings for validation. With ten other choices of those bearings, balanced accuracy ranged 0.762–0.887 for the MLP, 0.675–0.800 for the GMM and 0.787–0.800 for the baseline, against 0.850, 0.762 and 0.762 with the published choice. The MLP scored above the baseline in 7 of the 10.
-- **A8 GMM, the model ported to the ESP32, did no better than the baseline in the follow-up evaluations.** It tied in leave-one-bearing-out (0.762), scored lower without the ball-fault bearings and in the repeated splits, and was ahead in only 1 of the 10 validation choices.
+Other findings, in short:
 
-Full tables, every fold and held-out score: [`results/protocol_comparison.md`](results/protocol_comparison.md) and `.json`. Every logged ablation run (104 rows, 93 configurations), with configuration fields as recorded and notes where the run's code shows otherwise: [`results/ablation_runs.csv`](results/ablation_runs.csv).
+- **A 9-recording test set is noisy.** Between random splits of that size, balanced accuracy has a standard deviation of about 0.15.
+- **The thesis ranked by F1 on its test split.** By balanced accuracy on that split, A5 MLP was already first (0.917, against 0.833 for A16).
+- **A8 GMM, the model ported to the ESP32, did no better than the baseline** on unseen bearings.
+- **Splitting by recording instead of by bearing** changed mean balanced accuracy by less than 0.02 over 200 random splits. That doesn't prove the bearing overlap in the thesis split was harmless.
+
+Details: [all 86 pipelines, nested selection and robustness checks](results/ablation_lobo.md); [the thesis pipelines under other protocols](results/protocol_comparison.md) (random splits, other validation bearings, no ball-fault bearings); [every logged ablation run](results/ablation_runs.csv); [what has been validated](docs/VALIDATION.md).
 
 ## On the ESP32 (M5Stack Core2)
 
 | Part | Status |
 |---|---|
 | Firmware | The lab's custom MicroPython v1.20 image with ulab; the device measurements used its original build (v1.20.0-53). Rebuilt with ESP-IDF 4.4 to add model-inference modules: the rebuilt image booted, but those modules were not completed ([notes](records/firmware/)). |
-| Model export (scaler, PCA, GMM → JSON) and the ulab runtime | Host check passes: run on a PC with NumPy standing in for ulab, it matches scikit-learn on identical inputs ([`tests/test_device_runtime.py`](tests/test_device_runtime.py)). Not yet checked on the board. |
-| On-device feature extraction | **Doesn't match the model yet.** The device computes 25 short-frame band energies, but the model was trained on 25 window statistics. On-device classification accuracy has not been measured ([device notes](records/device/REPORT_DevicePhase.md)). |
-| Timing (WAV from flash) | About 64 ms per prediction call (63.4 and 64.0 ms in the two archived measurements), including reloading the model JSON on every call. About 11.2 s per feature frame, because a pure-Python DFT was used even though `ulab.numpy.fft` was available. |
+| Model export (scaler, PCA, GMM → JSON) and the ulab runtime | Host check only: run on a PC with NumPy standing in for ulab, it matches scikit-learn on the desktop features ([`tests/test_device_runtime.py`](tests/test_device_runtime.py)). Not checked on the board. |
+| On-device feature extraction | **Doesn't match the model.** The device computes 25 short-frame band energies; the model expects 25 window statistics. On-device accuracy has not been measured ([device notes](records/device/REPORT_DevicePhase.md)). |
+| Timing (WAV from flash) | About 64 ms per prediction call, including reloading the model JSON every time; about 11.2 s per feature frame, because a pure-Python DFT was used. |
 
-**Next:** one validated audio-to-decision path on the board.
-1. Define one feature set the device can compute with FFT, and train on exactly those features on the host. Start from the A5 front end (high-pass, pre-emphasis and notch filters, then the 25 time and spectral features), the best pipeline on unseen bearings, and compare against a small linear baseline as well.
-2. Add golden test vectors (audio → features → score) that must match on the host and the board.
-3. Load the model once instead of on every call, and use ulab's FFT.
-4. Evaluate the same recordings on an ESP32 (an ESP32-DevKitC-VE is on order), with timings and memory for each stage and the exact board and firmware versions. These will be new measurements, not a re-check of the M5Stack Core2 timings.
+**Next:** one verified audio-to-decision path on an ESP32-DevKitC-VE.
+1. Freeze a reference: the A5 fold models from the published manifests and seeds, with golden outputs for every stage from PCM samples to the recording decision.
+2. Port each stage to a pinned MicroPython + ulab build and compare it with the reference within declared tolerances. A5's 32,000-point FFT, forward-backward notch filter and librosa framing need explicit porting choices; a changed definition becomes a named variant that is evaluated in its own right.
+3. Run the recordings on the board in batches (the WAVs total 19.2 MB, more than the flash), compare every recording's decision with the host, and measure time and memory per stage.
 
 ## Reproduce
 
@@ -56,6 +80,7 @@ Tested with Python 3.13, the version CI uses.
 ```bash
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements-lock.txt
+python scripts/demo.py                                 # ~2 min: A5 MLP on unseen bearings (above)
 pytest -q                                              # ~3 min: thesis split, feature cache, fold integrity, ablation rebuild, device runtime
 python scripts/evaluate_protocols.py                   # ~15 min: the follow-up evaluations, see docs/RUNNING.md
 python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablation pipelines on unseen bearings
@@ -66,7 +91,7 @@ python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablatio
 | Path | Contents |
 |---|---|
 | [`src/bearing_audio/`](src/bearing_audio/) | Feature extraction, the two thesis pipelines, the evaluation protocols and the rebuild of every ablation pipeline |
-| [`scripts/`](scripts/) | `evaluate_protocols.py`, `evaluate_ablation.py`, `build_ablation_table.py`, archive checks and host diagnostics |
+| [`scripts/`](scripts/) | `demo.py`, `evaluate_protocols.py`, `evaluate_ablation.py`, `build_ablation_table.py`, archive checks and host diagnostics |
 | [`tests/`](tests/) | Reproduction, feature-cache, fold-integrity, ablation-rebuild, device-runtime and export tests, run on every push |
 | [`results/`](results/) | Follow-up evaluation results, the ablation table rebuilt from the run records, and all 86 ablation pipelines on unseen bearings |
 | [`records/`](records/) | Original research records: split manifests, 108 run folders, logs, device files, firmware notes |
@@ -82,7 +107,8 @@ python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablatio
 These are the documents as submitted and presented. Some of their statements go beyond what the code and records show:
 
 - Section 4.2 of the thesis says the WAV test exercised the model "identically to the offline pipeline", and contribution 3 calls the device work "On-device validation".
-- Slide 19 gives the PC results for A8 (F1 ≈ 0.90–0.91) as the board's accuracy, and about 70–75 ms per frame: the measured ~64 ms model step plus an assumed fast FFT feature step. On the board, the features didn't match the model and the measured feature step took about 11.2 s per frame, so neither figure describes the board.
+- Slide 19 presents the PC results for A8 (F1 ≈ 0.90–0.91, "same accuracy as offline") as the board's, at about 70–75 ms per frame ("FFT fast, but MicroPython PCA+GMM still ~64 ms"). The 64 ms is measured; no FFT timing is archived. On the board, the features didn't match the model and the measured feature step took about 11.2 s per frame.
+- Table 3.1 is headed "file-level F1", but some of its rows are window-level scores.
 - The feature table (Table 2.1), the data-preparation listing and some conclusions differ from the code. For example, the real split keeps whole recordings together, which is stricter than the listing shows.
 
 [Known issues](docs/KNOWN_ISSUES.md#5-thesis-text-versus-code-and-records) lists each one. None of them changes the reproduced scores above.
