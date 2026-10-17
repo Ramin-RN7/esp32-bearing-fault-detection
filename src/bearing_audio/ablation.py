@@ -166,6 +166,12 @@ def _definitions(code: str) -> list[ast.stmt]:
     return keep
 
 
+def _imports_only(node: ast.stmt, package: str) -> bool:
+    if isinstance(node, ast.Import):
+        return all(a.name.split(".")[0] == package for a in node.names)
+    return isinstance(node, ast.ImportFrom) and (node.module or "").split(".")[0] == package
+
+
 def feature_signature(code: str) -> str:
     """Hash of the parts of a script that can affect its features (model-only constants and paths left out)."""
     parts = []
@@ -188,6 +194,9 @@ def script_features(code_path: Path, segments: Path) -> tuple[np.ndarray, np.nda
             exec(compile(ast.Module(body=[node], type_ignores=[]), str(code_path), "exec"), ns)
         except NameError:          # a constant computed from training data, e.g. HEALTHY = (y_train == 0)
             continue
+        except ImportError:        # matplotlib: the scripts only plot confusion matrices with it
+            if not _imports_only(node, "matplotlib"):
+                raise
     ns["DATA"] = Path(segments)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
