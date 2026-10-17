@@ -9,7 +9,7 @@ These are unchanged copies from the original research workspace (`bearing-ml`, l
 | [`logs/`](logs/) | The running experiment log (`variants.csv`, plus its backup and queue). Also the cleaned tables cited in the thesis (`ablation_clean.csv`, top-10 tables), the appendix table and the run-integrity audit. |
 | [`predictions/`](predictions/) | Per-window and per-recording test predictions of the recording-level aggregation runs (A8 GMM, A16 MLP and A31 MLP). |
 | [`device/`](device/) | Files deployed to the M5Stack Core2 on 14 August 2025: the feature extractor, GMM runtime, timing and WAV-evaluation scripts, and the exported models (`exports/`). It also holds the device notes (`MODEL_INFO_A8_GMM.md`, `REPORT_DevicePhase.md`) and the copy commands. `earlier_versions/` holds the first device iteration. |
-| [`firmware/`](firmware/) | Notes, scripts and a placeholder C module from an attempt to extend the lab's custom MicroPython v1.20 firmware by rebuilding it with ESP-IDF 4.4. The extension was not completed; the device measurements ran on the lab's original build (v1.20.0-53). Also the module list of that build. The lab's firmware itself is not included. |
+| [`firmware/`](firmware/) | Notes, scripts and a placeholder C module from rebuilding the lab's custom MicroPython v1.20 firmware with ESP-IDF 4.4 to add model-inference modules. The rebuilt image booted, but those modules were not completed; the device measurements ran on the lab's original build (v1.20.0-53). Also the module list of that build. The lab's firmware itself is not included. |
 
 ## Reading these records
 
