@@ -1,5 +1,18 @@
 {
  "version": "0.1.0",
+ "provenance": {
+  "git_commit": "9e279672494dee4d9005b453b9e61feddcaf9156",
+  "feature_cache_key": "3db60c080298b451aefbe630e3e7badacfa1ac5215b91d14249649f87c1607cf",
+  "python": "3.13.16",
+  "packages": {
+   "numpy": "2.5.3",
+   "scipy": "1.18.1",
+   "scikit-learn": "1.7.1",
+   "librosa": "1.0.0",
+   "soundfile": "0.14.0",
+   "soxr": "1.1.0"
+  }
+ },
  "n_pipelines": 86,
  "not_separate_pipelines": {
   "A8-GMM-FILE": "mean aggregation of A8-GMM, the rule used for every pipeline here",
@@ -44149,7 +44162,6 @@
    ]
   }
  },
- "runtime_s": 4241,
  "robustness": {
   "pipelines": [
    "A5-MLP",
@@ -44319,5 +44331,6 @@
     ]
    }
   }
- }
+ },
+ "runtime_s": 4170
 }
