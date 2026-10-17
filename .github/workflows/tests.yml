@@ -21,4 +21,9 @@ jobs:
       - name: Archive checks (syntax, WAV files, archived results table)
         run: python scripts/check_snapshot.py
       - name: Tests (thesis reproduction, feature cache, fold integrity, one-fold LOBO check, ablation rebuild, device runtime)
-        run: python -m pytest -q
+        run: |
+          set -o pipefail
+          python -m pytest -q -rfE 2>&1 | tee pytest.log
+      - name: Show failing tests as annotations
+        if: failure()
+        run: grep -E "^(FAILED|ERROR)" pytest.log | sed 's/^/::error::/' || true
