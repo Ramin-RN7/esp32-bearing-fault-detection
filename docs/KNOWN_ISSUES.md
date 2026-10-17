@@ -94,7 +94,7 @@ At window level, A8 gives `[[26, 1], [9, 45]]` (F1 0.900) and A16 `[[18, 9], [0,
 | FFT input crop | `extract_features.py` and `run_variant_ov75.py` pass a 4096-point FFT length for 32,000-sample windows, so NumPy crops the input. | Open |
 | A45 is a placeholder | `a45_train_export_rf_small.py` exports the A44 ExtraTrees model under random-forest names; it doesn't train a random forest. | Documented |
 | Label polarity | Offline, 1 means fault; the archived device runtime returns 1 for healthy. | Open; part of the feature contract |
-| Embedded files | The WAV evaluation, live and loop scripts, the deployed JSON files and the notes from the firmware rebuild attempt are in [`records/device/`](../records/device/) and [`records/firmware/`](../records/firmware/). The `wavtools` and `feat_a8.extract` names in thesis Listing 4.1 never existed: the listing is illustrative, and the measured runs used `a8_eval_wav_gmm.py` and `time_gmm.py`. The device ran the lab's custom MicroPython firmware, which belongs to the lab and is not included. | Documented |
+| Embedded files | The WAV evaluation, live and loop scripts, the deployed JSON files and the notes from the firmware rebuild are in [`records/device/`](../records/device/) and [`records/firmware/`](../records/firmware/). The `wavtools` and `feat_a8.extract` names in thesis Listing 4.1 never existed: the listing is illustrative, and the measured runs used `a8_eval_wav_gmm.py` and `time_gmm.py`. The device ran the lab's custom MicroPython firmware, which belongs to the lab and is not included. | Documented |
 
 ## 5. Thesis text versus code and records
 

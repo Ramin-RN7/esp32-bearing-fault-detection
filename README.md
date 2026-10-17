@@ -38,7 +38,7 @@ Full tables, every fold and held-out score: [`results/protocol_comparison.md`](r
 
 | Part | Status |
 |---|---|
-| Firmware | The lab's custom MicroPython v1.20 image with ulab, used for the device measurements. An attempt to extend it by rebuilding it with ESP-IDF 4.4 was not completed ([notes](records/firmware/)). |
+| Firmware | The lab's custom MicroPython v1.20 image with ulab; the device measurements used its original build (v1.20.0-53). Rebuilt with ESP-IDF 4.4 to add model-inference modules: the rebuilt image booted, but those modules were not completed ([notes](records/firmware/)). |
 | Model export (scaler, PCA, GMM → JSON) and the ulab runtime | Host check passes: run on a PC with NumPy standing in for ulab, it matches scikit-learn on identical inputs ([`tests/test_device_runtime.py`](tests/test_device_runtime.py)). Not yet checked on the board. |
 | On-device feature extraction | **Doesn't match the model yet.** The device computes 25 short-frame band energies, but the model was trained on 25 window statistics. On-device classification accuracy has not been measured ([device notes](records/device/REPORT_DevicePhase.md)). |
 | Timing (WAV from flash) | About 64 ms per prediction call (63.4 and 64.0 ms in the two archived measurements), including reloading the model JSON on every call. About 11.2 s per feature frame, because a pure-Python DFT was used even though `ulab.numpy.fft` was available. |

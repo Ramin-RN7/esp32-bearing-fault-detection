@@ -93,7 +93,7 @@ python 05_model_export/a47_export_gmm_json.py --bundle 05_model_export/gmm_A8.jo
 
 The archived `feat_a8.py` is incompatible with the feature meanings used to train this GMM. Do not join that extractor to the bundle as a validated audio classifier. Define a matching feature contract and verify feature-to-score parity first. Device label 1 means normal, while offline label 1 means fault.
 
-`predict_gmm()` currently loads both JSON files on every call. Cache parameters before measuring arithmetic separately. Verify the actual ulab FFT API and return format on the board; changing only the import path does not establish compatibility. The device ran the lab's custom MicroPython firmware, which is not included; the notes from an unfinished attempt to rebuild it with ESP-IDF 4.4 are in [`records/firmware/`](../records/firmware/).
+`predict_gmm()` currently loads both JSON files on every call. Cache parameters before measuring arithmetic separately. Verify the actual ulab FFT API and return format on the board; changing only the import path does not establish compatibility. The device ran the lab's custom MicroPython firmware, which is not included. The notes from rebuilding it with ESP-IDF 4.4 are in [`records/firmware/`](../records/firmware/); the rebuilt image booted, but the model-inference modules it was meant to add were not completed.
 
 The optional `a46_export_mlp_MIN.py` path has a separate issue: its generated C predictor writes into the caller's input buffer despite accepting a `const` input pointer. Reusing that input without restoring it can change predictions. Repair the scratch-buffer swap and check input preservation and repeated calls before integrating this export. See [known issues](KNOWN_ISSUES.md#4-additional-archive-issues).
 
