@@ -66,12 +66,12 @@ python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablatio
 | Path | Contents |
 |---|---|
 | [`src/bearing_audio/`](src/bearing_audio/) | Feature extraction, the two thesis pipelines, the evaluation protocols and the rebuild of every ablation pipeline |
-| [`scripts/`](scripts/) | `evaluate_protocols.py`, `evaluate_ablation.py`, `build_ablation_table.py`, archive checks, earlier review diagnostics |
+| [`scripts/`](scripts/) | `evaluate_protocols.py`, `evaluate_ablation.py`, `build_ablation_table.py`, archive checks and host diagnostics |
 | [`tests/`](tests/) | Reproduction, feature-cache, fold-integrity, ablation-rebuild, device-runtime and export tests, run on every push |
 | [`results/`](results/) | Follow-up evaluation results, the ablation table rebuilt from the run records, and all 86 ablation pipelines on unseen bearings |
 | [`records/`](records/) | Original research records: split manifests, 108 run folders, logs, device files, firmware notes |
 | [`01_uottawa_wavs/`](01_uottawa_wavs/) to [`07_confusion_matrices_full/`](07_confusion_matrices_full/) | The supplementary package as submitted: audio, segmentation, feature and ablation scripts, export, results, confusion matrices |
-| [`docs/`](docs/) | [Technical review and known issues](docs/TECHNICAL_REVIEW.md), [validation scope](docs/VALIDATION.md), [running the archived scripts](docs/RUNNING.md) |
+| [`docs/`](docs/) | [Known issues](docs/KNOWN_ISSUES.md), [what has been validated](docs/VALIDATION.md), [running the scripts](docs/RUNNING.md) |
 
 ## Thesis documents
 
@@ -85,7 +85,7 @@ These are the documents as submitted and presented. Some of their statements go 
 - Slide 19 reports about 70–75 ms per frame at offline accuracy. Neither the latency nor the accuracy was measured on the board.
 - The feature table (Table 2.1), the data-preparation listing and some conclusions differ from the code. For example, the real split keeps whole recordings together, which is stricter than the listing shows.
 
-The [technical review](docs/TECHNICAL_REVIEW.md#5-thesis-text-versus-code-and-records) lists each one. None of them changes the reproduced scores above.
+[Known issues](docs/KNOWN_ISSUES.md#5-thesis-text-versus-code-and-records) lists each one. None of them changes the reproduced scores above.
 
 ## Data
 

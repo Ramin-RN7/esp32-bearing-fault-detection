@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Reproduce the archive review on a host, including its known feature mismatch.
+"""Host diagnostics for the archived models, including the known feature mismatch.
 
 Run from the repository root after installing requirements.txt. This loads trusted
 archived joblib bundles, reconstructs the missing split, and scores the nine test
 recordings without retraining. A NumPy shim exercises arithmetic only. The output
 does not validate ulab compatibility or ESP32 execution. Generated files go to
-artifacts/technical_review/ by default. See docs/TECHNICAL_REVIEW.md.
+artifacts/technical_review/ by default. See docs/KNOWN_ISSUES.md.
 """
 import sys
 from pathlib import Path
