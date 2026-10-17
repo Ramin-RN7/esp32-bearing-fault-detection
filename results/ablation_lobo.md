@@ -82,8 +82,8 @@ The three highest-ranked pipelines and the references under three changes: witho
 
 | Pipeline | LOBO BA | Without ball-fault bearings | Other validation bearings (min–median–max) | Other MLP seeds (min–median–max) |
 |---|---:|---:|---:|---:|
-| A5-MLP | 0.962 | 0.983 | 0.938–0.956–0.975 | 0.925–0.950–0.988 |
-| A7-MLP | 0.962 | 0.983 | 0.938–0.950–0.975 | 0.925–0.950–0.975 |
+| A5-MLP | 0.963 | 0.983 | 0.938–0.956–0.975 | 0.925–0.950–0.988 |
+| A7-MLP | 0.963 | 0.983 | 0.938–0.950–0.975 | 0.925–0.950–0.975 |
 | A38-MLP | 0.950 | 0.933 | 0.863–0.900–0.950 | 0.913–0.931–0.950 |
 | A16-MLP | 0.850 | 0.800 | 0.762–0.825–0.887 | 0.775–0.812–0.825 |
 | A8-GMM | 0.762 | 0.733 | 0.675–0.738–0.800 | – |

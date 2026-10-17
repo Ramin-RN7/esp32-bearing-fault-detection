@@ -461,8 +461,12 @@ def markdown(res) -> str:
             "| Other MLP seeds (min–median–max) |",
             "|---|---:|---:|---:|---:|",
         ]
+        # Take the LOBO BA from the ranking table's rows, so a score prints the same in both tables
+        # (0.9625 is stored as 0.96249999... and would otherwise print as 0.962 here and 0.963 there).
+        ranked_ba = {r["id"]: r["lobo_recording_ba"] for r in rows}
         for i in rb["pipelines"]:
-            lines.append(f"| {i} | {lobo[i]['balanced_accuracy']:.3f} | {rb['without_ball_fault_bearings'][i]:.3f} "
+            ba = ranked_ba.get(i, lobo[i]["balanced_accuracy"])
+            lines.append(f"| {i} | {ba:.3f} | {rb['without_ball_fault_bearings'][i]:.3f} "
                          f"| {span(rb['validation_selections']['balanced_accuracy'][i])} "
                          f"| {span(rb['mlp_seeds']['balanced_accuracy'].get(i, []))} |")
     lines += [
