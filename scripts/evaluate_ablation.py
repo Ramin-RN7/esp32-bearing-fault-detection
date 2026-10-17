@@ -35,6 +35,7 @@ from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
+from scipy.stats import spearmanr
 from sklearn.exceptions import ConvergenceWarning
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -166,13 +167,18 @@ def family(cfg, params) -> str:
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--stage", choices=("reproduce", "lobo", "nested", "robustness"), default="nested",
-                    help="robustness: add only the robustness checks to existing results")
+    ap.add_argument("--stage", choices=("reproduce", "lobo", "nested", "robustness", "render"), default="nested",
+                    help="robustness: add only the robustness checks to existing results; "
+                         "render: rewrite the CSV and Markdown from the existing JSON")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--out", type=Path, default=ROOT / "results")
     args = ap.parse_args()
     t0 = time.time()
 
+    if args.stage == "render":
+        _write(json.loads((args.out / "ablation_lobo.json").read_text()), args.out)
+        print(f"rendered {args.out / 'ablation_lobo.md'}")
+        return
     if args.stage == "robustness":
         res = json.loads((args.out / "ablation_lobo.json").read_text())
         _load_state()
@@ -301,12 +307,17 @@ def table_rows(res) -> list[dict]:
     """One row per pipeline, ranked by leave-one-bearing-out balanced accuracy."""
     lobo, ci, orig = res["lobo"], res["bootstrap"]["balanced_accuracy_95"], res["original_split"]
     ids = sorted(res["pipelines"], key=lambda k: (-lobo[k]["balanced_accuracy"], -lobo[k]["window_balanced_accuracy"]))
+    thesis_f1 = {k: fault_f1(v["archived"]) for k, v in orig.items()}
+    window_ids = [k for k, v in orig.items() if v["level"] == "window"]
+    thesis_rank = {k: 1 + sum(thesis_f1[j] > thesis_f1[k] + 1e-12 for j in window_ids) for k in window_ids}
     rows = []
     for rank, k in enumerate(ids, 1):
         p, l, o = res["pipelines"][k], lobo[k], orig[k]
         rows.append({
             "rank": rank, "id": k, "description": p["description"], "family": p["family"], "model": p["model"],
             "scaler": p["scaler"], "pca": p["pca"], "aggregation": p["aggregation"],
+            "thesis_level": o["level"], "thesis_fault_f1": round(thesis_f1[k], 4),
+            "thesis_ba": round(balanced_accuracy(o["archived"]), 4), "thesis_rank_by_f1": thesis_rank.get(k, ""),
             "reproduces_archived_counts": o["match"],
             "original_split_recording_ba": round(balanced_accuracy(o["original_recording"]), 4),
             "lobo_recording_ba": round(l["balanced_accuracy"], 4),
@@ -357,16 +368,20 @@ def markdown(res) -> str:
         "## 2. Leave-one-bearing-out (20 folds, 60 recordings)",
         "",
         "Same folds as `results/protocol_comparison.md`: each bearing is held out once, three other bearings set "
-        "the GMM thresholds, the rest train. 95% intervals resample the 20 bearings with the predictions fixed.",
+        "the GMM thresholds, the rest train. 95% intervals resample the 20 bearings with the predictions fixed. "
+        "The last column is the thesis's own result on its 9-recording test split (window-level fault F1, as "
+        "logged) and the rank by that F1 among the 82 window-level configurations, which is how the thesis "
+        "compared them.",
         "",
-        "| Rank | Pipeline | Model | Family | BA [95% interval] | Fault F1 | Window BA | Original-split BA |",
+        "| Rank | Pipeline | Model | Family | BA [95% interval] | Fault F1 | Window BA | Thesis split: F1 (rank) |",
         "|---:|---|---|---|---:|---:|---:|---:|",
     ]
     shown = rows[:15] + [r for r in rows[15:] if r["id"] in ("A16-MLP", "A8-GMM")]
     for r in shown:
         lines.append(f"| {r['rank']} | {r['id']} | {r['model']} | {r['family']} | {r['lobo_recording_ba']:.3f} "
                      f"[{r['lobo_ba_95_low']:.2f}–{r['lobo_ba_95_high']:.2f}] | {r['lobo_fault_f1']:.3f} "
-                     f"| {r['lobo_window_ba']:.3f} | {r['original_split_recording_ba']:.3f} |")
+                     f"| {r['lobo_window_ba']:.3f} | {r['thesis_fault_f1']:.3f}"
+                     + (f" ({r['thesis_rank_by_f1']})" if r["thesis_rank_by_f1"] != "" else " (recording level)") + " |")
     lines += [f"| – | BASELINE | LR | RMS + kurtosis (reference) | {lobo['BASELINE']['balanced_accuracy']:.3f} "
               f"[{fmt_ci('BASELINE')}] | {lobo['BASELINE']['fault_f1']:.3f} "
               f"| {lobo['BASELINE']['window_balanced_accuracy']:.3f} | – |", ""]
@@ -384,6 +399,24 @@ def markdown(res) -> str:
     ]
     for pair, (lo, hi) in boot["paired_difference_95"].items():
         lines.append(f"- {pair}: {lo:+.3f} to {hi:+.3f}")
+    window_rows = [r for r in rows if r["thesis_level"] == "window"]
+    lobo_ba = [r["lobo_recording_ba"] for r in window_rows]
+    rho_f1 = spearmanr([r["thesis_fault_f1"] for r in window_rows], lobo_ba).statistic
+    rho_ba = spearmanr([r["thesis_ba"] for r in window_rows], lobo_ba).statistic
+    thesis_top_f1 = max(window_rows, key=lambda r: (r["thesis_fault_f1"], -r["rank"]))
+    thesis_top_ba = max(window_rows, key=lambda r: (r["thesis_ba"], -r["rank"]))
+    lines += [
+        "",
+        "### The thesis ranking against unseen bearings",
+        "",
+        f"The thesis compared its {len(window_rows)} window-level configurations by fault F1 on the 9-recording test "
+        f"split, where {thesis_top_f1['id']} ranks first ({thesis_top_f1['thesis_fault_f1']:.3f}). By balanced accuracy on the same "
+        f"split, {thesis_top_ba['id']} ranks first ({thesis_top_ba['thesis_ba']:.3f}); it is number {thesis_top_ba['rank']} on unseen "
+        f"bearings. Across the {len(window_rows)} configurations, the Spearman rank correlation with the "
+        f"leave-one-bearing-out BA is {rho_ba:.2f} for the thesis-split BA and {rho_f1:.2f} for the thesis-split F1. "
+        "With two fault recordings for every healthy one, F1 rewards leaning towards \"fault\": a classifier that "
+        "always says fault gets F1 0.800 but BA 0.500.",
+    ]
     lines += ["", "### By family", "", "| Family | Model | Pipelines | Best BA | Median BA |",
               "|---|---|---:|---:|---:|"]
     groups = {}

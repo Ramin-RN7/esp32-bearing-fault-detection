@@ -34,7 +34,7 @@ This requires only Python's standard library. It checks syntax, WAV readability/
 
 ## Reproduce the later host review
 
-Read the [technical review and known issues](TECHNICAL_REVIEW.md), then install the desktop requirements and run:
+Read the [technical review and known issues](TECHNICAL_REVIEW.md). With the pinned environment from above installed, run:
 
 ```bash
 python scripts/review_models.py
@@ -44,7 +44,9 @@ This reconstructs the missing split, re-scores the two archived models, exports 
 
 ## Desktop environment
 
-Create a virtual environment, for example with Python 3.11 or 3.12:
+The package, the evaluation scripts and `review_models.py` need only the pinned environment above (`requirements-lock.txt`, Python 3.13). The archived experiment scripts in the numbered folders also import pandas, matplotlib and tqdm; for those, use `requirements.txt`.
+
+Create a virtual environment, for example with Python 3.13:
 
 ```bash
 python -m venv .venv
@@ -60,7 +62,7 @@ Activate it:
 source .venv/bin/activate
 ```
 
-Install the desktop dependencies:
+Install the dependencies for the archived experiment scripts:
 
 ```bash
 python -m pip install -r requirements.txt
