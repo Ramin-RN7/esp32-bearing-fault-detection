@@ -93,6 +93,20 @@ def lobo_rows(lobo: dict, intervals: dict | None = None) -> list[str]:
     return rows
 
 
+def protocol_difference_note(diffs: dict, n: int) -> str:
+    """Describe the measured recording-minus-bearing differences, whatever their size."""
+    largest = max(round(abs(d), 3) for d in diffs.values())   # as printed in the list above
+    if largest < 0.02:
+        finding = (f"Over these {n} splits, every mean difference is below 0.02, so no large average difference was "
+                   "seen between splitting by recording and by bearing.")
+    else:
+        finding = (f"Over these {n} splits, the largest mean difference is {largest:.3f}, so splitting by recording "
+                   "and by bearing did not give similar averages for every pipeline.")
+    return finding + (" The splits reuse the same bearings and compare averages over different test sets, with no "
+                      "equivalence margin. So this does not show that bearing overlap is harmless, or measure its "
+                      "effect on the archived split.")
+
+
 def markdown(res: dict) -> str:
     o, lobo, rep = res["original_split"], res["leave_one_bearing_out"], res["repeated_summary"]
     design, boot, sens = res["lobo_design"], res["lobo_bootstrap"], res["lobo_validation_sensitivity"]
@@ -124,8 +138,9 @@ def markdown(res: dict) -> str:
         "GMM uses the validation set, to set its decision threshold; the MLP and the baseline ignore it, so all three "
         "models train on the same data. The validation bearings are the next three IDs after the test bearing. "
         f"Bearing IDs are grouped by fault type, so in {design['single_type_validation_folds']} of "
-        f"{design['n_folds']} folds the validation faults all come from one type. Section 2c varies this choice. "
-        "Every fold, threshold and held-out score is in `protocol_comparison.json`.",
+        f"{design['n_folds']} folds the validation faults all come from one type. "
+        + ("Section 2c varies this choice. " if sens["n_selections"] else "")
+        + "Every fold, threshold and held-out score is in `protocol_comparison.json`.",
         "",
         f"**Uncertainty.** The 95% intervals come from resampling the {boot['n_bearings']} bearings "
         f"({boot['n_resamples']:,} resamples of the fixed out-of-fold predictions). They leave out the variation "
@@ -195,12 +210,8 @@ def markdown(res: dict) -> str:
             lines.append(f"- {NAMES[k]}: {'0.000' if abs(d) < 5e-4 else format(d, '+.3f')}; "
                          f"{v['recording']['share_splits_at_least_original_balanced_accuracy']:.0%} of random splits "
                          f"score at least the archived split's {o[k]['recording']['balanced_accuracy']:.3f}")
-        lines += [
-            "",
-            "These differences are below 0.02, so the comparison shows no large average inflation from splitting by "
-            "recording instead of by bearing. It compares averages over different test sets and has no equivalence "
-            "margin, so it does not prove that bearing overlap is harmless, or measure its effect on the archived split.",
-        ]
+        diffs = {k: v["recording_minus_bearing_balanced_accuracy"] for k, v in rep.items()}
+        lines += ["", protocol_difference_note(diffs, n)]
     return "\n".join(lines) + "\n"
 
 

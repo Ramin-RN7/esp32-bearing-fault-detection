@@ -44,7 +44,7 @@ The original research records are now published in [`records/`](../records/): sp
 - The archived MicroPython runtime, run on the host with NumPy standing in for ulab, matches scikit-learn on desktop features. This is host arithmetic parity; parity on the board is still untested.
 - A strict expected-failure test records that the device feature extractor does not reproduce the desktop decisions.
 - [`scripts/evaluate_protocols.py`](../scripts/evaluate_protocols.py) adds three evaluations: leave-one-bearing-out, the same without the ball-fault bearings, and 200 matched repeated splits by recording and by bearing. Results are in [`results/protocol_comparison.md`](../results/protocol_comparison.md).
-- These checks run on every push via GitHub Actions ([`tests.yml`](../.github/workflows/tests.yml)), using the pinned versions in [`requirements-lock.txt`](../requirements-lock.txt).
+- The tests run on every push via GitHub Actions ([`tests.yml`](../.github/workflows/tests.yml)) on Python 3.13, with the pinned versions in [`requirements-lock.txt`](../requirements-lock.txt). The full evaluations above are run by hand ([running notes](RUNNING.md)).
 
 ## Fourth-pass checks
 
@@ -57,7 +57,7 @@ Checked on 16 October 2026:
 
 Checked on 16 October 2026, after a separate review of `5452756`:
 
-- **The separate review's re-run** reproduced the original-split and leave-one-bearing-out results exactly, including every held-out prediction. It reproduced the rebuilt ablation table byte for byte. The 200-split summaries matched except for a GMM mean difference of 0.0004 under a different software environment (Python 3.12, older NumPy, SciPy and librosa).
+- **The separate review's re-run** reproduced the original-split and leave-one-bearing-out results exactly, including every held-out decision. It reproduced the rebuilt ablation table byte for byte. The 200-split summaries matched except for a GMM mean difference of 0.0004 under a different software environment (Python 3.12, older NumPy, SciPy and librosa). A later review traced that difference to one of the 1,200 per-split rows (GMM, recording protocol, seed 180). Continuous scores also differ slightly between the two environments; the decisions above do not.
 - **The feature cache** returned stale features for changed audio of the same size; the review confirmed this. It is fixed and covered by regression tests.
 - **Rerun.** The full evaluation was rerun from a clean commit (recorded in the JSON) with the pinned environment. The original-split and leave-one-bearing-out predictions are unchanged.
 - **Published outputs:**
@@ -69,7 +69,7 @@ Checked on 16 October 2026, after a separate review of `5452756`:
 
 ## Boundaries
 
-- The split is now the original one, not a reconstruction. Recordings from the same physical bearing cross subsets. Random splits of the same size that keep bearings apart scored within 0.02 on average, which rules out a large average inflation but does not prove the overlap is harmless. Leave-one-bearing-out results estimate performance on unseen bearings.
+- The split is now the original one, not a reconstruction. Recordings from the same physical bearing cross subsets. Random splits of the same size that keep bearings apart scored within 0.02 on average. No large average difference was seen in these splits, but they reuse the same 20 bearings, so this does not prove the overlap is harmless. Leave-one-bearing-out results estimate performance on unseen bearings.
 - The bootstrap intervals resample bearings with the predictions fixed. They leave out the variation from refitting and from the earlier choice of pipeline settings. With 20 bearings, the MLP's lead over the two-feature baseline is not established.
 - Comparing many configurations on the same test set introduces selection bias. The re-evaluation covers the two thesis pipelines, not a nested selection over all configurations.
 - Predictor timing includes two JSON loads per call; the approximately 64 ms thesis number is not isolated arithmetic time.
