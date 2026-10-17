@@ -21,13 +21,17 @@ from __future__ import annotations
 
 import argparse
 import csv
+import importlib.metadata
 import json
 import math
 import multiprocessing
+import platform
+import subprocess
 import sys
 import time
 import warnings
 from concurrent.futures import ProcessPoolExecutor
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -41,8 +45,8 @@ from bearing_audio import __version__                                           
 from bearing_audio.ablation import (BASELINE, NOT_SEPARATE, ablation_features, balanced_accuracy,  # noqa: E402
                                     bootstrap, configs, fault_f1, pooled, run_split, select)
 from bearing_audio.data import list_recordings, load_original_split                    # noqa: E402
-from bearing_audio.evaluation import lobo_folds                                          # noqa: E402
-from bearing_audio.features import FeatureTable                                          # noqa: E402
+from bearing_audio.evaluation import family_balanced_validation, lobo_folds              # noqa: E402
+from bearing_audio.features import FeatureTable, cache_key                               # noqa: E402
 
 _STATE: dict = {}          # per process; worker processes fill it from the caches in _init_worker
 
@@ -84,6 +88,67 @@ def _nested_outer(test_bearing):
             "inner_scores": scores}
 
 
+def provenance() -> dict:
+    """Code version and environment behind this run (as in evaluate_protocols.py)."""
+    def git(*args):
+        try:
+            return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
+        except (OSError, subprocess.CalledProcessError):
+            return ""
+    dirty = bool(git("status", "--porcelain", "--untracked-files=no"))
+    names = ("numpy", "scipy", "scikit-learn", "librosa", "soundfile", "soxr")
+    return {"git_commit": git("rev-parse", "HEAD") + ("+uncommitted changes" if dirty else ""),
+            "feature_cache_key": cache_key(list(_STATE["table"].recordings.values())),
+            "python": platform.python_version(),
+            "packages": {n: importlib.metadata.version(n) for n in names}}
+
+
+BALL_FAULT_BEARINGS = (11, 12, 13, 14, 15)
+N_ROBUSTNESS = 10
+
+
+def _robust_job(job):
+    """One robustness run for the selected pipelines: no ball-fault bearings, a validation choice, or an MLP seed."""
+    kind, arg, ids = job
+    s = _STATE
+    by_id = {c.id: c for c in s["all_cfgs"]}
+    sel = [by_id[i] for i in ids]
+    table, feats = s["table"], s["feats"]
+    if kind == "seed":
+        sel = [replace(c, id=f"{c.id}@{arg}", seed=arg, features_from=c.feature_key) for c in sel if c.model == "MLP"]
+        folds = lobo_folds(table.recordings)
+    elif kind == "validation":
+        folds = lobo_folds(table.recordings, choose_validation=family_balanced_validation(table.recordings, arg))
+    else:
+        folds = lobo_folds(table.recordings, exclude_bearings=BALL_FAULT_BEARINGS)
+    res = [run_split(sel, feats, table, f["train"], f["val"], f["test"]) for f in folds]
+    return kind, arg, {c.id.split("@")[0]: balanced_accuracy(pooled(res, c.id)["recording"]) for c in sel}
+
+
+def robustness(res, workers: int) -> dict:
+    """Leaders and references under three changes: no ball-fault bearings, other validation bearings, MLP seeds."""
+    rows = table_rows(res)
+    ids = [r["id"] for r in rows[:3]] + [i for i in ("A16-MLP", "A8-GMM") if i not in [r["id"] for r in rows[:3]]]
+    ids.append("BASELINE")
+    jobs = [("noball", None, ids)] + [("validation", k, ids) for k in range(N_ROBUSTNESS)] + \
+           [("seed", k, ids) for k in range(N_ROBUSTNESS)]
+    with _pool(workers) as ex:
+        done = list(ex.map(_robust_job, jobs))
+    out = {"pipelines": ids, "without_ball_fault_bearings": {},
+           "validation_selections": {"seeds": list(range(N_ROBUSTNESS)), "balanced_accuracy": {i: [] for i in ids}},
+           "mlp_seeds": {"seeds": list(range(N_ROBUSTNESS)), "balanced_accuracy": {}}}
+    for kind, arg, vals in done:
+        if kind == "noball":
+            out["without_ball_fault_bearings"] = vals
+        elif kind == "validation":
+            for i, v in vals.items():
+                out["validation_selections"]["balanced_accuracy"][i].append(v)
+        else:
+            for i, v in vals.items():
+                out["mlp_seeds"]["balanced_accuracy"].setdefault(i, []).append(v)
+    return out
+
+
 def family(cfg, params) -> str:
     feats = str(params.get("features") or "")
     pre = params.get("preprocess") or []
@@ -101,18 +166,28 @@ def family(cfg, params) -> str:
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--stage", choices=("reproduce", "lobo", "nested"), default="nested")
+    ap.add_argument("--stage", choices=("reproduce", "lobo", "nested", "robustness"), default="nested",
+                    help="robustness: add only the robustness checks to existing results")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--out", type=Path, default=ROOT / "results")
     args = ap.parse_args()
     t0 = time.time()
 
+    if args.stage == "robustness":
+        res = json.loads((args.out / "ablation_lobo.json").read_text())
+        _load_state()
+        res["robustness"] = robustness(res, args.workers)
+        res["robustness"]["provenance"] = provenance()
+        _write(res, args.out)
+        print(f"added robustness checks ({time.time() - t0:.0f} s)")
+        return
     _load_state(args.workers, progress=lambda i, n: print(f"  features {i}/{n} ({time.time() - t0:.0f} s)", flush=True))
     cfgs, all_cfgs, feats, table = (_STATE[k] for k in ("cfgs", "all_cfgs", "feats", "table"))
     print(f"{len(cfgs)} pipelines, features ready ({time.time() - t0:.0f} s)", flush=True)
 
     params = {c.id: json.loads((ROOT / c.run / "params.json").read_text()) for c in cfgs}
-    res = {"version": __version__, "n_pipelines": len(cfgs), "not_separate_pipelines": NOT_SEPARATE,
+    res = {"version": __version__, "provenance": provenance(), "n_pipelines": len(cfgs),
+           "not_separate_pipelines": NOT_SEPARATE,
            "pipelines": {c.id: {"description": c.description, "model": c.model, "scaler": c.scaler, "pca": c.pca,
                                 "threshold": c.threshold if c.model == "GMM" else "probability 0.5",
                                 "outlier_removal": c.outlier if c.outlier == "none" else f"{c.outlier} {c.outlier_pct:g}",
@@ -189,6 +264,8 @@ def main():
                                            "other bearings; ties to higher window balanced accuracy, then table order"}
         pairs.append(("NESTED", "BASELINE"))
     res["bootstrap"] = bootstrap(preds, table.recordings, pairs=pairs)
+    if args.stage == "nested":
+        res["robustness"] = robustness(_clean(res), args.workers)
     res["runtime_s"] = round(time.time() - t0)
     _write(res, args.out)
     print(f"wrote {args.out / 'ablation_lobo.md'} ({time.time() - t0:.0f} s)")
@@ -333,6 +410,28 @@ def markdown(res) -> str:
         ]
         if diff:
             lines.append(f"- Nested selection minus the RMS + kurtosis reference: {diff[0]:+.3f} to {diff[1]:+.3f}.")
+    if "robustness" in res:
+        rb = res["robustness"]
+        span = lambda v: f"{min(v):.3f}–{float(np.median(v)):.3f}–{max(v):.3f}" if v else "–"
+        lines += [
+            "",
+            "## 4. Do the leaders hold up?",
+            "",
+            "The three highest-ranked pipelines and the references under three changes: without the ball-fault "
+            f"bearings 11–15 (recorded without load, 15 folds); with {len(rb['validation_selections']['seeds'])} "
+            "other choices of the three validation bearings per fold (drawn from three fault types, as in "
+            "`protocol_comparison.md`); and, for the MLPs, with "
+            f"{len(rb['mlp_seeds']['seeds'])} other random initialisations (seeds "
+            f"{rb['mlp_seeds']['seeds'][0]}–{rb['mlp_seeds']['seeds'][-1]}).",
+            "",
+            "| Pipeline | LOBO BA | Without ball-fault bearings | Other validation bearings (min–median–max) "
+            "| Other MLP seeds (min–median–max) |",
+            "|---|---:|---:|---:|---:|",
+        ]
+        for i in rb["pipelines"]:
+            lines.append(f"| {i} | {lobo[i]['balanced_accuracy']:.3f} | {rb['without_ball_fault_bearings'][i]:.3f} "
+                         f"| {span(rb['validation_selections']['balanced_accuracy'][i])} "
+                         f"| {span(rb['mlp_seeds']['balanced_accuracy'].get(i, []))} |")
     lines += [
         "",
         "## Limits",

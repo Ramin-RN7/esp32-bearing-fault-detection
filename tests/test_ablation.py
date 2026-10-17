@@ -74,3 +74,15 @@ def test_published_ablation_report_matches_its_json():
     nested = res["nested"]
     assert len(nested["outer_folds"]) == 20 and len(nested["predictions"]) == 60
     assert sorted(p["recording"] for p in nested["predictions"]) == sorted(r.name for r in list_recordings())
+
+
+@pytest.mark.skipif(not RESULTS.exists(), reason="results/ablation_lobo.json not generated")
+def test_robustness_checks_agree_with_the_protocol_comparison():
+    """Validation-choice and no-ball-fault results for the references must equal the earlier evaluation's."""
+    rb = json.loads(RESULTS.read_text())["robustness"]
+    pc = json.loads((ROOT / "results" / "protocol_comparison.json").read_text())
+    sens = pc["lobo_validation_sensitivity"]["balanced_accuracy"]
+    noball = pc["leave_one_bearing_out_without_ball_fault_bearings"]
+    for a, p in (("A16-MLP", "a16_mlp"), ("A8-GMM", "a8_gmm"), ("BASELINE", "baseline_rms_kurtosis")):
+        assert rb["validation_selections"]["balanced_accuracy"][a] == pytest.approx(sens[p], abs=1e-12), a
+        assert rb["without_ball_fault_bearings"][a] == pytest.approx(noball[p]["balanced_accuracy"], abs=1e-12), a
