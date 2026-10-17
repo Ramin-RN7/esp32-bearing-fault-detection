@@ -22,10 +22,10 @@ Brackets: 95% interval from resampling the 20 bearings, with the predictions fix
 
 - **The thesis results reproduce exactly.** Retraining on the archived split gives the same confusion matrices ([`tests/test_reproduction.py`](tests/test_reproduction.py)).
 - **A 9-recording test set is noisy.** Between random splits of that size, balanced accuracy varies with a standard deviation of about 0.15. The thesis split was a favourable draw for the GMM: only about a quarter of random splits score as high. It was an unfavourable draw for the baseline.
-- **Splitting by recording instead of by bearing made little difference on average.** In the thesis split, recordings of one physical bearing appear in both training and test. Over 200 random splits of the same size, mean balanced accuracy differed by less than 0.02 between splitting by recording and by bearing. That rules out a large average inflation. It doesn't prove the overlap is harmless or measure its effect on the thesis split ([details](results/protocol_comparison.md)).
-- **A16 MLP scores highest on unseen bearings, but its lead isn't established.** Leave-one-bearing-out gives 0.850 (fault F1 0.883, against 0.923 on the thesis split). Its paired difference from the two-feature baseline is −0.03 to +0.20. The baseline matches it on bearing-grouped splits (0.794 vs. 0.790) and without the ball-fault bearings, which were recorded without load (0.817 vs. 0.800).
+- **Splitting by recording instead of by bearing made little difference on average in these splits.** In the thesis split, recordings of one physical bearing appear in both training and test. Over 200 random splits of the same size, mean balanced accuracy differed by less than 0.02 between splitting by recording and by bearing, so no large average difference was seen. The 200 splits reuse the same 20 bearings, so this doesn't prove the overlap is harmless or measure its effect on the thesis split ([details](results/protocol_comparison.md)).
+- **A16 MLP scored highest in the leave-one-bearing-out test, but its lead isn't established.** Leave-one-bearing-out gives 0.850 (fault F1 0.883, against 0.923 on the thesis split). Its paired difference from the two-feature baseline is −0.03 to +0.20. The baseline matches it on bearing-grouped splits (0.794 vs. 0.790) and without the ball-fault bearings, which were recorded without load (0.817 vs. 0.800).
 - **The choice of validation bearings matters.** Each leave-one-bearing-out fold sets aside 3 bearings for validation. With ten other choices of those bearings, balanced accuracy ranged 0.762–0.887 for the MLP, 0.675–0.800 for the GMM and 0.787–0.800 for the baseline, against 0.850, 0.762 and 0.762 with the published choice. The MLP scored above the baseline in 7 of the 10.
-- **A8 GMM is no better than the baseline.** This is the model that was ported to the ESP32.
+- **A8 GMM, the model ported to the ESP32, did no better than the baseline in the follow-up evaluations.** It tied in leave-one-bearing-out (0.762), scored lower without the ball-fault bearings and in the repeated splits, and was ahead in only 1 of the 10 validation choices.
 
 Full tables, every fold and held-out score: [`results/protocol_comparison.md`](results/protocol_comparison.md) and `.json`. Every logged ablation run (104 rows, 93 configurations), with configuration fields as recorded and notes where the run's code shows otherwise: [`results/ablation_runs.csv`](results/ablation_runs.csv).
 
@@ -36,15 +36,17 @@ Full tables, every fold and held-out score: [`results/protocol_comparison.md`](r
 | Custom MicroPython v1.20 image with ulab (ESP-IDF 4.4) | Built and flashed. See the [build notes](records/firmware/). |
 | Model export (scaler, PCA, GMM → JSON) and the ulab runtime | Host check passes: run on a PC with NumPy standing in for ulab, it matches scikit-learn on identical inputs ([`tests/test_device_runtime.py`](tests/test_device_runtime.py)). Not yet checked on the board. |
 | On-device feature extraction | **Doesn't match the model yet.** The device computes 25 short-frame band energies, but the model was trained on 25 window statistics. On-device classification accuracy has not been measured ([device notes](records/device/REPORT_DevicePhase.md)). |
-| Timing (WAV from flash) | About 63 ms per prediction call, including reloading the model JSON on every call. About 11.2 s per feature frame, because a pure-Python DFT was used even though `ulab.numpy.fft` was available. |
+| Timing (WAV from flash) | About 64 ms per prediction call (63.4 and 64.0 ms in the two archived measurements), including reloading the model JSON on every call. About 11.2 s per feature frame, because a pure-Python DFT was used even though `ulab.numpy.fft` was available. |
 
 **Next:** one validated audio-to-decision path on the board.
 1. Define one feature set the device can compute with FFT, and train on exactly those features on the host. Compare against a small linear baseline as well.
 2. Add golden test vectors (audio → features → score) that must match on the host and the board.
 3. Load the model once instead of on every call, and use ulab's FFT.
-4. Evaluate the same recordings on an ESP32 (an ESP32-DevKitC-VE is on order), with timings and memory for each stage.
+4. Evaluate the same recordings on an ESP32 (an ESP32-DevKitC-VE is on order), with timings and memory for each stage and the exact board and firmware versions. These will be new measurements, not a re-check of the M5Stack Core2 timings.
 
 ## Reproduce
+
+Tested with Python 3.13, the version CI uses.
 
 ```bash
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\Activate.ps1

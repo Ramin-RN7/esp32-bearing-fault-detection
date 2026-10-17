@@ -6,6 +6,8 @@ This repository preserves the thesis supplementary materials. The numbered direc
 
 The [`bearing_audio`](../src/bearing_audio/) package re-implements the two thesis pipelines with connected paths. It reads the WAVs in `01_uottawa_wavs/` and the archived split in `records/manifests/`.
 
+Use Python 3.13, the version CI tests with `requirements-lock.txt`. Other versions can work: an independent re-run on Python 3.12 with older NumPy, SciPy and librosa gave the same original-split and leave-one-bearing-out decisions, with slightly different continuous scores and one of the 1,200 repeated-split rows changed.
+
 ```bash
 python -m pip install -r requirements-lock.txt
 python -m pytest -q                       # reproduces the thesis split exactly; about 3 minutes the first time
@@ -92,6 +94,6 @@ The optional `a46_export_mlp_MIN.py` path has a separate issue: its generated C 
 
 ## Evaluation boundaries
 
-The historical file-level scores use nine test recordings, which makes them noisy (about ±0.15 balanced accuracy between random splits of that size). The split shares physical bearings across subsets. Random splits of the same size that keep bearings apart scored within 0.02 on average, which rules out a large average inflation but does not prove the overlap is harmless. Only the leave-one-bearing-out results in [`results/`](../results/) estimate unseen-bearing performance. Some A16 aggregation and re-segmentation scripts also change preprocessing relative to training. Review their differences before interpreting them as controlled comparisons.
+The historical file-level scores use nine test recordings, which makes them noisy (about ±0.15 balanced accuracy between random splits of that size). The split shares physical bearings across subsets. Random splits of the same size that keep bearings apart scored within 0.02 on average. No large average difference was seen in these splits, but they reuse the same 20 bearings, so this does not prove the overlap is harmless. Only the leave-one-bearing-out results in [`results/`](../results/) estimate unseen-bearing performance. Some A16 aggregation and re-segmentation scripts also change preprocessing relative to training. Review their differences before interpreting them as controlled comparisons.
 
 The approximately 64 ms thesis predictor measurement excludes feature extraction but includes repeated JSON loading/parsing. The device-runtime tests run the archived MicroPython code on the host with NumPy standing in for ulab; on-board parity has not been tested. The snapshot checker does not reproduce predictions or hardware timings. The host review script reproduces selected offline predictions and exposes the feature mismatch; hardware timings remain unverified.

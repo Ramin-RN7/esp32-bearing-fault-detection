@@ -73,4 +73,4 @@ The SD is the spread between whole random splits, not a confidence interval. Dif
 - A16 MLP: +0.010; 57% of random splits score at least the archived split's 0.833
 - Baseline: RMS + kurtosis: -0.018; 99% of random splits score at least the archived split's 0.500
 
-These differences are below 0.02, so the comparison shows no large average inflation from splitting by recording instead of by bearing. It compares averages over different test sets and has no equivalence margin, so it does not prove that bearing overlap is harmless, or measure its effect on the archived split.
+Over these 200 splits, every mean difference is below 0.02, so no large average difference was seen between splitting by recording and by bearing. The splits reuse the same bearings and compare averages over different test sets, with no equivalence margin. So this does not show that bearing overlap is harmless, or measure its effect on the archived split.
