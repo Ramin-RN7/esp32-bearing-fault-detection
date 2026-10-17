@@ -75,6 +75,7 @@ class Config:
     aggregation: str = "mean"      # recording decision: mean, median or majority of the windows
     base: str = ""                 # configuration whose trained model is shared (aggregation variants)
     features_from: str = ""        # configuration whose features are used, if not its own
+    seed: int = SEED               # MLP initialisation; the archived runs all used 42
     archived: dict = field(default_factory=dict, compare=False)   # archived counts and level
 
     @property
@@ -324,7 +325,7 @@ class Fitted:
             else:
                 if cfg.model == "MLP":
                     self.est = MLPClassifier(hidden_layer_sizes=(10,), activation="relu", solver="adam", max_iter=500,
-                                             random_state=SEED)
+                                             random_state=cfg.seed)
                 elif cfg.model == "RF":
                     self.est = RandomForestClassifier(n_estimators=cfg.trees[0], max_depth=cfg.trees[1],
                                                       random_state=SEED)

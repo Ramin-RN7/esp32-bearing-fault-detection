@@ -67,11 +67,19 @@ Checked on 16 October 2026, after a separate review of `5452756`:
   - per-split repeated results, in `results/repeated_splits.csv`
 - **Integrity tests** check that leave-one-bearing-out folds and bearing-grouped splits never share a bearing. Every recording is held out exactly once. One leave-one-bearing-out fold is recomputed in CI and compared with the published predictions and scores.
 
+## Ablation re-evaluation
+
+Checked on 17 October 2026. [`scripts/evaluate_ablation.py`](../scripts/evaluate_ablation.py) rebuilds every ablation pipeline from its run record and tests it on unseen bearings ([results](../results/ablation_lobo.md)).
+
+- **Rebuild.** Each run's own `code.py` computes its features; the model stage follows its settings. On the original split, 84 of the 86 pipelines reproduce their archived confusion counts exactly. The other two, A40-A16 and A41-A16, were scored by helpers with a different front end ([§5](TECHNICAL_REVIEW.md#5-thesis-text-versus-code-and-records)); rebuilt with the training front end, they match A16-MLP-FILE.
+- **Cross-checks.** For A16 MLP, A8 GMM and the baseline, the rebuilt leave-one-bearing-out decisions, the ten validation choices and the results without the ball-fault bearings equal those in `protocol_comparison.json` exactly. Tests check this, and an exact rebuild of A16 (features and counts) runs in CI.
+- **Selection.** Nested selection chooses among all 86 pipelines in each outer fold using only the other 19 bearings. Its balanced accuracy, 0.950 [0.89–1.00], is close to the best single pipeline's 0.963, so selection inflated the top result only slightly here.
+
 ## Boundaries
 
 - The split is now the original one, not a reconstruction. Recordings from the same physical bearing cross subsets. Random splits of the same size that keep bearings apart scored within 0.02 on average. No large average difference was seen in these splits, but they reuse the same 20 bearings, so this does not prove the overlap is harmless. Leave-one-bearing-out results estimate performance on unseen bearings.
 - The bootstrap intervals resample bearings with the predictions fixed. They leave out the variation from refitting and from the earlier choice of pipeline settings. With 20 bearings, the MLP's lead over the two-feature baseline is not established.
-- Comparing many configurations on the same test set introduces selection bias. The re-evaluation covers the two thesis pipelines, not a nested selection over all configurations.
+- Comparing many configurations on the same test set introduces selection bias. The ablation re-evaluation adds nested selection over all 86 pipelines, but every result still comes from the same 20 bearings on one test rig. It does not replace an independent test set.
 - Predictor timing includes two JSON loads per call; the approximately 64 ms thesis number is not isolated arithmetic time.
 - The physical ESP32, ulab behavior, firmware build, live microphone path and historical hardware timings were not verified.
 - The full original environment and every legacy script have not been executed end to end. Some archived evaluation scripts change preprocessing between training and scoring.
