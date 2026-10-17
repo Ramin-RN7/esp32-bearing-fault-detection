@@ -32,15 +32,15 @@ python scripts/check_snapshot.py
 
 This requires only Python's standard library. It checks syntax, WAV readability/durations and the archived best-results table. It does not run training or test an ESP32.
 
-## Reproduce the later host review
+## Host diagnostics
 
-Read the [technical review and known issues](TECHNICAL_REVIEW.md). With the pinned environment from above installed, run:
+See [known issues](KNOWN_ISSUES.md). With the pinned environment from above installed, run:
 
 ```bash
 python scripts/review_models.py
 ```
 
-This reconstructs the missing split, re-scores the two archived models, exports the GMM and demonstrates the desktop/device feature mismatch using a NumPy host emulation. It writes to `artifacts/technical_review/`. No retraining or ESP32 execution occurs. Other historical dependency versions are unknown, so matching the original environment fully is not established.
+This rebuilds the test split from the file names, re-scores the two archived models, exports the GMM and demonstrates the desktop/device feature mismatch using a NumPy host emulation. It writes to `artifacts/technical_review/`. No retraining or ESP32 execution occurs. Other historical dependency versions are unknown, so matching the original environment fully is not established.
 
 ## Desktop environment
 
@@ -95,10 +95,10 @@ The archived `feat_a8.py` is incompatible with the feature meanings used to trai
 
 `predict_gmm()` currently loads both JSON files on every call. Cache parameters before measuring arithmetic separately. Verify the actual ulab FFT API and return format on the board; changing only the import path does not establish compatibility. The firmware build notes and configuration are in [`records/firmware/`](../records/firmware/). This archive still does not include a complete ESP-IDF firmware tree or a tested flashing procedure.
 
-The optional `a46_export_mlp_MIN.py` path has a separate issue: its generated C predictor writes into the caller's input buffer despite accepting a `const` input pointer. Reusing that input without restoring it can change predictions. Repair the scratch-buffer swap and check input preservation and repeated calls before integrating this export. See the [second-pass review](TECHNICAL_REVIEW.md#second-pass-verification).
+The optional `a46_export_mlp_MIN.py` path has a separate issue: its generated C predictor writes into the caller's input buffer despite accepting a `const` input pointer. Reusing that input without restoring it can change predictions. Repair the scratch-buffer swap and check input preservation and repeated calls before integrating this export. See [known issues](KNOWN_ISSUES.md#4-additional-archive-issues).
 
 ## Evaluation boundaries
 
 The historical file-level scores use nine test recordings, which makes them noisy (about ±0.15 balanced accuracy between random splits of that size). The split shares physical bearings across subsets. Random splits of the same size that keep bearings apart scored within 0.02 on average. No large average difference was seen in these splits, but they reuse the same 20 bearings, so this does not prove the overlap is harmless. Only the leave-one-bearing-out results in [`results/`](../results/) estimate unseen-bearing performance. Some A16 aggregation and re-segmentation scripts also change preprocessing relative to training. Review their differences before interpreting them as controlled comparisons.
 
-The approximately 64 ms thesis predictor measurement excludes feature extraction but includes repeated JSON loading/parsing. The device-runtime tests run the archived MicroPython code on the host with NumPy standing in for ulab; on-board parity has not been tested. The snapshot checker does not reproduce predictions or hardware timings. The host review script reproduces selected offline predictions and exposes the feature mismatch; hardware timings remain unverified.
+The approximately 64 ms thesis predictor measurement excludes feature extraction but includes repeated JSON loading/parsing. The device-runtime tests run the archived MicroPython code on the host with NumPy standing in for ulab; on-board parity has not been tested. The snapshot checker does not reproduce predictions or hardware timings. `review_models.py` reproduces selected offline predictions and exposes the feature mismatch; hardware timings remain unverified.
