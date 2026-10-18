@@ -1,4 +1,4 @@
-# Acoustic Bearing-Fault Detection on an ESP32
+# Acoustic Bearing-Fault Detection and ESP32 Inference Prototype
 
 [![tests](https://github.com/Ramin-RN7/esp32-bearing-fault-detection/actions/workflows/tests.yml/badge.svg)](https://github.com/Ramin-RN7/esp32-bearing-fault-detection/actions/workflows/tests.yml)
 
