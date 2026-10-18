@@ -17,6 +17,16 @@ What has been checked in this repository, how to repeat each check, and what has
 - **Re-runs.** Both evaluations were re-run from a clean commit with the pinned environment (the commit is recorded in each JSON), with unchanged predictions.
 - **Independent re-runs.** One re-ran `evaluate_protocols.py` on Python 3.12 with older NumPy, SciPy and librosa: the same original-split and leave-one-bearing-out decisions for A8 GMM, A16 MLP and the baseline, and the same configuration table ([`results/ablation_runs.csv`](../results/ablation_runs.csv)). Continuous scores differed slightly, and one of the 1,200 repeated-split rows changed (GMM, recording protocol, seed 180). Another re-ran A5 MLP's 20 leave-one-bearing-out folds and got every recording decision (balanced accuracy 0.9625, fault F1 0.975). The full 86-pipeline run and nested selection have not been re-run independently.
 
+## The frozen A5 reference for a board port (2026)
+
+[`scripts/freeze_reference.py`](../scripts/freeze_reference.py) writes [`reference/a5/`](../reference/a5/) for the [decision contract](DECISION_CONTRACT.md) and stops unless:
+
+- the reference implementation ([`reference.py`](../src/bearing_audio/reference.py), no librosa) gives the archived A5 script's features **in every bit** for all 540 windows;
+- the 20 fold models give exactly the published leave-one-bearing-out decisions and scores of A5 MLP (58 of 60 correct), and their JSON export computes P(fault) within 3e-7 of scikit-learn;
+- a float32 emulation of a port ([`port32.py`](../src/bearing_audio/port32.py)) stays within every tolerance on all 540 windows (at most 0.28 of any) with the same 60 decisions.
+
+On every push, [`tests/test_reference.py`](../tests/test_reference.py) repeats the bit-for-bit feature check on the golden recordings by running A5's archived `code.py`. It also recomputes the golden outputs and five of the models, checks the float32 emulation on the golden recordings, and checks that `scripts/check_board.py` fails a port with a forward-only notch. None of this involves a board.
+
 ## The device runtime (on a PC)
 
 - The archived MicroPython runtime for scaler, PCA and GMM, run on a PC with NumPy in place of ulab, makes the same decisions as scikit-learn on the desktop features. The test on every push ([`tests/test_device_runtime.py`](../tests/test_device_runtime.py)) covers 54 windows from six test recordings, with log-likelihoods within 0.01; `scripts/review_models.py`, run by hand, covers all 81 test windows with two feature implementations (within about 0.0014). This checks the arithmetic, not ulab or the board.
@@ -29,7 +39,7 @@ What has been checked in this repository, how to repeat each check, and what has
 
 ## Continuous integration
 
-The tests run on every push with GitHub Actions ([`tests.yml`](../.github/workflows/tests.yml)), on Python 3.13 with the versions pinned in [`requirements-lock.txt`](../requirements-lock.txt). They include the exact A8 and A16 reproduction on the thesis split, an exact rebuild of A16 from its archived feature code, a recomputation of one leave-one-bearing-out fold of the thesis pipelines, fold-integrity checks and consistency checks between the published result files. CI does not re-run the 86-pipeline evaluation, nested selection or the bootstrap; those full evaluations are run by hand ([RUNNING.md](RUNNING.md)).
+The tests run on every push with GitHub Actions ([`tests.yml`](../.github/workflows/tests.yml)), on Python 3.13 with the versions pinned in [`requirements-lock.txt`](../requirements-lock.txt). They include the exact A8 and A16 reproduction on the thesis split, an exact rebuild of A16 from its archived feature code, a recomputation of one leave-one-bearing-out fold of the thesis pipelines, fold-integrity checks, consistency checks between the published result files and the frozen A5 reference checks above. CI does not re-run the 86-pipeline evaluation, nested selection or the bootstrap; those full evaluations are run by hand ([RUNNING.md](RUNNING.md)).
 
 ## Not checked
 
@@ -40,6 +50,6 @@ The tests run on every push with GitHub Actions ([`tests.yml`](../.github/workfl
   - The checks in [`ablation_lobo.md`](../results/ablation_lobo.md) §4 (other seeds, other validation bearings, no ball-fault bearings) test the leading pipelines one by one, not the nested procedure.
   - A16 MLP's lead over the baseline is not established (−0.025 to +0.200).
 - **The bearing overlap in the thesis split.** Random splits of the same size that keep bearings apart scored within 0.02 on average, but they reuse the same 20 bearings, so this doesn't prove the overlap was harmless.
-- **The board.** The physical ESP32, ulab behavior, the firmware build, a live microphone path and the historical hardware timings were not re-verified. The archived ~64 ms predictor timing includes two JSON loads per call.
+- **The board.** The physical ESP32, ulab behavior, the firmware build, a live microphone path and the historical hardware timings were not re-verified. The archived ~64 ms predictor timing includes two JSON loads per call. The frozen reference defines what a new board must reproduce, but no board has run it yet.
 - **Legacy scripts.** Not every archived script has been run end to end, and some archived evaluation scripts change preprocessing between training and scoring.
 - **The original environment.** scikit-learn 1.7.1 matches both archived model bundles; the other historical package versions are unknown.
