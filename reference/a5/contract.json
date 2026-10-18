@@ -1,0 +1,378 @@
+{
+ "pipeline": "A5-MLP",
+ "document": "docs/DECISION_CONTRACT.md",
+ "input": {
+  "format": "WAV, 16-bit signed PCM, little-endian, mono",
+  "sample_rate": 16000
+ },
+ "normalize": {
+  "peak_target": 0.8912509381337456,
+  "peak_target_float32": 0.8912509083747864,
+  "steps": [
+   "y = pcm / 32768 (float32)",
+   "gain = float32(min(1, peak_target / max|y|))",
+   "n = int16(trunc(clip(y * gain, -1, 1) * 32767)), float32 arithmetic"
+  ]
+ },
+ "windows": {
+  "length": 32000,
+  "hop": 16000,
+  "steps": [
+   "x = n / 32767 (float32)",
+   "w = int16(trunc(clip(x[start:start+32000], -1, 1) * 32767)), float32 arithmetic",
+   "signal = w / 32768 (float32)"
+  ]
+ },
+ "highpass": {
+  "type": "Butterworth high-pass",
+  "order": 5,
+  "cutoff_hz": 100.0,
+  "b": [
+   0.9384318012763266,
+   -4.692159006381633,
+   9.384318012763266,
+   -9.384318012763266,
+   4.692159006381633,
+   -0.9384318012763266
+  ],
+  "a": [
+   1.0,
+   -4.872922289230946,
+   9.499726110519884,
+   -9.261332241695408,
+   4.515182753749492,
+   -0.8806542456467316
+  ],
+  "sos": [
+   [
+    0.9384318012763266,
+    -0.9384318012763266,
+    0.0,
+    1.0,
+    -0.9614814515953285,
+    0.0
+   ],
+   [
+    1.0,
+    -2.0,
+    1.0,
+    1.0,
+    -1.936937343346109,
+    0.938431804016836
+   ],
+   [
+    1.0,
+    -2.0,
+    1.0,
+    1.0,
+    -1.9745034942895083,
+    0.9760269394471773
+   ]
+  ],
+  "initial_state": "zero at the start of every window"
+ },
+ "preemphasis": {
+  "coefficient": 0.97,
+  "first_sample": "unchanged",
+  "output": "float32"
+ },
+ "notch": {
+  "f0_hz": 50.0,
+  "q": 30.0,
+  "b": [
+   0.9996728578106041,
+   -1.9989603227048793,
+   0.9996728578106041
+  ],
+  "a": [
+   1.0,
+   -1.9989603227048793,
+   0.9993457156212082
+  ],
+  "zi": [
+   0.00032714218939589035,
+   0.00032714218939589035
+  ],
+  "pad": 9,
+  "padding": "odd",
+  "steps": [
+   "ext = odd extension by pad samples at each end",
+   "forward pass from state zi * ext[0]",
+   "backward pass over the reversed result from state zi * (its first sample)",
+   "reverse, drop pad samples at each end"
+  ]
+ },
+ "features": {
+  "names": [
+   "mean",
+   "std",
+   "rms",
+   "max_abs",
+   "peak_to_peak",
+   "skewness",
+   "kurtosis",
+   "mean_abs_diff",
+   "mean_sq_diff",
+   "zero_crossing_rate",
+   "bp_0_250",
+   "bp_250_500",
+   "bp_500_1k",
+   "bp_1k_2k",
+   "bp_2k_3k",
+   "bp_3k_4k",
+   "bp_4k_6k",
+   "bp_6k_8k",
+   "centroid_hz",
+   "bandwidth_hz",
+   "rolloff_hz",
+   "flatness",
+   "spectral_slope",
+   "autocorr_peak",
+   "autocorr_lag"
+  ],
+  "input": "notch output as float32",
+  "dft_points": 32000,
+  "bands_hz": [
+   [
+    0,
+    250
+   ],
+   [
+    250,
+    500
+   ],
+   [
+    500,
+    1000
+   ],
+   [
+    1000,
+    2000
+   ],
+   [
+    2000,
+    3000
+   ],
+   [
+    3000,
+    4000
+   ],
+   [
+    4000,
+    6000
+   ],
+   [
+    6000,
+    8000
+   ]
+  ],
+  "zero_crossing_threshold": 1e-10,
+  "stft": {
+   "n_fft": 2048,
+   "hop": 512,
+   "window": "periodic Hann",
+   "frames": 63,
+   "centred": true,
+   "padding": "zeros"
+  },
+  "rolloff_percent": 0.85,
+  "flatness_amin": 1e-10,
+  "max_lag": 200,
+  "spread": [
+   4.496788158601142e-06,
+   0.012287932892378938,
+   0.01228793116650107,
+   0.10161354126344786,
+   0.19266615341638962,
+   9.661013873569086,
+   1166.5369653177497,
+   0.01476513463175884,
+   0.001491188117997316,
+   0.10082846916067839,
+   0.09357469546669006,
+   0.041134022086681876,
+   0.07826811583907124,
+   0.06058133301078233,
+   0.08607631101075043,
+   0.09757034849446537,
+   0.13444671758126428,
+   0.10319521131564534,
+   531.9291638255365,
+   158.87940134699093,
+   464.4140520977096,
+   0.06431430839842926,
+   0.00016541586074933577,
+   0.1470994982168043,
+   19.8293732429917
+  ]
+ },
+ "decision": {
+  "window_score": "P(fault) from the MLP",
+  "recording_score": "mean of the 9 window scores",
+  "threshold": 0.5,
+  "fault_when": "recording_score >= threshold",
+  "labels": {
+   "0": "healthy",
+   "1": "fault"
+  }
+ },
+ "tolerances": {
+  "pcm": "identical",
+  "signal_fraction_of_peak": {
+   "highpass": 0.0002,
+   "preemphasis": 0.0001,
+   "notch": 0.004
+  },
+  "feature_fraction_of_spread": {
+   "mean": 0.5,
+   "std": 0.001,
+   "rms": 0.001,
+   "max_abs": 0.01,
+   "peak_to_peak": 0.005,
+   "skewness": 0.1,
+   "kurtosis": 0.2,
+   "mean_abs_diff": 0.001,
+   "mean_sq_diff": 0.001,
+   "zero_crossing_rate": 0.1,
+   "bp_0_250": 0.1,
+   "bp_250_500": 0.02,
+   "bp_500_1k": 0.01,
+   "bp_1k_2k": 0.02,
+   "bp_2k_3k": 0.01,
+   "bp_3k_4k": 0.005,
+   "bp_4k_6k": 0.01,
+   "bp_6k_8k": 0.01,
+   "centroid_hz": 0.02,
+   "bandwidth_hz": 0.02,
+   "rolloff_hz": 0.01,
+   "flatness": 1.0,
+   "spectral_slope": 0.001,
+   "autocorr_peak": 0.05,
+   "autocorr_lag": 0.0
+  },
+  "lag_near_tie": 0.01,
+  "model_from_golden_features": 0.0001,
+  "probability": {
+   "from_golden_features": 1e-05,
+   "window": 0.05,
+   "recording": 0.02
+  },
+  "decisions": "identical for all 60 recordings"
+ },
+ "probes": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  10,
+  100,
+  1000,
+  8000,
+  16000,
+  24000,
+  31990,
+  31995,
+  31999
+ ],
+ "models": [
+  "models/all_bearings.json",
+  "models/lobo_bearing_01.json",
+  "models/lobo_bearing_02.json",
+  "models/lobo_bearing_03.json",
+  "models/lobo_bearing_04.json",
+  "models/lobo_bearing_05.json",
+  "models/lobo_bearing_06.json",
+  "models/lobo_bearing_07.json",
+  "models/lobo_bearing_08.json",
+  "models/lobo_bearing_09.json",
+  "models/lobo_bearing_10.json",
+  "models/lobo_bearing_11.json",
+  "models/lobo_bearing_12.json",
+  "models/lobo_bearing_13.json",
+  "models/lobo_bearing_14.json",
+  "models/lobo_bearing_15.json",
+  "models/lobo_bearing_16.json",
+  "models/lobo_bearing_17.json",
+  "models/lobo_bearing_18.json",
+  "models/lobo_bearing_19.json",
+  "models/lobo_bearing_20.json"
+ ],
+ "golden": [
+  "golden/H_10_0.json",
+  "golden/B_11_2.json",
+  "golden/H_13_0.json",
+  "golden/C_19_2.json",
+  "golden/H_2_0.json"
+ ],
+ "audio_sha256": {
+  "H_10_0": "ceb953d0fb9efafc3c21ee6d0e9f34dd6eaa022b1631b7b0e82b1d0c189152ac",
+  "H_11_0": "1c7a63174e3e4f954afdafca7e6f164cfccf06e981f66dd1ded22bb15f05ee6b",
+  "H_12_0": "987538ee3fbfce3b1afe7f3a7adf335776f23aaf5d1dfe013ead49e0036fe2d1",
+  "H_13_0": "02fbf7bdf8a6f99a6828beacf9d033fc5e3c3bf8132d397259f713b0571984bd",
+  "H_14_0": "1bdd28e51529e2e91d0348031923ecf8b74474a9fc228854c852fc2444ca438e",
+  "H_15_0": "3b6bdbe018a6a037aeb535857d06a84b62494871a2dbe8d2e7347291e0d4b695",
+  "H_16_0": "e6191a1a289e02e1ed3ab07db8ff9cad79500c85cba01b89bef4515ab01a10c0",
+  "H_17_0": "e889997f20add42dd0aec2d7690c9900fcde9580c1c5845da801fff10e732402",
+  "H_18_0": "0e46d9fcae365659bf0f679fd4ed2008cb8364bb3620768eaa4fb50d14a2fb58",
+  "H_19_0": "4da31cb5d705b1319a44bf681db1bfe1ca783f3ec903bc992deced7beb665256",
+  "H_1_0": "8c8ae1e7e0b1cedbdf8255239fe774417dd1df808c817c2579914584495d2f4d",
+  "H_20_0": "94d5cf3e8fcbf997c6b5078d6edb4dcaa9095276a8fd8302b0226c105adfe0bd",
+  "H_2_0": "c4981e905a097ff1282dc8752e4c18c51043ecf5035092ab79fcb5207066f3eb",
+  "H_3_0": "b8d98906f6db304dc8b387c2dc4309812e45fa6f3e71fc188a799128577c2be2",
+  "H_4_0": "2fb53ba68b7da8463178a1ea5d6151ea399e511ec6984849afe04fee2ce6db0a",
+  "H_5_0": "4e478d2c483ebbaa48d19187cb361c5c8fb9900c3fc1efe2fe3e1d6cc6ddceed",
+  "H_6_0": "cf7b5fbd8cfdeb888bee544ed46fec99e361469d2a6e6d7d4c763f6d15e78cdd",
+  "H_7_0": "fc3c2b47ee80df39f51a0a0bbed16c91f55737cdd97cc449ca5d49dc6d43443f",
+  "H_8_0": "4d6ea50094570bff525fba421f8d980ee58041d45379b7b8727c4a7fc05602db",
+  "H_9_0": "0dd3c8b549594459a69738c92c99ea54522921258a0b8e64ca4f8f1856b44c75",
+  "B_11_1": "507fe5ba757e5b3cd2ca6ae074000fde29ea09f128d5916452f6de1c4ca23c73",
+  "B_11_2": "8af91b6aa58765191a2358bfcc349f14dce90ad28620d7bff63e8d04b96621c7",
+  "B_12_1": "f51a36a18caf5d5c4327d989bb9e156827a8082e9438629a17c2c6943319e50a",
+  "B_12_2": "24d5f26e5fb05d2588e35f4947d002c6061e767dd2e9cb38c8b19679b47a0a69",
+  "B_13_1": "0d9511713d6270af0108e42153739ba725475f9fd73f4370d87b87ce14dddc9a",
+  "B_13_2": "767c590577799092c8cb4c1cead3f5d0b287d7aa015d1ac976e13192329ec47e",
+  "B_14_1": "9475510acd0f923565568e4151c2c966a06ecd03e394519bba7036ecab369ba7",
+  "B_14_2": "22f366f0dc023fcb351596105ea86febe59bbbe17ca20c693f49798760a56eff",
+  "B_15_1": "e5ded4a985b125217825c7a3bdaeb5073e9cc60353f95155606d74393b7607fc",
+  "B_15_2": "7252bcd470ca52e8b6cbef7d752e177406deb99f11cc1dc49bdc62ae71ecd4da",
+  "C_16_1": "7ac09a9ada87ebb1e3476d8028cb52e9b1050228de1558551c3b85860ccc365b",
+  "C_16_2": "f29455c72329d8ca4bc9fb3ae7ebea90b15f3f4acc11585d5f82069ee59dfd3c",
+  "C_17_1": "d63db4eb7e9abaea2b061d94811feeea65b35e48f73c43df8157672b40403be0",
+  "C_17_2": "f76f7419f5022393d6837d23babb45efe6078b41ec340b98f6fd44dacc556f9f",
+  "C_18_1": "55f36c46f5120c22dc11626a341fc75e76c03a08d14a65492547519c0925fe50",
+  "C_18_2": "a2938ef91efeb47f7a1df1b7424b5efe945af303361944a5ac747f0dc3757b7a",
+  "C_19_1": "eb4e4688afcae0d7042b75ab65110d769c8329bceb84258cd7571e56a95c3f9b",
+  "C_19_2": "b316e27f7225b0446b27d9984fc4665a22b34cd9ed1e6cf8c21db2a0eafc005e",
+  "C_20_1": "f2d27fcc6497bf27ba553abcc7fff7b938f435c56865fb86470a712fe3bbe041",
+  "C_20_2": "028a4a456fcae5c7510b4319ff0319d1d7dd0abbfa211c50bee08fb75a0d0393",
+  "I_1_1": "432d9764e7cda09b6bd79fd8ad7e6271e280cd9b6b7528c962f4aac1c637e8bd",
+  "I_1_2": "2c6f43c301db22d44dce7aca6317b12dc2f70acc99e6921b730c57373eafd944",
+  "I_2_1": "4a50ad6e72968dde72bf4c0d59b29100ed64d3c8557b6ff5ddf995032b992f12",
+  "I_2_2": "552089b7acf611133c48a0a563344f70a4337970b90a11ab21fab0f790128c97",
+  "I_3_1": "29640abcf3359c7b0432393c4d13014d6d981c79a7c2ddbc343df2f50accf4ba",
+  "I_3_2": "958e1aad4a9acdd9094a738c6761d916dbcaa5c15379a72e1dbe3a58f64c97b2",
+  "I_4_1": "3c6c4358d5741409d5e5713f670284ff333375da773456cb690c05ead8bab943",
+  "I_4_2": "adcde88b80d5b851f11c606b5a6215c0db0336e321c3413c11975111e3d9d192",
+  "I_5_1": "957ebc1cf5af7442b563bd6b1c5d0499c0554dc3af8b107d448fe8a07efa442d",
+  "I_5_2": "3aa7097ad77d32bc1d99f1e268d3e6d401131f4af8f703f32edea97fa74b5348",
+  "O_10_1": "05a447c0534965564176d271b80e456e3f554e32dedff7ef39657f6b187fb94e",
+  "O_10_2": "d778c6d402c54f1eca117394fcdc0fc66aa6fde505d64e80d0ebbe8b28b7d05f",
+  "O_6_1": "73d42d67eeb15699708f30ca5929d04b0985f18726a014b9c9bbbd014e596b53",
+  "O_6_2": "7058ccca27e49125c5590a80375eda1b8e33f8732d62fc03308db6d1915f327b",
+  "O_7_1": "5c99c81ca1b7d090444031df2dad5c7103184932d6aa3f147192a685d2d82e6d",
+  "O_7_2": "8067f457625c3fc7fd9e9a990c6f522c53286d4ac3b6281ebeba81701026ebe1",
+  "O_8_1": "df8018fd8966ed1effe1fbf4f803316bf96bfaac99686ffc0a5299e426dc2eb8",
+  "O_8_2": "8bfb4dd00a66acc3acc09b80df47d4b9a23fbb472145344c25d63a11d8753248",
+  "O_9_1": "0a4ef55dc5a91dab99bd1f8f70797a3ff18ad16885a98451a2fc84e7ef6cb76b",
+  "O_9_2": "b0d95846307240930398d311b4a5b883357ee31c5be2284e59fca6eb85f0b513"
+ },
+ "versions": {
+  "python": "3.13.16",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "scikit-learn": "1.7.1",
+  "soundfile": "0.14.0"
+ }
+}

@@ -11,7 +11,8 @@ Use Python 3.13, the version CI tests with `requirements-lock.txt`. Other versio
 ```bash
 python -m pip install -r requirements-lock.txt
 python scripts/demo.py                    # A5 MLP on unseen bearings; about 2 minutes the first time
-python -m pytest -q                       # includes the exact A8/A16 reproduction on the thesis split; about 3 minutes the first time
+python -m pytest -q                       # includes the exact A8/A16 reproduction on the thesis split; about 4 minutes the first time
+python scripts/freeze_reference.py        # the frozen A5 reference for a board port (reference/a5/); about 1 minute
 python scripts/evaluate_protocols.py      # follow-up evaluations (see below); about 15 minutes
 python scripts/build_ablation_table.py    # rebuilds results/ablation_runs.csv from the original run log
 python scripts/evaluate_ablation.py       # every ablation pipeline on unseen bearings; about 75 minutes on 2 cores
@@ -22,6 +23,19 @@ python scripts/evaluate_ablation.py       # every ablation pipeline on unseen be
 `evaluate_ablation.py` rebuilds every ablation pipeline from its run record ([`ablation.py`](../src/bearing_audio/ablation.py)). Each run's own `code.py` computes its features on the archived two-second segments, written exactly as `prep_segments.py` wrote them; only the script's imports, constants and functions execute. The model stage follows the run's settings. The script first checks every pipeline against its archived counts on the original split, then runs leave-one-bearing-out on all of them, then nested selection: each outer fold chooses a pipeline using only the other 19 bearings. Finally it checks the leading pipelines without the ball-fault bearings, with other validation bearings and with other MLP seeds. It writes `results/ablation_lobo.{json,csv,md}` and caches features in `artifacts/ablation_features/`.
 
 Window features are cached in `artifacts/features.npz`. The cache is reused only if the audio content, the feature code, the feature-spec version and the feature libraries are all unchanged; otherwise the features are recomputed.
+
+## The frozen A5 reference and a board port
+
+[DECISION_CONTRACT.md](DECISION_CONTRACT.md) defines what a port of A5 MLP must compute and how it is checked.
+
+```bash
+python scripts/freeze_reference.py                    # rewrites reference/a5/; stops if any of its checks fails
+python scripts/trace_recording.py H_13_0 --float32    # every window of one recording, with the float32 emulation
+python scripts/trace_recording.py H_13_0 --window 3 --save w3.npz   # all stages of one window as arrays
+python scripts/check_board.py board/*.json            # a board's output files against the reference
+```
+
+`freeze_reference.py` writes the same files on the same environment; `tests/test_reference.py` checks them on every push. The format of the board's output files is in the contract, section 6.
 
 ## Inspect the snapshot
 
@@ -92,7 +106,7 @@ The runtime expects `/models/A8_GMM/preprocess.json` and `/models/A8_GMM/gmm.jso
 python 05_model_export/a47_export_gmm_json.py --bundle 05_model_export/gmm_A8.joblib --out 05_model_export/exports/A8_GMM
 ```
 
-The archived `feat_a8.py` is incompatible with the feature meanings used to train this GMM. Do not join that extractor to the bundle as a validated audio classifier. Define a matching feature contract and verify feature-to-score parity first. Device label 1 means normal, while offline label 1 means fault.
+The archived `feat_a8.py` is incompatible with the feature meanings used to train this GMM. Do not join that extractor to the bundle as a validated audio classifier. Device label 1 means normal, while offline label 1 means fault. A new port should follow the [decision contract](DECISION_CONTRACT.md) for A5 MLP instead.
 
 `predict_gmm()` currently loads both JSON files on every call. Cache parameters before measuring arithmetic separately. Verify the actual ulab FFT API and return format on the board; changing only the import path does not establish compatibility. The device ran the lab's custom MicroPython firmware, which is not included. The notes from rebuilding it with ESP-IDF 4.4 are in [`records/firmware/`](../records/firmware/); the rebuilt image booted, but the model-inference modules it was meant to add were not completed.
 

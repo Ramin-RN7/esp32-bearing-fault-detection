@@ -1,10 +1,10 @@
 # Known issues
 
-The known problems in the thesis archive: where the device prototype falls short, why the thesis test split can't support claims about unseen bearings, defects in the archived scripts, and where the thesis text differs from the code. The thesis PDF and slides stay as submitted; the corrections are collected here. Last updated 17 October 2026.
+The known problems in the thesis archive: where the device prototype falls short, why the thesis test split can't support claims about unseen bearings, defects in the archived scripts, and where the thesis text differs from the code. The thesis PDF and slides stay as submitted; the corrections are collected here. Last updated 18 October 2026.
 
 | Issue | Status | Details |
 |---|---|---|
-| The device computes different features from the ones the model was trained on | **Open.** A strict expected-failure test tracks it. Next: one decision contract and golden outputs, checked on a new board | [§1](#1-desktop-and-device-features-have-different-meanings) |
+| The device computes different features from the ones the model was trained on | **Open on the device.** A strict expected-failure test tracks it. The [decision contract](DECISION_CONTRACT.md) and golden outputs are frozen (18 October 2026); a new board has to meet them | [§1](#1-desktop-and-device-features-have-different-meanings) |
 | The predictor timing includes reloading the model on every call; feature extraction used a Python DFT | **Open.** To be re-measured on the new board | [§2](#2-predictor-timing-includes-repeated-model-loading) |
 | The thesis test split has 9 recordings, shares bearings with training, and the configurations were compared on it | **Addressed by follow-up evaluations** on unseen bearings, with nested selection. The thesis's A8 GMM and A16 MLP results reproduce exactly | [§3](#3-the-split-is-too-weak-for-unseen-bearing-claims) |
 | The thesis text differs from the code and records in seven places; slide 19 presents the PC accuracy as the board's, with a timing that is only partly measured | **Documented** | [§5](#5-thesis-text-versus-code-and-records) |
@@ -36,6 +36,8 @@ This is an emulation on a PC, not a measurement on the board. The [device report
 Neither tests ulab or the board.
 
 **Fix.** One decision contract covering PCM scaling, filters and their boundary handling, FFT and framing settings, feature definitions and order, scaler, PCA and model parameters, the window-to-recording aggregation, the threshold and the label meaning. Golden outputs for every stage, from PCM samples to the recording decision, that the board must reproduce within declared tolerances before any accuracy is measured on it.
+
+**Status (18 October 2026).** Defined for A5 MLP, the best single pipeline, in [DECISION_CONTRACT.md](DECISION_CONTRACT.md), with the frozen files in [`reference/a5/`](../reference/a5/). The reference reproduces the archived A5 features in every bit. A float32 emulation of a port meets every tolerance on all 540 windows with the same decisions. What remains is the board itself (open work, item 2).
 
 ## 2. Predictor timing includes repeated model loading
 
@@ -131,8 +133,8 @@ The first command checks that the archived files are readable. The second rebuil
 
 ## Open work
 
-1. Define the decision contract from §1 and golden outputs from PCM to the recording decision. The current mismatch is tracked by a strict expected-failure test.
-2. On the new board, with a pinned MicroPython + ulab build: complete the WAV path (recordings copied in batches, since the WAVs total 19.2 MB), load the model once, use the board's FFT, check each stage against the golden outputs and time each stage alongside correct predictions.
+1. Done for A5 MLP (18 October 2026): the decision contract from §1 and golden outputs from PCM to the recording decision ([DECISION_CONTRACT.md](DECISION_CONTRACT.md)). The old device's mismatch is still tracked by a strict expected-failure test.
+2. On the new board, with a pinned MicroPython + ulab build: complete the WAV path (recordings copied in batches, since the WAVs total 19.2 MB), load the model once, use the board's FFT, check each stage against the golden outputs with `scripts/check_board.py` and time each stage alongside correct predictions.
 3. Repair the MLP C exporter's buffer handling and check repeated calls before using that export path.
 4. Consolidate the duplicated experiment code and repair the legacy writers.
 

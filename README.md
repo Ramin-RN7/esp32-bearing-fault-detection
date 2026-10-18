@@ -8,7 +8,7 @@ Can a microphone and a small microcontroller tell a healthy rolling bearing from
 - **What you need to check it:** the original data split and run records, and a package that reproduces the thesis's two headline results (A8 GMM and A16 MLP) exactly and rebuilds 84 of the 86 ablation pipelines to their archived confusion counts.
 - **Stricter follow-up evaluations (2026, not part of the thesis):** every ablation pipeline re-tested on bearings unseen in training. Choosing among them without seeing the test bearing (nested selection) reaches 0.950 balanced accuracy, against 0.762 for logistic regression on RMS and kurtosis.
 
-**On the device:** the model arithmetic is verified on a PC, but the board computes different features from the ones the model was trained on, so on-device accuracy has not been measured ([details](#on-the-esp32-m5stack-core2)).
+**On the device:** the model arithmetic is verified on a PC, but the board computed different features from the ones the model was trained on, so on-device accuracy has not been measured ([details](#on-the-esp32-m5stack-core2)). For the next board, a [decision contract](docs/DECISION_CONTRACT.md) now fixes every step from audio samples to the decision, with golden outputs and tolerances.
 
 ## Quick demo
 
@@ -69,8 +69,8 @@ Details: [all 86 pipelines, nested selection and robustness checks](results/abla
 | Timing (WAV from flash) | About 64 ms per prediction call, including reloading the model JSON every time; about 11.2 s per feature frame, because a pure-Python DFT was used. |
 
 **Next:** one verified audio-to-decision path on an ESP32-DevKitC-VE.
-1. Freeze a reference: the A5 fold models from the published manifests and seeds, with golden outputs for every stage from PCM samples to the recording decision.
-2. Port each stage to a pinned MicroPython + ulab build and compare it with the reference within declared tolerances. A5's 32,000-point FFT, forward-backward notch filter and librosa framing need explicit porting choices; a changed definition becomes a named variant that is evaluated in its own right.
+1. **Done (18 Oct 2026):** the [decision contract](docs/DECISION_CONTRACT.md) and its frozen reference in [`reference/a5/`](reference/a5/). The reference code reproduces the archived A5 features in every bit without librosa. The 20 fold models reproduce the published decisions, and an all-bearings model is included for deployment. Golden outputs cover every stage of five recordings. A float32 emulation of a port meets every tolerance on all 540 windows with the same 60 decisions.
+2. Port each stage to a pinned MicroPython + ulab build and check it with [`scripts/check_board.py`](scripts/check_board.py). A changed definition, such as a zero-padded FFT, becomes a named variant that is evaluated in its own right.
 3. Run the recordings on the board in batches (the WAVs total 19.2 MB, more than the flash), compare every recording's decision with the host, and measure time and memory per stage.
 
 ## Reproduce
@@ -81,7 +81,8 @@ Tested with Python 3.13, the version CI uses.
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements-lock.txt
 python scripts/demo.py                                 # ~2 min: A5 MLP on unseen bearings (above)
-pytest -q                                              # ~3 min: thesis split, feature cache, fold integrity, ablation rebuild, device runtime
+python scripts/freeze_reference.py                     # ~1 min: the frozen A5 reference for the board (reference/a5/)
+pytest -q                                              # ~4 min: thesis split, feature cache, fold integrity, ablation rebuild, device runtime, frozen reference
 python scripts/evaluate_protocols.py                   # ~15 min: the follow-up evaluations, see docs/RUNNING.md
 python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablation pipelines on unseen bearings
 ```
@@ -91,12 +92,13 @@ python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablatio
 | Path | Contents |
 |---|---|
 | [`src/bearing_audio/`](src/bearing_audio/) | Feature extraction, the two thesis pipelines, the evaluation protocols and the rebuild of every ablation pipeline |
-| [`scripts/`](scripts/) | `demo.py`, `evaluate_protocols.py`, `evaluate_ablation.py`, `build_ablation_table.py`, archive checks and host diagnostics |
-| [`tests/`](tests/) | Reproduction, feature-cache, fold-integrity, ablation-rebuild, device-runtime and export tests, run on every push |
+| [`scripts/`](scripts/) | `demo.py`, `evaluate_protocols.py`, `evaluate_ablation.py`, `build_ablation_table.py`, `freeze_reference.py`, `trace_recording.py`, `check_board.py`, archive checks and host diagnostics |
+| [`tests/`](tests/) | Reproduction, feature-cache, fold-integrity, ablation-rebuild, device-runtime, export and frozen-reference tests, run on every push |
 | [`results/`](results/) | Follow-up evaluation results, the ablation table rebuilt from the run records, and all 86 ablation pipelines on unseen bearings |
+| [`reference/a5/`](reference/a5/) | The frozen A5 reference for a board port: models as JSON, golden outputs for every stage, features and decisions of all 60 recordings ([decision contract](docs/DECISION_CONTRACT.md)) |
 | [`records/`](records/) | Original research records: split manifests, 108 run folders, logs, device files, firmware notes |
 | [`01_uottawa_wavs/`](01_uottawa_wavs/) to [`07_confusion_matrices_full/`](07_confusion_matrices_full/) | The supplementary package as submitted: audio, segmentation, feature and ablation scripts, export, results, confusion matrices |
-| [`docs/`](docs/) | [Known issues](docs/KNOWN_ISSUES.md), [what has been validated](docs/VALIDATION.md), [running the scripts](docs/RUNNING.md) |
+| [`docs/`](docs/) | [Known issues](docs/KNOWN_ISSUES.md), [what has been validated](docs/VALIDATION.md), [running the scripts](docs/RUNNING.md), [the decision contract for a board port](docs/DECISION_CONTRACT.md) |
 
 ## Thesis documents
 
