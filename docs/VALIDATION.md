@@ -34,7 +34,7 @@ The tests run on every push with GitHub Actions ([`tests.yml`](../.github/workfl
 ## Not checked
 
 - **Independent data.** Every result comes from the same 20 bearings, recorded on one test rig with one microphone. Leave-one-bearing-out estimates performance on unseen bearings of this rig; it does not replace an independent test set.
-- **Refitting and selection variation.** The bootstrap intervals resample bearings with the predictions fixed; they don't repeat training or the selection, so they understate the uncertainty. With that caveat:
+- **Refitting and selection variation.** The bootstrap intervals resample bearings with the predictions fixed; they condition on the fitted predictions and don't capture the variation from retraining or from the pipeline selection. With that caveat:
   - Nested selection, which includes the choice among 86 pipelines, scores +0.088 to +0.287 above the RMS + kurtosis baseline (paired 95% interval).
   - A5 MLP's own interval (+0.100 to +0.300) ignores that A5 was picked as the best of 86 after seeing the results, so it is exploratory. On this dataset the hindsight and nested estimates differed by 0.0125.
   - The checks in [`ablation_lobo.md`](../results/ablation_lobo.md) §4 (other seeds, other validation bearings, no ball-fault bearings) test the leading pipelines one by one, not the nested procedure.

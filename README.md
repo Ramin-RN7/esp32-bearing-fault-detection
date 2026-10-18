@@ -45,7 +45,7 @@ Balanced accuracy of recording-level decisions (healthy vs. fault); 0.5 is chanc
 | Baseline: logistic regression on RMS and kurtosis | 0.762 [0.66–0.86] | 0.500 |
 
 - **Original split:** the A16 and A8 entries reproduce the thesis's records exactly ([`tests/test_reproduction.py`](tests/test_reproduction.py)); the thesis reported their F1. The A5 and baseline entries on that split are 2026 calculations.
-- **Intervals:** from resampling the 20 bearings with the predictions fixed. They leave out the variation from retraining and from the selection itself, so they understate the uncertainty.
+- **Intervals:** from resampling the 20 bearings with the predictions fixed. They condition on the fitted predictions and don't capture the variation from retraining or from the pipeline selection.
 - **Against the baseline** (paired 95% intervals): nested selection +0.09 to +0.29; A16 MLP −0.03 to +0.20, so its lead is not established.
 - **Nested selection** chose A5 MLP in 12 of 20 folds, A2 MLP in 4, A7 MLP in 3 and A38 MLP in 1.
 - **Limit:** 20 bearings from one test rig and one microphone. This is not evidence for other machines, microphones or loads.
