@@ -14,6 +14,7 @@ These are unchanged copies from the original research workspace (`bearing-ml`, l
 ## Reading these records
 
 - **Every metric in these records is a test-set metric**, computed on 81 windows from 9 recordings. No validation metrics were logged. Validation data were used only to set the GMM decision threshold inside each run.
+- [`firmware/Firmware_Rebuild_Report_20250814-060352.md`](firmware/Firmware_Rebuild_Report_20250814-060352.md) says **Author: (your name)**: a placeholder that was never filled in. The file is kept as recorded. The report documents Ramin Nassiri's rebuild of the lab's firmware on 14 August 2025.
 - `logs/variants_backup_20250814_050536.csv` has one malformed row (line 81 has 14 fields instead of 15). It is kept as recorded; the active log `logs/variants.csv` is complete.
 - Paths such as `C:\Users\ramin\Desktop\bearing-ml\...` refer to the original workspace. [`scripts/evaluate_protocols.py`](../scripts/evaluate_protocols.py) reads the published copies instead.
 - **The on-device features don't match the model.** The device feature extractor computes 25 short-frame PSD band energies, but the exported A8 model expects the 25 desktop features. The device notes record this ("parity with PC not established"). On-device classification accuracy was never measured. See [known issues](../docs/KNOWN_ISSUES.md#1-desktop-and-device-features-have-different-meanings).

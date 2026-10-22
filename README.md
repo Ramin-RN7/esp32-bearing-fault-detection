@@ -93,7 +93,7 @@ python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablatio
 |---|---|
 | [`src/bearing_audio/`](src/bearing_audio/) | Feature extraction, the two thesis pipelines, the evaluation protocols and the rebuild of every ablation pipeline |
 | [`scripts/`](scripts/) | `demo.py`, `evaluate_protocols.py`, `evaluate_ablation.py`, `build_ablation_table.py`, `freeze_reference.py`, `trace_recording.py`, `check_board.py`, archive checks and host diagnostics |
-| [`tests/`](tests/) | Reproduction, feature-cache, fold-integrity, ablation-rebuild, device-runtime, export and frozen-reference tests, run on every push |
+| [`tests/`](tests/) | Reproduction, feature-cache, fold-integrity, ablation-rebuild, device-runtime, export, frozen-reference and board-checker tests, run by CI on pushes to `main` and on pull requests |
 | [`results/`](results/) | Follow-up evaluation results, the ablation table rebuilt from the run records, and all 86 ablation pipelines on unseen bearings |
 | [`reference/a5/`](reference/a5/) | The frozen A5 reference for a board port: models as JSON, golden outputs for every stage, features and decisions of all 60 recordings ([decision contract](docs/DECISION_CONTRACT.md)) |
 | [`records/`](records/) | Original research records: split manifests, 108 run folders, logs, device files, firmware notes |
@@ -118,6 +118,10 @@ These are the documents as submitted and presented. Some of their statements go 
 ## Data
 
 The audio comes from the University of Ottawa bearing dataset (UORED-VAFCLS, version 5) by Mert Sehri and Patrick Dumond, licensed CC BY 4.0. It has 60 ten-second microphone recordings, converted here to 16 kHz WAV, from 20 bearings. Each bearing was recorded healthy, with a developing fault and faulty. There are five bearings per fault type: inner race, outer race, ball and cage. See the [attribution](01_uottawa_wavs/ATTRIBUTION.md).
+
+## Authorship
+
+Ramin Nassiri carried out the 2025 thesis work kept in [`records/`](records/) (the 104 logged runs of 93 pipeline configurations, the ESP32 prototype and the rebuild of the lab's MicroPython firmware) and wrote the thesis, with help from ChatGPT. The 2026 follow-up (the re-evaluation, tests, frozen reference and documentation) was developed with substantial AI assistance: Claude generated most of its code and text, and ChatGPT reviewed it. The original records and thesis documents are kept unchanged, separate from the later re-evaluation.
 
 ## License and citation
 
