@@ -19,17 +19,17 @@ What has been checked in this repository, how to repeat each check, and what has
 
 ## The frozen A5 reference for a board port (2026)
 
-[`scripts/freeze_reference.py`](../scripts/freeze_reference.py) writes [`reference/a5/`](../reference/a5/) for the [decision contract](DECISION_CONTRACT.md) and stops unless:
+[`scripts/freeze_reference.py`](../scripts/freeze_reference.py) builds [`reference/a5/`](../reference/a5/) for the [decision contract](DECISION_CONTRACT.md) in a staging copy and publishes it only if:
 
 - the reference implementation ([`reference.py`](../src/bearing_audio/reference.py), no librosa) gives the archived A5 script's features **in every bit** for all 540 windows;
 - the 20 fold models give exactly the published leave-one-bearing-out decisions and scores of A5 MLP (58 of 60 correct), and their JSON export computes P(fault) within 3e-7 of scikit-learn;
 - a float32 emulation of a port ([`port32.py`](../src/bearing_audio/port32.py)) stays within every tolerance on all 540 windows (at most 0.28 of any) with the same 60 decisions.
 
-On every push, [`tests/test_reference.py`](../tests/test_reference.py) repeats the bit-for-bit feature check on the golden recordings by running A5's archived `code.py`. It also recomputes the golden outputs and five of the models, checks the float32 emulation on the golden recordings, and checks that `scripts/check_board.py` fails a port with a forward-only notch. None of this involves a board.
+In CI, [`tests/test_reference.py`](../tests/test_reference.py) repeats the bit-for-bit feature check on the golden recordings by running A5's archived `code.py`. It also recomputes the golden outputs and five of the models, checks the float32 emulation on the golden recordings, and checks that `scripts/check_board.py` fails a port with a forward-only notch. [`tests/test_check_board.py`](../tests/test_check_board.py) checks that the board checker rejects malformed files (missing, non-finite or wrongly shaped values; missing, repeated or out-of-range window IDs), fails a score or decision that disagrees with the board's own window probabilities, matches windows by ID, and requires all 60 recordings with their fold models in `--complete` mode. [`tests/test_freeze_reference.py`](../tests/test_freeze_reference.py) checks that a regeneration that fails after writing its models leaves the published reference unchanged. None of this involves a board.
 
 ## The device runtime (on a PC)
 
-- The archived MicroPython runtime for scaler, PCA and GMM, run on a PC with NumPy in place of ulab, makes the same decisions as scikit-learn on the desktop features. The test on every push ([`tests/test_device_runtime.py`](../tests/test_device_runtime.py)) covers 54 windows from six test recordings, with log-likelihoods within 0.01; `scripts/review_models.py`, run by hand, covers all 81 test windows with two feature implementations (within about 0.0014). This checks the arithmetic, not ulab or the board.
+- The archived MicroPython runtime for scaler, PCA and GMM, run on a PC with NumPy in place of ulab, makes the same decisions as scikit-learn on the desktop features. The CI test ([`tests/test_device_runtime.py`](../tests/test_device_runtime.py)) covers 54 windows from six test recordings, with log-likelihoods within 0.01; `scripts/review_models.py`, run by hand, covers all 81 test windows with two feature implementations (within about 0.0014). This checks the arithmetic, not ulab or the board.
 - A strict expected-failure test records that the device feature extractor does not give the desktop decisions ([known issues §1](KNOWN_ISSUES.md#1-desktop-and-device-features-have-different-meanings)).
 
 ## The archive
@@ -39,7 +39,7 @@ On every push, [`tests/test_reference.py`](../tests/test_reference.py) repeats t
 
 ## Continuous integration
 
-The tests run on every push with GitHub Actions ([`tests.yml`](../.github/workflows/tests.yml)), on Python 3.13 with the versions pinned in [`requirements-lock.txt`](../requirements-lock.txt). They include the exact A8 and A16 reproduction on the thesis split, an exact rebuild of A16 from its archived feature code, a recomputation of one leave-one-bearing-out fold of the thesis pipelines, fold-integrity checks, consistency checks between the published result files and the frozen A5 reference checks above. CI does not re-run the 86-pipeline evaluation, nested selection or the bootstrap; those full evaluations are run by hand ([RUNNING.md](RUNNING.md)).
+The tests run with GitHub Actions on pushes to `main` and on pull requests ([`tests.yml`](../.github/workflows/tests.yml)), on Python 3.13 with the versions pinned in [`requirements-lock.txt`](../requirements-lock.txt). They include the exact A8 and A16 reproduction on the thesis split, an exact rebuild of A16 from its archived feature code, a recomputation of one leave-one-bearing-out fold of the thesis pipelines, fold-integrity checks, consistency checks between the published result files and the frozen A5 reference checks above. CI does not re-run the 86-pipeline evaluation, nested selection or the bootstrap; those full evaluations are run by hand ([RUNNING.md](RUNNING.md)).
 
 ## Not checked
 

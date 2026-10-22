@@ -1,6 +1,6 @@
 # Frozen A5 reference
 
-What an ESP32 port of A5 MLP is checked against. The rules, the tolerances and the board's output format are in the [decision contract](../../docs/DECISION_CONTRACT.md). Frozen on 18 October 2026 by [`scripts/freeze_reference.py`](../../scripts/freeze_reference.py) and checked on every push by [`tests/test_reference.py`](../../tests/test_reference.py).
+What an ESP32 port of A5 MLP is checked against. The rules, the tolerances and the board's output format are in the [decision contract](../../docs/DECISION_CONTRACT.md). Frozen on 18 October 2026 by [`scripts/freeze_reference.py`](../../scripts/freeze_reference.py) and checked in CI (pushes to `main` and pull requests) by [`tests/test_reference.py`](../../tests/test_reference.py).
 
 | File | Contents |
 |---|---|

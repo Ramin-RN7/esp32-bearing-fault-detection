@@ -12,7 +12,7 @@ prep_segments.py wrote, with every step spelled out so that a port can be compar
 
 scripts/freeze_reference.py checks the features against the archived feature code for all 540 windows (they
 agree in every bit) and writes the models and golden outputs to reference/a5/. tests/test_reference.py repeats
-the check on the golden recordings on every push.
+the check on the golden recordings in CI (pushes to main and pull requests).
 """
 from __future__ import annotations
 
@@ -310,13 +310,28 @@ def golden_window(stages: dict, index: int) -> dict:
     return out
 
 
+def _fraction(diff, tol: float) -> float:
+    """A difference as a fraction of its tolerance. Anything that isn't a finite number (NaN, inf) fails: inf."""
+    diff = float(diff)
+    return diff / tol if np.isfinite(diff) else float("inf")
+
+
+def _single(value, what: str) -> float:
+    """The one number in a scalar or a one-element array (np.ravel(v)[0] would silently drop the rest)."""
+    v = np.ravel(np.asarray(value, dtype=np.float64))
+    if v.size != 1:
+        raise ValueError(f"{what}: expected one number, got {v.size}")
+    return float(v[0])
+
+
 def check_window(stages: dict, golden: dict, spread) -> dict:
     """A port's window against its golden record: each difference as a fraction of its tolerance.
 
     ``stages`` holds any of the port's pcm, highpass, preemphasis, notch, features and probability for one window
-    (missing ones are skipped); the first four can be arrays or their summaries (pcm_summary, signal_summary), as a
-    board writes them. A value of 1.0 is at the limit and anything above fails. PCM must be identical (0 or inf); so
-    must the lag (inf), except in a near tie (golden lag_gap below LAG_NEAR_TIE), which is reported as 1.0.
+    (missing ones are skipped; scripts/check_board.py requires features and probability); the first four can be
+    arrays or their summaries (pcm_summary, signal_summary), as a board writes them. A value of 1.0 is at the limit
+    and anything above fails, including NaN and infinite values (reported as inf). PCM must be identical (0 or inf);
+    so must the lag (inf), except in a near tie (golden lag_gap below LAG_NEAR_TIE), which is reported as 1.0.
     """
     summary = lambda v, f: v if isinstance(v, dict) else f(v)
     r = {}
@@ -325,28 +340,32 @@ def check_window(stages: dict, golden: dict, spread) -> dict:
     for s, tol in SIGNAL_TOLERANCE.items():
         if s in stages:
             mine, ref = summary(stages[s], signal_summary), golden[s]
-            diff = max([abs(a - b) for a, b in zip(mine["probes"], ref["probes"])] +
-                       [abs(mine[k] - ref[k]) for k in ("peak", "rms", "mean")])
-            r[s] = diff / (tol * ref["peak"])
+            if len(mine["probes"]) != len(ref["probes"]):
+                raise ValueError(f"{s}: expected {len(ref['probes'])} probes, got {len(mine['probes'])}")
+            diffs = np.abs(np.concatenate([np.subtract(mine["probes"], ref["probes"], dtype=np.float64),
+                                           [mine[k] - ref[k] for k in ("peak", "rms", "mean")]]))
+            r[s] = _fraction(np.max(diffs), tol * ref["peak"])       # np.max keeps a NaN; Python's max may not
     if "features" in stages:
         r.update(check_features(stages["features"], golden["features"], spread, golden.get("lag_gap")))
     if "probability" in stages:
-        r["probability"] = (abs(float(np.ravel(stages["probability"])[0]) - golden["probability"])
-                            / PROBABILITY_TOLERANCE["window"])
+        r["probability"] = _fraction(abs(_single(stages["probability"], "probability") - golden["probability"]),
+                                     PROBABILITY_TOLERANCE["window"])
     return r
 
 
 def check_features(features, reference, spread, lag_gap_value=None) -> dict:
-    """Each feature's difference as a fraction of its tolerance (FEATURE_TOLERANCE x spread)."""
-    f, g = np.asarray(features, dtype=np.float64), np.asarray(reference, dtype=np.float64)
+    """Each feature's difference as a fraction of its tolerance (FEATURE_TOLERANCE x spread); non-finite fails."""
+    f, g = np.ravel(np.asarray(features, dtype=np.float64)), np.asarray(reference, dtype=np.float64)
+    if f.shape != (len(FEATURE_NAMES),):
+        raise ValueError(f"expected {len(FEATURE_NAMES)} features, got {f.size}")
     r = {}
     for j, name in enumerate(FEATURE_NAMES):
         d, tol = abs(f[j] - g[j]), FEATURE_TOLERANCE[name] * spread[j]
         if tol:
-            r[name] = d / tol
+            r[name] = _fraction(d, tol)
         else:
             near_tie = lag_gap_value is not None and lag_gap_value < LAG_NEAR_TIE
-            r[name] = 0.0 if d == 0 else (1.0 if near_tie else float("inf"))
+            r[name] = 0.0 if d == 0 else (1.0 if near_tie and np.isfinite(d) else float("inf"))
     return r
 
 
@@ -355,7 +374,9 @@ def check_model(stages: dict, golden: dict) -> dict:
     r = {}
     for s in ("standardized", "pca", "hidden"):
         mine, ref = np.ravel(stages[s]).astype(np.float64), np.asarray(golden[s])
-        r[s] = float(np.max(np.abs(mine - ref) / np.maximum(1.0, np.abs(ref)))) / MODEL_TOLERANCE
-    r["probability"] = (abs(float(np.ravel(stages["probability"])[0]) - golden["probability"])
-                        / PROBABILITY_TOLERANCE["from_golden_features"])
+        if mine.shape != ref.shape:
+            raise ValueError(f"{s}: expected {ref.size} values, got {mine.size}")
+        r[s] = _fraction(np.max(np.abs(mine - ref) / np.maximum(1.0, np.abs(ref))), MODEL_TOLERANCE)
+    r["probability"] = _fraction(abs(_single(stages["probability"], "probability") - golden["probability"]),
+                                 PROBABILITY_TOLERANCE["from_golden_features"])
     return r
