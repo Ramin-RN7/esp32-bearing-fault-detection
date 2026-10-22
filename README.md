@@ -121,7 +121,7 @@ The audio comes from the University of Ottawa bearing dataset (UORED-VAFCLS, ver
 
 ## Authorship
 
-Ramin Nassiri carried out the 2025 thesis work kept in [`records/`](records/) (the 104 logged runs of 93 pipeline configurations, the ESP32 prototype and the rebuild of the lab's MicroPython firmware) and wrote the thesis, with help from ChatGPT. The 2026 follow-up (the re-evaluation, tests, frozen reference and documentation) was developed with substantial AI assistance: Claude generated most of its code and text, and ChatGPT reviewed it. The original records and thesis documents are kept unchanged, separate from the later re-evaluation.
+Ramin Nassiri carried out the 2025 thesis work kept in [`records/`](records/) (the 104 logged runs of 93 pipeline configurations, the ESP32 prototype and the rebuild of the lab's MicroPython firmware) and wrote the thesis, with help from ChatGPT and Claude. The 2026 follow-up (the re-evaluation, tests, frozen reference and documentation) was developed with substantial AI assistance: Claude generated most of its code and text, and ChatGPT reviewed it. The original records and thesis documents are kept unchanged, separate from the later re-evaluation.
 
 ## License and citation
 
