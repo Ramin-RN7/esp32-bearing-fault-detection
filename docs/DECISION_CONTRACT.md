@@ -4,7 +4,7 @@ Frozen on 18 October 2026, before any board run. It defines every step of the A5
 
 - Reference implementation: [`src/bearing_audio/reference.py`](../src/bearing_audio/reference.py)
 - Frozen files: [`reference/a5/`](../reference/a5/), written by [`scripts/freeze_reference.py`](../scripts/freeze_reference.py)
-- Checks: [`tests/test_reference.py`](../tests/test_reference.py) on every push
+- Checks: [`tests/test_reference.py`](../tests/test_reference.py), [`tests/test_check_board.py`](../tests/test_check_board.py) and [`tests/test_freeze_reference.py`](../tests/test_freeze_reference.py), run by CI on pushes to `main` and on pull requests
 
 ## 1. Why
 
@@ -22,7 +22,7 @@ The earlier ESP32 prototype computed different features from the ones its model 
 | `golden/<recording>.json` | Every stage of every window of five recordings (below). |
 | `float32_check.json` | How close a single-precision implementation comes to the reference (§4). |
 
-Two checks run before anything is written:
+The script builds the files in a staging copy and replaces `reference/a5/` only after every check has passed, including the float32 check in §4; if one fails, the published files stay as they were. Two of the checks:
 
 - The reference features equal the archived A5 script's features **in every bit**, for all 540 windows. The reference uses no librosa, writes the zero-phase notch out and computes only the 201 autocorrelation lags it needs.
 - The fold models' decisions and scores equal the published leave-one-bearing-out run: 58 of 60 correct, balanced accuracy 0.9625.
@@ -100,9 +100,9 @@ A port that changes a definition computes a different pipeline. Examples: a zero
  "score": 0.727, "decision": 1}
 ```
 
-   Only `features` and `probability` are required per window. The other stages are checked when present, and only for golden recordings. The probes are the samples at the indices in `contract.json`. `peak` is the largest absolute value.
-5. On the PC: `python scripts/check_board.py board/*.json`. It prints PASS or FAIL per recording, each check as a fraction of its tolerance, and exits with status 1 if anything fails.
-6. When all 60 decisions match, the board has reproduced the leave-one-bearing-out result: the same 60 predictions, so the same 0.9625. This is not a new estimate. Then time each stage with the model loaded once, and record the memory used.
+   Every window needs its `window` ID, its 25 `features` and its `probability` (one number from 0 to 1); windows 1–9 must each appear once, in any order, and are matched by ID. `score` is a number from 0 to 1 and `decision` is 0 or 1. The other stages are optional; they are checked when present, and only for golden recordings. The probes are the samples at the indices in `contract.json`. `peak` is the largest absolute value.
+5. On the PC: `python scripts/check_board.py board/*.json`. A file with a missing field, a wrong shape or a value that is not a finite number is REJECTED before any check. Otherwise it prints PASS or FAIL per recording, each check as a fraction of its tolerance. Besides the reference, the board must agree with itself: its score is the mean of its own window probabilities (within 0.001, so values printed to three decimals pass) and its decision is score ≥ 0.5. It exits with status 1 if anything is rejected or fails. A recording checked with `models/all_bearings.json` shows only that the board computes what the PC computes on that model's training data; it is not an accuracy.
+6. `python scripts/check_board.py --complete board/*.json` also requires all 60 recordings, each once, each with its fold model. When it passes, the board has reproduced the leave-one-bearing-out result: the same 60 predictions, so the same 0.9625. This is not a new estimate. Then time each stage with the model loaded once, and record the memory used.
 
 For debugging, `python scripts/trace_recording.py H_13_0 --float32` shows every window and the float32 emulation's worst check. `--window 3 --save w3.npz` writes all stages of one window as arrays.
 

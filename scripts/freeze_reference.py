@@ -17,8 +17,11 @@ Writes to reference/a5/:
   fraction of each tolerance.
 
 The features come from src/bearing_audio/reference.py (no librosa). The script stops if they differ from the
-archived feature code in any bit, or if the leave-one-bearing-out decisions or scores differ from the
-published run.
+archived feature code in any bit, if the leave-one-bearing-out decisions or scores differ from the published
+run, or if the float32 emulation misses the contract.
+
+Everything is written to a staging copy of reference/a5/ first. Only when every check has passed does the copy
+replace reference/a5/; if anything fails, the published reference stays exactly as it was.
 """
 from __future__ import annotations
 
@@ -26,8 +29,11 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import platform
+import shutil
 import sys
+import tempfile
 import time
 import warnings
 from importlib.metadata import version
@@ -51,15 +57,17 @@ OUT = ROOT / "reference" / "a5"
 GOLDEN = ("H_10_0", "B_11_2", "H_13_0", "C_19_2", "H_2_0")   # see docs/DECISION_CONTRACT.md, section 2
 
 
+class FreezeError(RuntimeError):
+    """A check failed. Nothing is published: the existing reference stays as it was."""
+
+
 def dump(obj, path: Path):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(obj, indent=1) + "\n")
 
 
-def main():
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--skip-float32", action="store_true", help="skip the float32 emulation over all 540 windows")
-    args = ap.parse_args()
+def build(out: Path, skip_float32: bool = False):
+    """Write the whole reference into ``out`` (a staging directory) and run every check. Raises FreezeError."""
     warnings.filterwarnings("ignore", category=ConvergenceWarning)
     t0 = time.time()
     recs = list_recordings()
@@ -81,7 +89,7 @@ def main():
     cfg = next(c for c in configs() if c.id == "A5-MLP")
     archived = ablation_features(recs, [cfg], cache_dir=ROOT / "artifacts" / "ablation_features")["A5-MLP"]
     if not np.array_equal(X, archived):
-        sys.exit("The reference features differ from the archived A5 feature code.")
+        raise FreezeError("The reference features differ from the archived A5 feature code.")
     print("reference features equal the archived A5 feature code in every bit")
 
     # 2. Models: the 20 leave-one-bearing-out folds and one model on all bearings
@@ -101,7 +109,7 @@ def main():
     models["all_bearings"] = (fit_all, R.export_model(fit_all, model="all_bearings", test_bearing=None,
                                                       trained_on=sorted(by_name), **meta))
     for key, (_, m) in models.items():
-        dump(m, OUT / "models" / f"{key}.json")
+        dump(m, out / "models" / f"{key}.json")
 
     # 3. Window probabilities and recording decisions; check them against the published run
     p_fold = np.array([R.model_stages(X[i], models[fold_of[n]][1])["probability"][0] for i, n in enumerate(names)])
@@ -119,18 +127,18 @@ def main():
         s_all, d_all = R.recording_decision(p_all[m])
         pub = published[r.name]
         if d_fold != pub["pred"] or float(np.mean(sk_fold[m].astype(np.float32))) != pub["score"]:
-            sys.exit(f"{r.name}: leave-one-bearing-out result differs from results/ablation_lobo.json")
+            raise FreezeError(f"{r.name}: leave-one-bearing-out result differs from results/ablation_lobo.json")
         rows.append({"recording": r.name, "bearing": r.bearing, "truth": r.label, "fold_model": fold_of[r.name],
                      "lobo_score": repr(s_fold), "lobo_decision": d_fold, "lobo_correct": int(d_fold == r.label),
                      "lobo_margin": f"{abs(s_fold - R.THRESHOLD):.4f}",
                      "all_bearings_score": repr(s_all), "all_bearings_decision": d_all})
     print("leave-one-bearing-out decisions and scores equal the published run; "
           f"JSON forward pass within {np.abs(p_fold - sk_fold).max():.1e} of scikit-learn")
-    with open(OUT / "decisions.csv", "w", newline="") as f:
+    with open(out / "decisions.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
-    with open(OUT / "window_features.csv", "w", newline="") as f:
+    with open(out / "window_features.csv", "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["recording", "window", *FEATURE_NAMES, "lag_gap", "p_lobo", "p_all_bearings"])
         k = 0
@@ -155,7 +163,7 @@ def main():
               "all_bearings": {"model": "models/all_bearings.json",
                                "probabilities": [float(w["probability"][0]) for w in tr_all["windows"]],
                                "score": tr_all["score"], "decision": tr_all["decision"]}},
-             OUT / "golden" / f"{name}.json")
+             out / "golden" / f"{name}.json")
 
     # 5. The contract's constants, for a port to load
     contract = {
@@ -198,17 +206,17 @@ def main():
         "versions": {"python": platform.python_version(),
                      **{k: version(k) for k in ("numpy", "scipy", "scikit-learn", "soundfile")}},
     }
-    dump(contract, OUT / "contract.json")
+    dump(contract, out / "contract.json")
 
     # 6. The float32 emulation against the contract, over all 540 windows
-    if not args.skip_float32:
+    if not skip_float32:
         t1 = time.time()
         worst: dict[str, float] = {}
         pw, k = [], 0
         for r in recs:
             port_normalized, _ = P.normalize(R.read_pcm(r.path))
             if not np.array_equal(port_normalized, normalized[r.name]):
-                sys.exit(f"{r.name}: float32 normalisation differs")
+                raise FreezeError(f"{r.name}: float32 normalisation differs")
             model = models[fold_of[r.name]][1]
             for i, w in enumerate(R.windows(port_normalized)):
                 st = {"pcm": w, **P.front_end(R.window_signal(w))}
@@ -232,12 +240,75 @@ def main():
               "largest_window_probability_difference": float(np.abs(pw - p_fold).max()),
               "largest_recording_score_difference": float(rec_diff),
               "fraction_of_tolerance": {c: round(v, 4) for c, v in worst.items()}},
-             OUT / "float32_check.json")
+             out / "float32_check.json")
         print(f"float32 emulation: worst check at {max(worst.values()):.2f} of its tolerance, decisions identical: "
               f"{same} ({time.time() - t1:.0f} s)")
         if max(worst.values()) > 1 or not same:
-            sys.exit("The float32 emulation does not meet the contract.")
-    print(f"wrote {OUT.relative_to(ROOT)} ({time.time() - t0:.0f} s)")
+            raise FreezeError("The float32 emulation does not meet the contract.")
+    verify(out, skip_float32)
+    print(f"built and checked ({time.time() - t0:.0f} s)")
+
+
+def verify(out: Path, skip_float32: bool = False):
+    """The staged reference is complete and consistent: every file the contract lists, 60 decisions, 540 windows,
+    and golden decisions equal to decisions.csv."""
+    contract = json.loads((out / "contract.json").read_text())
+    needed = ["contract.json", "decisions.csv", "window_features.csv", *contract["models"], *contract["golden"]]
+    if not skip_float32:
+        needed.append("float32_check.json")
+    missing = [f for f in needed if not (out / f).exists()]
+    if missing:
+        raise FreezeError(f"staged reference incomplete: {missing}")
+    with open(out / "decisions.csv", newline="") as f:
+        decisions = {row["recording"]: row for row in csv.DictReader(f)}
+    with open(out / "window_features.csv", newline="") as f:
+        n_windows = sum(1 for _ in csv.DictReader(f))
+    if len(decisions) != 60 or n_windows != 540:
+        raise FreezeError(f"staged reference has {len(decisions)} decisions and {n_windows} windows, not 60 and 540")
+    for g in contract["golden"]:
+        golden = json.loads((out / g).read_text())
+        d = decisions[golden["recording"]]
+        if golden["decision"] != int(d["lobo_decision"]) or abs(golden["score"] - float(d["lobo_score"])) > 1e-9:
+            raise FreezeError(f"{g}: golden decision or score differs from decisions.csv")
+
+
+def freeze(out: Path, build_into) -> None:
+    """Build into a staging copy of ``out`` and swap it in only if ``build_into(stage)`` returns without error.
+
+    The copy keeps the files the build doesn't write (README.md, and float32_check.json with --skip-float32). On
+    any failure the staging copy is removed and ``out`` is left untouched.
+    """
+    out = Path(out)
+    stage = Path(tempfile.mkdtemp(prefix=f".{out.name}.staging-", dir=out.parent))
+    try:
+        if out.exists():
+            shutil.copytree(out, stage, dirs_exist_ok=True)
+        build_into(stage)
+    except BaseException:
+        shutil.rmtree(stage, ignore_errors=True)
+        raise
+    old = out.with_name(f".{out.name}.old-{os.getpid()}")
+    if out.exists():
+        os.replace(out, old)
+    try:
+        os.replace(stage, out)
+    except BaseException:
+        if old.exists():
+            os.replace(old, out)
+        shutil.rmtree(stage, ignore_errors=True)
+        raise
+    shutil.rmtree(old, ignore_errors=True)
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--skip-float32", action="store_true", help="skip the float32 emulation over all 540 windows")
+    args = ap.parse_args()
+    try:
+        freeze(OUT, lambda stage: build(stage, args.skip_float32))
+    except FreezeError as e:
+        sys.exit(f"{e}\nNothing was written: {OUT.relative_to(ROOT)} is unchanged.")
+    print(f"wrote {OUT.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

@@ -29,13 +29,14 @@ Window features are cached in `artifacts/features.npz`. The cache is reused only
 [DECISION_CONTRACT.md](DECISION_CONTRACT.md) defines what a port of A5 MLP must compute and how it is checked.
 
 ```bash
-python scripts/freeze_reference.py                    # rewrites reference/a5/; stops if any of its checks fails
+python scripts/freeze_reference.py                    # rebuilds reference/a5/; publishes nothing if any check fails
 python scripts/trace_recording.py H_13_0 --float32    # every window of one recording, with the float32 emulation
 python scripts/trace_recording.py H_13_0 --window 3 --save w3.npz   # all stages of one window as arrays
-python scripts/check_board.py board/*.json            # a board's output files against the reference
+python scripts/check_board.py board/*.json            # a board's output files against the reference (any subset)
+python scripts/check_board.py --complete board/*.json # all 60, each with its fold model: the held-out result
 ```
 
-`freeze_reference.py` writes the same files on the same environment; `tests/test_reference.py` checks them on every push. The format of the board's output files is in the contract, section 6.
+`freeze_reference.py` writes the same files on the same environment; `tests/test_reference.py` checks them in CI (pushes to `main` and pull requests). The format of the board's output files is in the contract, section 6.
 
 ## Inspect the snapshot
 

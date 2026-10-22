@@ -31,7 +31,7 @@ This is an emulation on a PC, not a measurement on the board. The [device report
 **What does work.** Given the correct desktop features, the archived MicroPython runtime, run on a PC with NumPy in place of ulab, makes the same decisions as scikit-learn:
 
 - `scripts/review_models.py` (run by hand) compares all 81 test windows with two feature implementations: the same decisions in all 162 comparisons, with log-likelihoods within about 0.0014.
-- On every push, [`tests/test_device_runtime.py`](../tests/test_device_runtime.py) checks a smaller case: 54 windows from six test recordings with one feature implementation, the same decisions and log-likelihoods within 0.01. It also checks that the deployed JSON files hold the archived A8 model.
+- In CI, [`tests/test_device_runtime.py`](../tests/test_device_runtime.py) checks a smaller case: 54 windows from six test recordings with one feature implementation, the same decisions and log-likelihoods within 0.01. It also checks that the deployed JSON files hold the archived A8 model.
 
 Neither tests ulab or the board.
 
