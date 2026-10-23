@@ -23,6 +23,16 @@ RECS = {r.name: r for r in list_recordings()}
 GOLDEN = ("H_10_0", "B_11_2", "H_13_0", "C_19_2", "H_2_0")
 CONTRACT = json.loads((REF / "contract.json").read_text())
 SPREAD = np.asarray(CONTRACT["features"]["spread"])
+# The frozen files were computed on a CPU on which NumPy uses AVX-512. On a CPU without it, float32 sums round
+# differently in the last bits: features move by up to about 2e-6 of their spread (skewness, kurtosis, centroid),
+# with the same decisions. These host checks allow 1e-5 of the spread, still 100 times tighter than the tightest
+# feature tolerance a board must meet (1e-3).
+HOST_FEATURE_TOLERANCE = 1e-5
+
+
+def assert_features_close(ours, frozen, what):
+    worst = np.abs(np.asarray(ours, np.float64) - np.asarray(frozen, np.float64)) / SPREAD
+    assert np.all(worst <= HOST_FEATURE_TOLERANCE), f"{what}: {worst.max():.3g} of the spread"
 
 
 def _json(path):
@@ -74,7 +84,7 @@ def test_frozen_window_features_and_decisions(ref_features):
     rows = _csv("window_features.csv")
     assert [r["recording"] for r in rows] == names.tolist()
     frozen = np.array([[float(r[n]) for n in FEATURE_NAMES] for r in rows], dtype=np.float32)
-    np.testing.assert_allclose(frozen, X, rtol=1e-6, atol=1e-12)
+    assert_features_close(X, frozen, "window_features.csv")
     assert np.array_equal(frozen[:, -1], X[:, -1])                       # the autocorrelation lag exactly
     lobo = _json(ROOT / "results" / "ablation_lobo.json")["lobo"]["A5-MLP"]
     published = {p["recording"]: p for p in lobo["predictions"]}
@@ -98,15 +108,19 @@ def test_frozen_models_retrain_from_the_reference_features(ref_features):
         fit = ablation.Fitted(cfg, X[tr], labels[tr], X[:0], labels[:0])
         fresh = R.export_model(fit)
         assert frozen["trained_on"] == (sorted(fold["train"]) if fold else sorted(RECS))
+        # Training amplifies the last-bit differences between CPUs (see HOST_FEATURE_TOLERANCE): without AVX2 a weight
+        # can move by 4e-4 and a probability by 6e-4. A different seed or setting moves them by far more.
         for part in ("standardize", "pca", "mlp"):
             for k, v in fresh[part].items():
                 if isinstance(v, str):
                     assert frozen[part][k] == v
                 else:
-                    np.testing.assert_allclose(frozen[part][k], v, rtol=1e-4, atol=1e-6, err_msg=f"{key} {part} {k}")
+                    np.testing.assert_allclose(frozen[part][k], v, rtol=1e-4, atol=1e-3, err_msg=f"{key} {part} {k}")
         sk = fit.window_scores(X[tr][:20])
-        ours = [R.model_stages(x, frozen)["probability"][0] for x in X[tr][:20]]
+        ours = [R.model_stages(x, fresh)["probability"][0] for x in X[tr][:20]]      # our model code, same model
         np.testing.assert_allclose(ours, sk, atol=1e-5)
+        kept = [R.model_stages(x, frozen)["probability"][0] for x in X[tr][:20]]     # the frozen model
+        np.testing.assert_allclose(kept, sk, atol=1e-3)
 
 
 @pytest.mark.parametrize("name", GOLDEN)
@@ -124,10 +138,10 @@ def test_golden_outputs_reproduce(name):
             np.testing.assert_allclose(fresh[s]["probes"], frozen[s]["probes"], rtol=1e-9, atol=1e-15)
             np.testing.assert_allclose([fresh[s][k] for k in ("peak", "rms")], [frozen[s][k] for k in ("peak", "rms")],
                                        rtol=1e-9)
-        np.testing.assert_allclose(fresh["features"], frozen["features"], rtol=1e-6, atol=1e-12)
+        assert_features_close(fresh["features"], frozen["features"], f"{name} window {i + 1}")
         assert fresh["features"][-1] == frozen["features"][-1]
         for s in ("standardized", "pca", "hidden", "probability"):
-            np.testing.assert_allclose(fresh[s], frozen[s], rtol=1e-5, atol=1e-6)
+            np.testing.assert_allclose(fresh[s], frozen[s], rtol=1e-5, atol=1e-5)
 
 
 def test_contract_file_matches_the_reference():

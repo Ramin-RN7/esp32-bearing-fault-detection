@@ -27,6 +27,8 @@ The script builds the files in a staging copy and replaces `reference/a5/` only 
 - The reference features equal the archived A5 script's features **in every bit**, for all 540 windows. The reference uses no librosa, writes the zero-phase notch out and computes only the 201 autocorrelation lags it needs.
 - The fold models' decisions and scores equal the published leave-one-bearing-out run: 58 of 60 correct, balanced accuracy 0.9625.
 
+The frozen values were computed on an x86-64 CPU on which NumPy uses AVX-512. On a CPU without it, float32 sums round differently in the last bits: features move by up to about 2e-6 of their spread (skewness, kurtosis, centroid), with the same decisions. The PC tests in `tests/test_reference.py` therefore allow 1e-5 of the spread, still 100 times tighter than the tightest feature tolerance a board must meet.
+
 The golden recordings:
 
 | Recording | Truth | Out-of-fold result | Why it is golden |
