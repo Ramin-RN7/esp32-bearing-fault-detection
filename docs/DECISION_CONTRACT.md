@@ -22,12 +22,12 @@ The earlier ESP32 prototype computed different features from the ones its model 
 | `golden/<recording>.json` | Every stage of every window of five recordings (below). |
 | `float32_check.json` | How close a single-precision implementation comes to the reference (§4). |
 
-The script builds the files in a staging copy and replaces `reference/a5/` only after every check has passed, including the float32 check in §4; if one fails, the published files stay as they were. Two of the checks:
+`python scripts/freeze_reference.py` rebuilds everything in a temporary directory and compares it with the published files; it writes nothing. With `--write` it builds the files in a staging copy and replaces `reference/a5/` only after every check has passed, including the float32 check in §4; if one fails, the published files stay as they were. Two of the checks:
 
 - The reference features equal the archived A5 script's features **in every bit**, for all 540 windows. The reference uses no librosa, writes the zero-phase notch out and computes only the 201 autocorrelation lags it needs.
-- The fold models' decisions and scores equal the published leave-one-bearing-out run: 58 of 60 correct, balanced accuracy 0.9625.
+- The fold models make the published leave-one-bearing-out decisions, with the same scores on the CPU that froze them and within 1e-4 on others: 58 of 60 correct, balanced accuracy 0.9625.
 
-The frozen values were computed on an x86-64 CPU on which NumPy uses AVX-512. On a CPU without it, float32 sums round differently in the last bits: features move by up to about 2e-6 of their spread (skewness, kurtosis, centroid), with the same decisions. The PC tests in `tests/test_reference.py` therefore allow 1e-5 of the spread, still 100 times tighter than the tightest feature tolerance a board must meet.
+The frozen values were computed on an x86-64 CPU on which NumPy uses AVX-512. On a CPU without it, float32 sums round differently in the last bits: features move by up to about 2e-6 of their spread (skewness, kurtosis, centroid), with the same decisions. Recording scores move by up to about 2.5e-6. The PC checks (the tests, and `freeze_reference.py` without `--write`) therefore require the same decisions and allow features to differ by 1e-5 of their spread, still 100 times tighter than the tightest feature tolerance a board must meet, and probabilities and scores by 1e-4 (`HOST_TOLERANCE` in `reference.py`).
 
 The golden recordings:
 

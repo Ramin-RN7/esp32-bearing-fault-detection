@@ -70,6 +70,11 @@ FEATURE_TOLERANCE = dict(zip(FEATURE_NAMES, (
 # 1e-4 x max(1, |value|), P(fault) within 1e-5. End to end: window P(fault) within 0.05, recording score within 0.02.
 MODEL_TOLERANCE = 1e-4
 PROBABILITY_TOLERANCE = {"from_golden_features": 1e-5, "window": 0.05, "recording": 0.02}
+# Reproducing the frozen files on another PC (not a board). They were computed on an x86-64 CPU on which NumPy uses
+# AVX-512; elsewhere float32 sums round differently in the last bits. Features then move by up to about 2e-6 of
+# their spread and recording scores by up to about 2.5e-6, with the same decisions. A reproduction must make the same
+# decisions, with features within 1e-5 of their spread and probabilities and scores within 1e-4.
+HOST_TOLERANCE = {"feature_fraction_of_spread": 1e-5, "probability": 1e-4}
 
 
 # --------------------------------------------------------------------------------------------- PCM and windows
