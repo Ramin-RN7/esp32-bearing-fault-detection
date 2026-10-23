@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
-"""Freeze the A5 reference that an ESP32 port is checked against (2026 follow-up).
+"""Check or regenerate the frozen A5 reference that an ESP32 port is checked against (2026 follow-up).
 
-    python scripts/freeze_reference.py                 # writes reference/a5/ (about a minute)
-    python scripts/freeze_reference.py --skip-float32  # without the float32 emulation over all 540 windows
+    python scripts/freeze_reference.py                 # checks that reference/a5/ reproduces here; writes nothing
+    python scripts/freeze_reference.py --write         # regenerates reference/a5/ (about a minute)
+    python scripts/freeze_reference.py --skip-float32  # either, without the float32 emulation over all 540 windows
 
-Writes to reference/a5/:
+Without --write, everything is rebuilt in a temporary directory and compared with the published reference/a5/.
+The decisions must be identical. Features may differ by 1e-5 of their spread, and probabilities and scores by
+1e-4 (HOST_TOLERANCE in reference.py), because other CPUs round float32 sums differently in the last bits.
+
+The reference (with --write, in reference/a5/):
 
 * models/lobo_bearing_NN.json: the 20 leave-one-bearing-out models of A5 MLP, trained exactly as in
   results/ablation_lobo.md (16 training bearings each, seed 42), and models/all_bearings.json, trained on all 20.
@@ -17,11 +22,11 @@ Writes to reference/a5/:
   fraction of each tolerance.
 
 The features come from src/bearing_audio/reference.py (no librosa). The script stops if they differ from the
-archived feature code in any bit, if the leave-one-bearing-out decisions or scores differ from the published
-run, or if the float32 emulation misses the contract.
+archived feature code in any bit, if the leave-one-bearing-out decisions differ from the published run or its
+scores by more than 1e-4, or if the float32 emulation misses the contract.
 
-Everything is written to a staging copy of reference/a5/ first. Only when every check has passed does the copy
-replace reference/a5/; if anything fails, the published reference stays exactly as it was.
+With --write, everything is written to a staging copy of reference/a5/ first. Only when every check has passed
+does the copy replace reference/a5/; if anything fails, the published reference stays exactly as it was.
 """
 from __future__ import annotations
 
@@ -89,7 +94,8 @@ def build(out: Path, skip_float32: bool = False):
     cfg = next(c for c in configs() if c.id == "A5-MLP")
     archived = ablation_features(recs, [cfg], cache_dir=ROOT / "artifacts" / "ablation_features")["A5-MLP"]
     if not np.array_equal(X, archived):
-        raise FreezeError("The reference features differ from the archived A5 feature code.")
+        raise FreezeError("The reference features differ from the archived A5 feature code. If "
+                          "artifacts/ablation_features/ was computed on another machine, delete it and run again.")
     print("reference features equal the archived A5 feature code in every bit")
 
     # 2. Models: the 20 leave-one-bearing-out folds and one model on all bearings
@@ -118,21 +124,20 @@ def build(out: Path, skip_float32: bool = False):
     for r in recs:                                       # in one batch per recording, as run_split() does
         m = names == r.name
         sk_fold[m] = models[fold_of[r.name]][0].window_scores(X[m])
-    published = {p["recording"]: p for p in json.loads((ROOT / "results" / "ablation_lobo.json").read_text())
-                 ["lobo"]["A5-MLP"]["predictions"]}
-    rows = []
+    rows, results = [], {}
     for r in recs:
         m = names == r.name
         s_fold, d_fold = R.recording_decision(p_fold[m])
         s_all, d_all = R.recording_decision(p_all[m])
-        pub = published[r.name]
-        if d_fold != pub["pred"] or float(np.mean(sk_fold[m].astype(np.float32))) != pub["score"]:
-            raise FreezeError(f"{r.name}: leave-one-bearing-out result differs from results/ablation_lobo.json")
+        results[r.name] = (float(np.mean(sk_fold[m].astype(np.float32))), d_fold)
         rows.append({"recording": r.name, "bearing": r.bearing, "truth": r.label, "fold_model": fold_of[r.name],
                      "lobo_score": repr(s_fold), "lobo_decision": d_fold, "lobo_correct": int(d_fold == r.label),
                      "lobo_margin": f"{abs(s_fold - R.THRESHOLD):.4f}",
                      "all_bearings_score": repr(s_all), "all_bearings_decision": d_all})
-    print("leave-one-bearing-out decisions and scores equal the published run; "
+    published = {p["recording"]: p for p in json.loads((ROOT / "results" / "ablation_lobo.json").read_text())
+                 ["lobo"]["A5-MLP"]["predictions"]}
+    worst = check_published_run(results, published)
+    print(f"leave-one-bearing-out decisions equal the published run, scores within {worst:.1e}; "
           f"JSON forward pass within {np.abs(p_fold - sk_fold).max():.1e} of scikit-learn")
     with open(out / "decisions.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
@@ -249,6 +254,89 @@ def build(out: Path, skip_float32: bool = False):
     print(f"built and checked ({time.time() - t0:.0f} s)")
 
 
+def check_published_run(results: dict[str, tuple[float, int]], published: dict) -> float:
+    """The fold models must make the published leave-one-bearing-out decisions for all 60 recordings, with scores
+    within HOST_TOLERANCE (other CPUs round float32 sums differently in the last bits). Returns the largest score
+    difference. ``results`` maps each recording to (score, decision)."""
+    tol = R.HOST_TOLERANCE["probability"]
+    if set(results) != set(published):
+        raise FreezeError("leave-one-bearing-out result differs from results/ablation_lobo.json: other recordings")
+    worst = 0.0
+    for name, (score, decision) in results.items():
+        pub = published[name]
+        diff = abs(score - pub["score"])
+        if decision != pub["pred"] or not diff <= tol:
+            raise FreezeError(f"{name}: leave-one-bearing-out result differs from results/ablation_lobo.json "
+                              f"(decision {decision}, published {pub['pred']}; score difference {diff:.3g}, "
+                              f"allowed {tol:g})")
+        worst = max(worst, diff)
+    return worst
+
+
+def _rows(d: Path, name: str) -> list[dict]:
+    with open(d / name, newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def compare(new: Path, published: Path = OUT) -> str:
+    """A freshly built reference against the published one: the same decisions, features within HOST_TOLERANCE of
+    their spread, probabilities and scores within HOST_TOLERANCE. The autocorrelation lag must be the same except
+    in a near tie (contract, section 4). Raises FreezeError; returns a one-line summary."""
+    tol_f, tol_p = R.HOST_TOLERANCE["feature_fraction_of_spread"], R.HOST_TOLERANCE["probability"]
+    spread = np.asarray(json.loads((published / "contract.json").read_text())["features"]["spread"])
+    worst_p = 0.0
+
+    def close(a: float, b: float, what: str):
+        nonlocal worst_p
+        d = abs(float(a) - float(b))
+        if not d <= tol_p:
+            raise FreezeError(f"{what} differs from the published reference by {d:.3g} (allowed {tol_p:g})")
+        worst_p = max(worst_p, d)
+
+    a, b = _rows(new, "decisions.csv"), _rows(published, "decisions.csv")
+    if [r["recording"] for r in a] != [r["recording"] for r in b]:
+        raise FreezeError("decisions.csv lists other recordings than the published reference")
+    for x, y in zip(a, b):
+        for k in ("lobo_decision", "all_bearings_decision"):
+            if x[k] != y[k]:
+                raise FreezeError(f"{x['recording']}: {k} differs from the published reference")
+        for k in ("lobo_score", "all_bearings_score"):
+            close(x[k], y[k], f"{x['recording']}: {k}")
+
+    a, b = _rows(new, "window_features.csv"), _rows(published, "window_features.csv")
+    if [(r["recording"], r["window"]) for r in a] != [(r["recording"], r["window"]) for r in b]:
+        raise FreezeError("window_features.csv lists other windows than the published reference")
+    fa, fb = (np.array([[float(r[n]) for n in FEATURE_NAMES] for r in rows]) for rows in (a, b))
+    frac = np.abs(fa[:, :-1] - fb[:, :-1]) / spread[:-1]
+    if not np.all(frac <= tol_f):
+        i, j = np.unravel_index(np.argmax(np.where(np.isfinite(frac), frac, np.inf)), frac.shape)
+        raise FreezeError(f"{a[i]['recording']} window {a[i]['window']}: {FEATURE_NAMES[j]} differs from the "
+                          f"published reference by {frac[i, j]:.3g} of its spread (allowed {tol_f:g})")
+    near_tie = np.array([float(r["lag_gap"]) for r in b]) < R.LAG_NEAR_TIE
+    if np.any((fa[:, -1] != fb[:, -1]) & ~near_tie):
+        raise FreezeError("an autocorrelation lag differs from the published reference outside a near tie")
+    for x, y in zip(a, b):
+        for k in ("p_lobo", "p_all_bearings"):
+            close(x[k], y[k], f"{x['recording']} window {x['window']}: {k}")
+
+    for g in json.loads((published / "contract.json").read_text())["golden"]:
+        ga, gb = (json.loads((d / g).read_text()) for d in (new, published))
+        if ga["decision"] != gb["decision"]:
+            raise FreezeError(f"{g}: decision differs from the published reference")
+        close(ga["score"], gb["score"], f"{g}: score")
+    return (f"the same 60 decisions; features within {frac.max():.1e} of their spread; probabilities and scores "
+            f"within {worst_p:.1e}")
+
+
+def check(skip_float32: bool = False, published: Path = OUT) -> str:
+    """Rebuild the reference in a temporary directory and compare it with the published one. Writes nothing."""
+    with tempfile.TemporaryDirectory(prefix="a5-check-") as tmp:
+        stage = Path(tmp) / "a5"
+        stage.mkdir()
+        build(stage, skip_float32)
+        return compare(stage, published)
+
+
 def verify(out: Path, skip_float32: bool = False):
     """The staged reference is complete and consistent: every file the contract lists, 60 decisions, 540 windows,
     and golden decisions equal to decisions.csv."""
@@ -302,13 +390,22 @@ def freeze(out: Path, build_into) -> None:
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--write", action="store_true", help="regenerate reference/a5/ (otherwise only check it)")
     ap.add_argument("--skip-float32", action="store_true", help="skip the float32 emulation over all 540 windows")
     args = ap.parse_args()
+    where = OUT.relative_to(ROOT)
+    if not args.write:
+        try:
+            summary = check(args.skip_float32)
+        except FreezeError as e:
+            sys.exit(f"{e}\n{where} does not reproduce on this machine. Nothing was written.")
+        print(f"{where} reproduces on this machine: {summary}. Nothing was written.")
+        return
     try:
         freeze(OUT, lambda stage: build(stage, args.skip_float32))
     except FreezeError as e:
-        sys.exit(f"{e}\nNothing was written: {OUT.relative_to(ROOT)} is unchanged.")
-    print(f"wrote {OUT.relative_to(ROOT)}")
+        sys.exit(f"{e}\nNothing was written: {where} is unchanged.")
+    print(f"wrote {where}")
 
 
 if __name__ == "__main__":

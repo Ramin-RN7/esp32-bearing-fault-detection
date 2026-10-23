@@ -81,7 +81,7 @@ Tested with Python 3.13, the version CI uses.
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements-lock.txt
 python scripts/demo.py                                 # ~2 min: A5 MLP on unseen bearings (above)
-python scripts/freeze_reference.py                     # ~1 min: the frozen A5 reference for the board (reference/a5/)
+python scripts/freeze_reference.py                     # ~1 min: checks that the frozen A5 reference (reference/a5/) reproduces
 pytest -q                                              # ~4 min: thesis split, feature cache, fold integrity, ablation rebuild, device runtime, frozen reference
 python scripts/evaluate_protocols.py                   # ~15 min: the follow-up evaluations, see docs/RUNNING.md
 python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablation pipelines on unseen bearings
@@ -121,7 +121,7 @@ The audio comes from the University of Ottawa bearing dataset (UORED-VAFCLS, ver
 
 ## Authorship
 
-Ramin Nassiri carried out the 2025 thesis work kept in [`records/`](records/) (the 104 logged runs of 93 pipeline configurations, the ESP32 prototype and the rebuild of the lab's MicroPython firmware) and wrote the thesis, with help from ChatGPT and Claude. The 2026 follow-up (the re-evaluation, tests, frozen reference and documentation) was developed with substantial AI assistance: Claude generated most of its code and text, and ChatGPT reviewed it. The original records and thesis documents are kept unchanged, separate from the later re-evaluation.
+Ramin Nassiri carried out the 2025 thesis work kept in [`records/`](records/) (the 104 logged runs of 93 pipeline configurations, the ESP32 prototype and the rebuild of the lab's MicroPython firmware) and wrote the thesis, with help from ChatGPT and Claude. He also started the 2026 follow-up (the re-evaluation, tests, frozen reference and documentation), supplied the original records, corrected historical details such as the firmware account, and decided what to publish. The follow-up was developed with substantial AI assistance: Claude generated most of its code and text, and ChatGPT reviewed it. The original records and thesis documents are kept unchanged, separate from the later re-evaluation.
 
 ## License and citation
 

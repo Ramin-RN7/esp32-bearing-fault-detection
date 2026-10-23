@@ -24,10 +24,11 @@ GOLDEN = ("H_10_0", "B_11_2", "H_13_0", "C_19_2", "H_2_0")
 CONTRACT = json.loads((REF / "contract.json").read_text())
 SPREAD = np.asarray(CONTRACT["features"]["spread"])
 # The frozen files were computed on a CPU on which NumPy uses AVX-512. On a CPU without it, float32 sums round
-# differently in the last bits: features move by up to about 2e-6 of their spread (skewness, kurtosis, centroid),
-# with the same decisions. These host checks allow 1e-5 of the spread, still 100 times tighter than the tightest
-# feature tolerance a board must meet (1e-3).
-HOST_FEATURE_TOLERANCE = 1e-5
+# differently in the last bits, so these PC checks use R.HOST_TOLERANCE: the same decisions, features within 1e-5 of
+# their spread (100 times tighter than the tightest feature tolerance a board must meet), probabilities and scores
+# within 1e-4.
+HOST_FEATURE_TOLERANCE = R.HOST_TOLERANCE["feature_fraction_of_spread"]
+HOST_SCORE_TOLERANCE = R.HOST_TOLERANCE["probability"]
 
 
 def assert_features_close(ours, frozen, what):
@@ -92,7 +93,7 @@ def test_frozen_window_features_and_decisions(ref_features):
     assert len(decisions) == 60
     for d in decisions:
         assert int(d["lobo_decision"]) == published[d["recording"]]["pred"]
-        assert float(d["lobo_score"]) == pytest.approx(published[d["recording"]]["score"], abs=1e-6)
+        assert float(d["lobo_score"]) == pytest.approx(published[d["recording"]]["score"], abs=HOST_SCORE_TOLERANCE)
     assert sum(int(d["lobo_correct"]) for d in decisions) == 58          # A5 MLP: 0.9625 balanced accuracy
     assert min(float(d["lobo_margin"]) for d in decisions) > 0.1
 
@@ -130,7 +131,7 @@ def test_golden_outputs_reproduce(name):
     assert g["wav_sha256"] == file_sha256(rec.path) == CONTRACT["audio_sha256"][name]
     tr = R.trace(rec.path, _json(REF / g["model"]))
     assert float(tr["gain"]) == g["gain"] and tr["decision"] == g["decision"]
-    assert tr["score"] == pytest.approx(g["score"], abs=1e-6)
+    assert tr["score"] == pytest.approx(g["score"], abs=HOST_SCORE_TOLERANCE)
     for i, w in enumerate(tr["windows"]):
         fresh, frozen = R.golden_window(w, i), g["windows"][i]
         assert fresh["pcm"] == frozen["pcm"]

@@ -12,7 +12,7 @@ Use Python 3.13, the version CI tests with `requirements-lock.txt`. Other versio
 python -m pip install -r requirements-lock.txt
 python scripts/demo.py                    # A5 MLP on unseen bearings; about 2 minutes the first time
 python -m pytest -q                       # includes the exact A8/A16 reproduction on the thesis split; about 4 minutes the first time
-python scripts/freeze_reference.py        # the frozen A5 reference for a board port (reference/a5/); about 1 minute
+python scripts/freeze_reference.py        # checks that the frozen A5 reference (reference/a5/) reproduces; writes nothing; about 1 minute
 python scripts/evaluate_protocols.py      # follow-up evaluations (see below); about 15 minutes
 python scripts/build_ablation_table.py    # rebuilds results/ablation_runs.csv from the original run log
 python scripts/evaluate_ablation.py       # every ablation pipeline on unseen bearings; about 75 minutes on 2 cores
@@ -29,14 +29,15 @@ Window features are cached in `artifacts/features.npz`. The cache is reused only
 [DECISION_CONTRACT.md](DECISION_CONTRACT.md) defines what a port of A5 MLP must compute and how it is checked.
 
 ```bash
-python scripts/freeze_reference.py                    # rebuilds reference/a5/; publishes nothing if any check fails
+python scripts/freeze_reference.py                    # rebuilds reference/a5/ in a temporary directory and compares; writes nothing
+python scripts/freeze_reference.py --write            # regenerates reference/a5/; publishes nothing if any check fails
 python scripts/trace_recording.py H_13_0 --float32    # every window of one recording, with the float32 emulation
 python scripts/trace_recording.py H_13_0 --window 3 --save w3.npz   # all stages of one window as arrays
 python scripts/check_board.py board/*.json            # a board's output files against the reference (any subset)
 python scripts/check_board.py --complete board/*.json # all 60, each with its fold model: the held-out result
 ```
 
-`freeze_reference.py` writes the same files on the same environment; `tests/test_reference.py` checks them in CI (pushes to `main` and pull requests). The format of the board's output files is in the contract, section 6.
+Without `--write`, `freeze_reference.py` requires the same 60 decisions and allows features to differ by 1e-5 of their spread and probabilities and scores by 1e-4, because another CPU rounds float32 sums differently in the last bits (contract, section 2). With `--write` on the same environment it writes the same files. `tests/test_reference.py` checks them in CI (pushes to `main` and pull requests). The format of the board's output files is in the contract, section 6.
 
 ## Inspect the snapshot
 
