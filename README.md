@@ -106,14 +106,7 @@ python scripts/evaluate_ablation.py                    # ~75 min: all 86 ablatio
 - [Defense slides](Presentation%20Audio-Based%20Bearing%20Fault%20Detection.pptx)
 - [Supplementary-materials index](Supplementary_Materials_Index_Ramin_Nassiri_MEM_OTH_Regensburg.pdf)
 
-These are the documents as submitted and presented. Some of their statements go beyond what the code and records show:
-
-- Section 4.2 of the thesis says the WAV test exercised the model "identically to the offline pipeline", and contribution 3 calls the device work "On-device validation".
-- Slide 19 presents the PC results for A8 (F1 ≈ 0.90–0.91, "same accuracy as offline") as the board's, at about 70–75 ms per frame ("FFT fast, but MicroPython PCA+GMM still ~64 ms"). The 64 ms is measured; no FFT timing is archived. On the board, the features didn't match the model and the measured feature step took about 11.2 s per frame.
-- Table 3.1 is headed "file-level F1", but some of its rows are window-level scores.
-- The feature table (Table 2.1), the data-preparation listing and some conclusions differ from the code. For example, the real split keeps whole recordings together, which is stricter than the listing shows.
-
-[Known issues](docs/KNOWN_ISSUES.md#5-thesis-text-versus-code-and-records) lists each one. None of them changes the reproduced scores above.
+These are the documents as submitted and presented; the thesis PDF has the matriculation number and the signature removed. Some of their statements go beyond what the code and records show: the device-validation claims (Section 4.2, contribution 3 and slide 19), the 64 ms timing on slide 19, the "file-level F1" label of Table 3.1, and the feature table and data-preparation listing. [Known issues](docs/KNOWN_ISSUES.md#5-thesis-text-versus-code-and-records) lists each one. None of them changes the reproduced scores above.
 
 ## Data
 
@@ -121,7 +114,7 @@ The audio comes from the University of Ottawa bearing dataset (UORED-VAFCLS, ver
 
 ## Authorship
 
-Ramin Nassiri carried out the 2025 thesis work kept in [`records/`](records/) (the 104 logged runs of 93 pipeline configurations, the ESP32 prototype and the rebuild of the lab's MicroPython firmware) and wrote the thesis, with help from ChatGPT and Claude. He planned and led the 2026 follow-up (the re-evaluation, tests, frozen reference and documentation): he set its goals, supplied the original records, reviewed the evaluation reports, directed follow-up checks, corrected historical details such as the firmware account, and decided what to publish. Claude generated most of the follow-up's code and text under his direction, and ChatGPT reviewed key changes. The original records and thesis documents are kept unchanged, separate from the later re-evaluation.
+Ramin Nassiri carried out the 2025 thesis work kept in [`records/`](records/) (the 104 logged runs of 93 pipeline configurations, the ESP32 prototype and the rebuild of the lab's MicroPython firmware) and wrote the thesis, with help from ChatGPT and Claude. The 2026 follow-up (the re-evaluation, tests, frozen reference and documentation) was AI-assisted. He planned and led it: he set its goals, supplied the original records, reviewed the evaluation reports, directed follow-up checks, corrected historical details such as the firmware account, and decided what to publish. Claude did most of the hands-on coding, tests and documentation under his direction, and ChatGPT reviewed key changes. The original records and thesis documents are kept unchanged (apart from the removed personal data in the thesis PDF), separate from the later re-evaluation.
 
 ## License and citation
 
