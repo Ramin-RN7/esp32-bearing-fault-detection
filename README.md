@@ -57,6 +57,10 @@ Other findings, in short:
 - **A8 GMM, the model ported to the ESP32, did no better than the baseline** on unseen bearings.
 - **Splitting by recording instead of by bearing** changed mean balanced accuracy by less than 0.02 over 200 random splits. That doesn't prove the bearing overlap in the thesis split was harmless.
 
+![Balanced accuracy on the thesis split against balanced accuracy on unseen bearings for the 86 ablation pipelines](results/split_vs_lobo.png)
+
+*Each dot is one ablation pipeline (bigger dots: several pipelines at the same point). Nine test recordings give only a few distinct scores, and pipelines with the same thesis-split score range widely on unseen bearings. Made by [`scripts/plot_split_vs_lobo.py`](scripts/plot_split_vs_lobo.py).*
+
 Details: [all 86 pipelines, nested selection and robustness checks](results/ablation_lobo.md); [the thesis pipelines under other protocols](results/protocol_comparison.md) (random splits, other validation bearings, no ball-fault bearings); [every logged ablation run](results/ablation_runs.csv); [what has been validated](docs/VALIDATION.md).
 
 ## On the ESP32 (M5Stack Core2)
